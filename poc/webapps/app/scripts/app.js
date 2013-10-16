@@ -31,4 +31,18 @@ angular.module('mobile')
             });
     });
 
+angular.module('machine', ['rest', 'widgets']);
+
+angular.module('machine')
+    .config(function ($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'views/machine.html',
+                controller: 'MachineController'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+    });
+
 })();
