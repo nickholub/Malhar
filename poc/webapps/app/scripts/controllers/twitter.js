@@ -21,33 +21,6 @@ angular.module('app')
             $scope.appURL = settings.appsURL + app.id;
         });
     }])
-    .controller('StatController', ['$scope', 'socket', 'Restangular', function ($scope, socket, Restangular) {
-        $scope.tuplesEmittedPSMA = 0;
-        $scope.totalTuplesProcessed = 0;
-
-        $scope.$watch('appId', function (appId) {
-            if (appId) {
-                //var topic = 'applications.' + appId;
-                var topic = 'apps.' + appId + '.operators.list';
-
-                socket.subscribe(topic, function (message) {
-                    var operators = message.data.operators;
-
-                    var emitted = BigInteger.ZERO;
-                    var processed = BigInteger.ZERO;
-                    //var emitted = new BigInteger('9007199254740992');
-                    _.each(operators, function (op) {
-                        emitted = emitted.add(new BigInteger(op.tuplesEmittedPSMA10));
-                        processed = processed.add(new BigInteger(op.totalTuplesProcessed));
-                    });
-
-                    $scope.totalEmitted = emitted.toString();
-                    $scope.totalProcessed = processed.toString();
-                    $scope.$apply();
-                });
-            }
-        });
-    }])
     .controller('ApplicationTextController', ['$scope', 'socket', 'Restangular', function ($scope, socket, Restangular) {
         //$scope.appText = '';
 
