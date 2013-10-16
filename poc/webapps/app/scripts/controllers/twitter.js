@@ -7,7 +7,9 @@ angular.module('app')
         $scope.appURL = '#';
         $scope.appId = rest.getAppId(settings.twitter.appName);
         $scope.$watch('appId', function (appId) {
-            $scope.appURL = settings.appsURL + appId;
+            if (appId) {
+                $scope.appURL = settings.appsURL + appId;
+            }
         });
     }])
     .controller('TwitterGridControlller', ['$scope', 'socket', function ($scope, socket) {
