@@ -17,7 +17,7 @@ angular.module('app')
             });
     });
 
-angular.module('mobile', ['rest', 'widgets']);
+angular.module('mobile', ['rest', 'widgets', 'ngGrid', 'google-maps']);
 
 angular.module('mobile')
     .config(function ($routeProvider) {
