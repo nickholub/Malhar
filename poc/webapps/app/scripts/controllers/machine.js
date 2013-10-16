@@ -7,7 +7,9 @@ angular.module('machine')
         $scope.appURL = '#';
         $scope.appId = rest.getAppId(settings.machine.appName);
         $scope.$watch('appId', function (appId) {
-            $scope.appURL = settings.appsURL + appId;
+            if (appId) {
+                $scope.appURL = settings.appsURL + appId;
+            }
         });
     }]);
 
