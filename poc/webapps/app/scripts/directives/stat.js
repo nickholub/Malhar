@@ -13,12 +13,11 @@ angular.module('widgets')
                 onClick: "&"
             },
             link: function($scope, iElement, iAttrs) {
+                $scope.totalEmitted = 0;
+                $scope.totalProcessed = 0;
+
                 $scope.$watch('data', function (appId) {
                     if (appId) {
-                        console.log('stat ' + appId);
-                        $scope.totalEmitted = 0;
-                        $scope.totalProcessed = 0;
-
                         var topic = 'apps.' + appId + '.operators.list';
 
                         socket.subscribe(topic, function (message) {

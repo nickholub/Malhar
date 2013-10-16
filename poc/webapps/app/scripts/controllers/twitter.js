@@ -3,33 +3,14 @@
 'use strict';
 
 angular.module('app')
-    .controller('TwitterController', ['$scope', 'socket', 'Restangular', function ($scope, socket, Restangular) {
+    .controller('TwitterController', ['$scope', 'rest', function ($scope, rest) {
         $scope.appURL = '#';
-
-        var appName = settings.twitter.appName;
-
-        Restangular.one('applications').get().then(function (response) {
-            //console.log(response.apps.app);
-            //var apps = _.where(response.apps.app, { name: appName, state: 'RUNNING' });
-            var apps = _.where(response.apps.app, { name: appName, state: 'RUNNING' });
-
-            apps = _.sortBy(apps, function (app) { return parseInt(app.elapsedTime) });
-            //var app = _.findWhere(data.apps, { name: appName, state: 'RUNNING' });
-            var app = apps[0];
-
-            $scope.appId = app.id;
-            $scope.appURL = settings.appsURL + app.id;
+        $scope.appId = rest.getAppId(settings.twitter.appName);
+        $scope.$watch('appId', function (appId) {
+            $scope.appURL = settings.appsURL + appId;
         });
     }])
-    .controller('ApplicationTextController', ['$scope', 'socket', 'Restangular', function ($scope, socket, Restangular) {
-        //$scope.appText = '';
-
-        //Restangular.one('applications').get().then(function (data) {
-        //    var app = _.findWhere(data.apps, { name: 'TwitterCustomerApplication', state: 'RUNNING' });
-        //    $scope.appText = JSON.stringify(app, null, 2);
-        //});
-    }])
-    .controller('TwitterGridControlller', ['$scope', 'socket', 'Restangular', function ($scope, socket, Restangular) {
+    .controller('TwitterGridControlller', ['$scope', 'socket', function ($scope, socket) {
         var topic = "demos.twitter.topURLs";
 
         socket.subscribe(topic, function(data) {
@@ -71,16 +52,6 @@ angular.module('app')
             $scope.$apply();
         });
         $scope.twitterBarChartData = [];
-    }])
-    .controller('AppDAGController', ['$scope', 'socket', 'Restangular', function($scope, socket, Restangular) {
-        $scope.text = '';
-        $scope.$watch('appId', function (appId) {
-            if (appId) {
-                Restangular.one('applications', appId).one('logicalPlan').get().then(function (data) {
-                    $scope.text = JSON.stringify(data, null, 2);
-                });
-            }
-        });
     }]);
 
 })();

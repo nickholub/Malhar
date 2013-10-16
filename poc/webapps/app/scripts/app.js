@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('widgets', ['socket']);
-angular.module('app', ['socket', 'widgets', 'ngGrid', 'restangular']);
+angular.module('app', ['rest', 'socket', 'widgets', 'ngGrid']);
 
 angular.module('app')
     .config(function ($routeProvider) {
@@ -16,9 +16,4 @@ angular.module('app')
                 redirectTo: '/'
             });
     })
-    .run(function(Restangular) {
-        //Restangular.setBaseUrl('/ws/v1');
-        Restangular.setBaseUrl('/stram/v1');
-    });
-
 })();
