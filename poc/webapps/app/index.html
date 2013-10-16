@@ -51,62 +51,7 @@
     </div>
 </div>
 
-<div class="container-fluid" ng-controller="TwitterController">
-    <h2 style="margin-top:0;">Twitter Demo
-        <a href="{{appURL}}" class="btn btn-primary" target="_blank" style="margin-left: 20px;">Open in Console</a>
-    </h2>
-    <div class="row-fluid">
-        <p class="well span8">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. 
-        </p>
-        <div class="span4" ng-controller="StatController">
-            <div class="overview-item well span6">
-                <div class="key">Events/sec</div>
-                <div class="value">{{totalEmitted|number}}</div>
-            </div>
-            <div class="overview-item well span6">
-                <div class="key">Total Events</div>
-                <div class="value">{{totalProcessed|number}}</div>
-            </div>
-        </div><!--/span-->
-    </div>
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="row-fluid">
-                <div class="span4">
-                    <h2>Top 10 URLs</h2>
-                    <div ng-controller="TwitterGridControlller">
-                        <div class="gridStyle" ng-grid="gridOptions" style="height: 350px"></div>
-                    </div>
-                </div><!--/span-->
-                <div class="span4">
-                    <h2>Top 10 URLs Chart</h2>
-                    <div ng-controller="TwitterBarChartController">
-                        <span bar-chart="" class="bar-chart" data="twitterBarChartData" label="name" on-click="d3OnClick(item)"></span>
-                    </div>
-                </div><!--/span-->
-            </div><!--/row-->
-        </div><!--/row-->
-    </div><!--/span-->
-    <!--
-    <div class="row-fluid">
-        <div class="span12">
-            <div ng-controller="AppDAGController">
-                <pre class="widget-response">{{text}}</pre>
-            </div>
-        </div>
-    </div>
-    -->
-</div><!--/row-->
-
-
-<hr>
-
-<footer>
-    <p>&copy; DataTorrent 2013</p>
-</footer>
-
-</div><!--/.fluid-container-->
+<div class="ng-view"></div>
 
 <script src="bower_components/jquery/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>

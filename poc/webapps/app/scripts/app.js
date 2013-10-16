@@ -6,8 +6,8 @@ angular.module('app', ['socket', 'ngGrid', 'restangular'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'views/main.html',
-                controller: 'MainCtrl'
+                templateUrl: 'views/twitter.html',
+                controller: 'TwitterController'
             })
             .otherwise({
                 redirectTo: '/'

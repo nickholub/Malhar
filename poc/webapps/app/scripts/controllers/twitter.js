@@ -4,7 +4,6 @@
 
 angular.module('app')
     .controller('TwitterController', ['$scope', 'socket', 'Restangular', function ($scope, socket, Restangular) {
-        $scope.appText = '';
         $scope.appURL = '#';
 
         var appName = settings.twitter.appName;
@@ -20,7 +19,6 @@ angular.module('app')
 
             $scope.appId = app.id;
             $scope.appURL = settings.appsURL + app.id;
-            $scope.appText = JSON.stringify(app, null, 2);
         });
     }])
     .controller('StatController', ['$scope', 'socket', 'Restangular', function ($scope, socket, Restangular) {
