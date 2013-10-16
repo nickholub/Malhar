@@ -2,8 +2,8 @@
 (function () {
 'use strict';
 
-angular.module('app')
-    .directive('barChart', function () {
+angular.module('widgets')
+    .directive('widgetsBarChart', function () {
         return {
             restrict: 'A',
             scope: {

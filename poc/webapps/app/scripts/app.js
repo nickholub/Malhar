@@ -2,7 +2,10 @@
 (function () {
 'use strict';
 
-angular.module('app', ['socket', 'ngGrid', 'restangular'])
+angular.module('widgets', ['socket']);
+angular.module('app', ['socket', 'widgets', 'ngGrid', 'restangular']);
+
+angular.module('app')
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
