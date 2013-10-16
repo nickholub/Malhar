@@ -74,13 +74,13 @@
         <div class="span12">
             <div class="row-fluid">
                 <div class="span4">
-                    <h2>Twitter Top 10 URLs</h2>
+                    <h2>Top 10 URLs</h2>
                     <div ng-controller="TwitterGridControlller">
                         <div class="gridStyle" ng-grid="gridOptions" style="height: 350px"></div>
                     </div>
                 </div><!--/span-->
                 <div class="span4">
-                    <h2>Twitter Top 10 URLs Chart</h2>
+                    <h2>Top 10 URLs Chart</h2>
                     <div ng-controller="TwitterBarChartController">
                         <span bar-chart="" class="bar-chart" data="twitterBarChartData" label="name" on-click="d3OnClick(item)"></span>
                     </div>
@@ -88,16 +88,15 @@
             </div><!--/row-->
         </div><!--/row-->
     </div><!--/span-->
-
+    <!--
     <div class="row-fluid">
         <div class="span12">
             <div ng-controller="AppDAGController">
                 <pre class="widget-response">{{text}}</pre>
             </div>
-        </div><!--/span-->
-    </div><!--/row-->
-
-
+        </div>
+    </div>
+    -->
 </div><!--/row-->
 
 
