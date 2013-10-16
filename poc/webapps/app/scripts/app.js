@@ -45,4 +45,22 @@ angular.module('machine')
             });
     });
 
+angular.module('fraud', ['rest', 'widgets']);
+
+angular.module('fraud')
+    .config(function($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'views/fraud.html',
+                controller: 'FraudController'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+    });
+
 })();
+
+
+    
+    
