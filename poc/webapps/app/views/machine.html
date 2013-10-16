@@ -2,14 +2,14 @@
     <div class="row-fluid">
         <div class="span12">
             <h2 class="app-title">
-                Machine Demo
+                Large Scale Monitoring and Analysis
                 <a href="{{appURL}}" class="btn btn-primary" target="_blank" style="margin-left: 20px;">Open in Console</a>
             </h2>
         </div>
     </div>
     <div class="row-fluid">
         <p class="well span8">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.
+            This demo application constantly monitors samples of CPU, RAM and HD utilization coming from heterogeneous installed base of multiple devices located at multiple data centers and used by different customers. The application constantly generates and calculates averages for multiple analytic dimensions, including product type, OS, several software versions and customer and stores the data into fast storage (in this case Redis). This allows both immediate analysis by any combination of analysis dimensions and also allows to generate alarms in real time (e.g. notify me when average CPU utilization exceeds 70% for particular combination of model, customer and software). While influenced by real customer, because of security concerns, this demo uses randomly generated data.
         </p>
         <div class="span4">
             <span widgets-stat="" data="appId"></span>
