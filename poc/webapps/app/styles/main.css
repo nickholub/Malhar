@@ -6,6 +6,10 @@ body {
     padding: 9px 0;
 }
 
+.navbar .nav > li {
+    line-height:28px;
+}
+
 @media (max-width: 980px) {
     /* Enable use of floated navbar text */
     .navbar-text.pull-right {
@@ -68,6 +72,7 @@ body {
     padding: 0;
     width: 241px;
     height: 48px;
+    margin-left:-15px;
 }
 
 .navbar-inverse .nav .active > a, .navbar-inverse .nav .active > a:hover, .navbar-inverse .nav .active > a:focus {
