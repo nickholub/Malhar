@@ -9,4 +9,4 @@ settings.appsURL = 'http://localhost:3490/static/#ops/apps/';
 
 settings.twitter.appName = 'TwitterCustomerApplication';
 settings.mobile.appName = 'MobileLocatorCustomerApplication';
-settings.machine.appName = 'MCScalableApplication';
+settings.machine.appName = 'MachineDataCustomerApplication';
