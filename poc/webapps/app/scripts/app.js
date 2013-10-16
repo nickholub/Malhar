@@ -15,5 +15,20 @@ angular.module('app')
             .otherwise({
                 redirectTo: '/'
             });
-    })
+    });
+
+angular.module('mobile', ['rest', 'widgets']);
+
+angular.module('mobile')
+    .config(function ($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'views/mobile.html',
+                controller: 'MobileController'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+    });
+
 })();
