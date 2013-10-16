@@ -46,17 +46,12 @@ body {
 }
 
 .overview-item {
-    padding: 7px;
-    border: thin solid #ccc;
-    background-color: #FFF;
-    display: inline-block;
-    vertical-align: middle;
-    margin: 2px 5px 2px 0;
+    padding-top: 14px;
 }
 
 .overview-item .key {
     color: #888;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
     display: block;
     margin-bottom: 5px;
 }
