@@ -2,10 +2,7 @@
 (function () {
 'use strict';
 
-angular.module('app').factory('socket', function() {
-    //var webSocketUrl = 'ws://node0.morado.com:9090/pubsub';
-    //var ws = new WebSocket(webSocketUrl);
-    //var ws = new WebSocket('ws://localhost:3002/random/websocket');
+angular.module('socket', []).factory('socket', function() {
     var ws = new WebSocket(settings.webSocketUrl);
 
     //TODO use AngularJS promise instead
