@@ -7,7 +7,9 @@ angular.module('mobile')
         $scope.appURL = '#';
         $scope.appId = rest.getAppId(settings.mobile.appName);
         $scope.$watch('appId', function (appId) {
-            $scope.appURL = settings.appsURL + appId;
+            if (appId) {
+                $scope.appURL = settings.appsURL + appId;
+            }
         });
     }]);
 
