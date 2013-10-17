@@ -48,6 +48,10 @@ body {
     fill: black;
 }
 
+.chart-ctnr {
+    height: 300px;
+}
+
 .widget-response {
     max-height: 340px;
     overflow:auto;
