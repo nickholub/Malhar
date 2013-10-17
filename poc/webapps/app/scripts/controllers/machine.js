@@ -45,11 +45,6 @@ angular.module('machine')
         $scope.ram = 0;
         $scope.hdd = 0;
 
-        $scope.reload = function () {
-            console.log('click');
-            console.log($scope.customer);
-        };
-
         $scope.range = function (start, stop) {
             return _.range(start, stop + 1);
         };
@@ -70,9 +65,9 @@ angular.module('machine')
                 });
 
                 var current = _.last(data);
-                $scope.cpu = current.cpu;
-                $scope.ram = current.ram;
-                $scope.hdd = current.hdd;
+                $scope.cpu = parseFloat(current.cpu);
+                $scope.ram = parseFloat(current.ram);
+                $scope.hdd = parseFloat(current.hdd);
             }
         });
 
