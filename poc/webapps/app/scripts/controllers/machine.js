@@ -41,6 +41,10 @@ angular.module('machine')
         $scope.deviceId = "";
         $scope.lookback = 30;
 
+        $scope.cpu = 0;
+        $scope.ram = 0;
+        $scope.hdd = 0;
+
         $scope.reload = function () {
             console.log('click');
             console.log($scope.customer);
@@ -64,6 +68,11 @@ angular.module('machine')
                     container: 'hddChart',
                     property: 'hdd'
                 });
+
+                var current = _.last(data);
+                $scope.cpu = current.cpu;
+                $scope.ram = current.ram;
+                $scope.hdd = current.hdd;
             }
         });
 
