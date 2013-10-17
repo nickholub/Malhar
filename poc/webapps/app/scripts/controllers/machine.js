@@ -38,7 +38,7 @@ angular.module('machine')
         $scope.os = "";
         $scope.software1 = "";
         $scope.software2 = "";
-        $scope.software3 = "";
+        $scope.deviceId = "";
         $scope.lookback = 30;
 
         $scope.reload = function () {
@@ -74,7 +74,7 @@ angular.module('machine')
                 os: $scope.os,
                 software1: $scope.software1,
                 software2: $scope.software2,
-                software3: $scope.software3,
+                deviceId: $scope.deviceId,
                 lookback: $scope.lookback
             };
 

@@ -45,7 +45,7 @@ exports.data = function(req, res) {
 
 function getMinutes(query, resCallback) {
     var lookback = query.lookback;
-    var keyParams = [query.customer, query.product, query.os, query.software1, query.software2, query.software3];
+    var keyParams = [query.customer, query.product, query.os, query.software1, query.software2, query.software3, query.deviceId];
 
     var paramKeyTemplate = '|$index:$param';
     var minuteKeyTemplate = 'm|$date';
