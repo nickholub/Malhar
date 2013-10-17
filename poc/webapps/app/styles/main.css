@@ -52,6 +52,10 @@ body {
     height: 300px;
 }
 
+.gauge {
+    margin-top: 40px;
+}
+
 .widget-response {
     max-height: 340px;
     overflow:auto;
