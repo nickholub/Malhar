@@ -34,8 +34,8 @@ angular.module('mobile')
             var latlon = translateLatLong(item);
             map[item.phone] = {
                 phone: item.phone,
-                latitude: $filter('number')(latlon.latitude, 14),
-                longitude: $filter('number')(latlon.longitude, 14)
+                latitude: $filter('number')(latlon.latitude, 17),
+                longitude: $filter('number')(latlon.longitude, 17)
             };
             $scope.gridData = _.values(map);
             $scope.$apply();
