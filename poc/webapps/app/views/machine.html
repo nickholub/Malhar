@@ -24,74 +24,64 @@
                     <form method="GET">
                         <li>
                         <label for="customer">Customer ID:</label>
-                        <select name="customer" id="customer" style="width:200px;">
+                        <select ng-model="customer" id="customer" style="width:200px;">
                             <option value="">ALL</option>
-                            <% for (var i = 1; i <= 5; i++) { %>
-                            <%- '<option value="$i">Customer $i</option>'.replace(/\$i/g, i) %>
-                            <% } %>
+                            <option ng-repeat="value in range(1,5)" value="{{value}}">Customer {{value}}</option>
                         </select>
                         </li>
 
                         <li>
-                        <label for="">Product ID:</label>
-                        <select name="product" id="product" style="width:200px;">
+                        <label for="product">Product ID:</label>
+                        <select ng-model="product" id="product" style="width:200px;">
                             <option value="">ALL</option>
-                            <% for (var i = 4; i <= 6; i++) { %>
-                            <%- '<option value="$i">Product $i</option>'.replace(/\$i/g, i) %>
-                            <% } %>
+                            <option ng-repeat="value in range(4,6)" value="{{value}}">Product {{value}}</option>
                         </select>
                         </li>
 
                         <li>
-                        <label for="">Product OS:</label>
-                        <select name="os" id="os" style="width:200px;">
+                        <label for="os">Product OS:</label>
+                        <select ng-model="os" id="os" style="width:200px;">
                             <option value="">ALL</option>
-                            <% for (var i = 10; i <= 12; i++) { %>
-                            <%- '<option value="$i">OS $i</option>'.replace(/\$i/g, i) %>
-                            <% } %>
+                            <option ng-repeat="value in range(10,12)" value="{{value}}">OS {{value}}</option>
                         </select>
                         </li>
 
                         <li>
                         <label for="software1">Software1 Ver:</label>
-                        <select name="software1" id="software1" style="width:200px;">
+                        <select ng-model="software1" id="software1" style="width:200px;">
                             <option value="">ALL</option>
-                            <% for (var i = 10; i <= 12; i++) { %>
-                            <%- '<option value="$i">Software1 Version $i</option>'.replace(/\$i/g, i) %>
-                            <% } %>
+                            <option ng-repeat="value in range(10,12)" value="{{value}}">Software1 Version {{value}}</option>
                         </select>
                         </li>
 
                         <li>
                         <label for="software2">Software2 Ver:</label>
-                        <select name="software2" id="software2" style="width:200px;">
+                        <select ng-model="software2" id="software2" style="width:200px;">
                             <option value="">ALL</option>
-                            <% for (var i = 12; i <= 14; i++) { %>
-                            <%- '<option value="$i">Software2 Version $i</option>'.replace(/\$i/g, i) %>
-                            <% } %>
+                            <option ng-repeat="value in range(12,14)" value="{{value}}">Software2 Version {{value}}</option>
                         </select>
                         </li>
 
                         <li>
                         <label for="software3">Software3 Ver:</label>
-                        <select name="software3" id="software3" style="width:200px;">
+                        <select ng-model="software3" id="software3" style="width:200px;">
                             <option value="">ALL</option>
-                            <% for (var i = 4; i <= 6; i++) { %>
-                            <%- '<option value="$i">Software3 Version $i</option>'.replace(/\$i/g, i) %>
-                            <% } %>
+                            <option ng-repeat="value in range(4,6)" value="{{value}}">Software3 Version {{value}}</option>
                         </select>
                         </li>
 
                         <li>
                         <label for="lookback">Look Back:</label>
                         <div class="input-append">
-                            <input type="text" name="lookback" id="lookback" class="input-small"/>
-                            <span class="add-on">Hours</span>
+                            <input type="number" ng-model="lookback" min="2" id="lookback" class="input-small"/>
+                            <span class="add-on">Minutes</span>
                         </div>
                         </li>
+                        <!--
                         <li>
-                        <input type="submit" value="submit" class="btn btn-primary" />
+                        <input ng-click="reload();" type="submit" value="submit" class="btn btn-primary" />
                         </li>
+                        -->
 
                     </form>
                 </ul>

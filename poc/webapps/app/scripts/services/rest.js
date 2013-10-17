@@ -16,11 +16,11 @@ angular.module('rest', ['ng', 'restangular'])
                 });
                 return deferred.promise;
             },
-            getMachineData: function () {
+            getMachineData: function (query) {
                 //Restangular.all('machine').getList().then(function (response) {
                 //    console.log(response);
                 //});
-                return Restangular.all('machine').getList();
+                return Restangular.all('machine').getList(query);
             }
         };
     }])

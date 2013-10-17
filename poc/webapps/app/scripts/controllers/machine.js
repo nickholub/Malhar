@@ -33,6 +33,23 @@ angular.module('machine')
             }
         });
 
+        $scope.customer = "";
+        $scope.product = "";
+        $scope.os = "";
+        $scope.software1 = "";
+        $scope.software2 = "";
+        $scope.software3 = "";
+        $scope.lookback = 30;
+
+        $scope.reload = function () {
+            console.log('click');
+            console.log($scope.customer);
+        };
+
+        $scope.range = function (start, stop) {
+            return _.range(start, stop + 1);
+        };
+
         $scope.$watch('machineData', function (data) {
             if (data) {
                 drawChart(data, {
@@ -51,7 +68,17 @@ angular.module('machine')
         });
 
         function fetchMachineData () {
-            $scope.machineData = rest.getMachineData();
+            var query = {
+                customer: $scope.customer,
+                product: $scope.product,
+                os: $scope.os,
+                software1: $scope.software1,
+                software2: $scope.software2,
+                software3: $scope.software3,
+                lookback: $scope.lookback
+            };
+
+            $scope.machineData = rest.getMachineData(query);
             $timeout(fetchMachineData, 1000);
         }
 

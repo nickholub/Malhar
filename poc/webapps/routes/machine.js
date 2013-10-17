@@ -44,7 +44,7 @@ exports.data = function(req, res) {
 };
 
 function getMinutes(query, resCallback) {
-    var lookbackHours = query.lookbackHours;
+    var lookback = query.lookback;
     var keyParams = [query.customer, query.product, query.os, query.software1, query.software2, query.software3];
 
     var paramKeyTemplate = '|$index:$param';
@@ -62,8 +62,7 @@ function getMinutes(query, resCallback) {
     var result = [];
     var endTime = Date.now();
     endTime -= (endTime % minute); // round to minute
-    //var time = endTime - lookbackHours * (60 * minute);
-    var time = endTime - (30 * minute);
+    var time = endTime - (lookback * minute);
 
     // fetch all minutes serially within lookback period
     async.whilst(
