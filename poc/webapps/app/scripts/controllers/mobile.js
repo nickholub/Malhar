@@ -25,13 +25,18 @@ angular.module('mobile')
             }
         });
     }])
-    .controller('MobileGridControlller', ['$scope', 'socket', function ($scope, socket) {
+    .controller('MobileGridControlller', ['$scope', '$filter', 'socket', function ($scope, $filter, socket) {
         var topic = "demos.mobile.phoneLocationQueryResult";
 
         var map = {};
         socket.subscribe(topic, function(message) {
             var item = message.data;
-            map[item.phone] = item;
+            var latlon = translateLatLong(item);
+            map[item.phone] = {
+                phone: item.phone,
+                latitude: $filter('number')(latlon.latitude, 14),
+                longitude: $filter('number')(latlon.longitude, 14)
+            };
             $scope.gridData = _.values(map);
             $scope.$apply();
         });
@@ -40,8 +45,9 @@ angular.module('mobile')
             data: 'gridData',
             enableColumnResize: true,
             columnDefs: [
-                { field: "phone", displayName: 'Phone', width: '50%', sortable: false },
-                { field: "location", displayName: 'Location', width: '50%', sortable: false }]
+                { field: "phone", displayName: 'Phone', width: '20%', sortable: false },
+                { field: "latitude", displayName: 'Latitude', width: '40%', sortable: false },
+                { field: "longitude", displayName: 'Longitude', width: '40%', sortable: false }]
         };
     }])
     .controller('ExampleController', ['$scope', 'socket', function ($scope, socket) {
