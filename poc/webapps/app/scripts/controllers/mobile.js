@@ -65,14 +65,7 @@ angular.module('mobile')
                     longitude: -121.92674696445465
                 }
             },
-
-            /** the initial zoom level of the map */
-            zoomProperty: 12,
-
-            // These 2 properties will be set when clicking on the map
-            clickedLatitudeProperty: null,
-            clickedLongitudeProperty: null
-
+            zoomProperty: 12
         });
     }]);
 
