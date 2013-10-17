@@ -2,6 +2,19 @@
 (function () {
 'use strict';
 
+function translateLatLong(item) {
+    var match = item.location.match(/\((\d+),(\d+)/); //TODO server should pass this data as numbers
+    var lat = parseInt(match[1]);
+    var lon = parseInt(match[2]);
+    var phone = parseInt(item.phone);
+
+    //TODO magic numbers
+    var latitude = 37.375894 + (phone % 4 - 2) * 0.01 - lat * 0.005;
+    var longitude = -121.959328 + (phone % 8 - 4) * 0.01 + lon * 0.007;
+
+    return { latitude: latitude, longitude: longitude };
+}
+
 angular.module('mobile')
     .controller('MobileController', ['$scope', 'rest', function ($scope, rest) {
         $scope.appURL = '#';
@@ -31,46 +44,35 @@ angular.module('mobile')
                 { field: "location", displayName: 'Location', width: '50%', sortable: false }]
         };
     }])
-    .controller('ExampleController', ['$scope', '$timeout', '$log', function ($scope, $timeout, $log) {
-        // Enable the new Google Maps visuals until it gets enabled by default.
-        // See http://googlegeodevelopers.blogspot.ca/2013/05/a-fresh-new-look-for-maps-api-for-all.html
+    .controller('ExampleController', ['$scope', 'socket', function ($scope, socket) {
         google.maps.visualRefresh = true;
 
-        angular.extend($scope, {
+        var topic = "demos.mobile.phoneLocationQueryResult";
 
+        var map = {};
+        socket.subscribe(topic, function(message) {
+            var item = message.data;
+            var latlon = translateLatLong(item);
+            map[item.phone] = latlon;
+            $scope.markersProperty = _.values(map); //TODO update only changed marker
+            $scope.$apply();
+        });
+
+        angular.extend($scope, {
             position: {
                 coords: {
-                    latitude: 37.375894,
-                    longitude: -121.959328
+                    latitude: 37.36197126180853,
+                    longitude: -121.92674696445465
                 }
-            },
-
-            /** the initial center of the map */
-            centerProperty: {
-                latitude: 45,
-                longitude: -73
             },
 
             /** the initial zoom level of the map */
             zoomProperty: 12,
 
-            /** list of markers to put in the map */
-            markersProperty: [ {
-                latitude: 45,
-                longitude: -74
-            }],
-
             // These 2 properties will be set when clicking on the map
             clickedLatitudeProperty: null,
-            clickedLongitudeProperty: null,
+            clickedLongitudeProperty: null
 
-            eventsProperty: {
-                click: function (mapModel, eventName, originalEventArgs) {
-                    // 'this' is the directive's scope
-                    $log.log("user defined event on map directive with scope", this);
-                    $log.log("user defined event: " + eventName, mapModel, originalEventArgs);
-                }
-            }
         });
     }]);
 
