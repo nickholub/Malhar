@@ -90,18 +90,32 @@
         <div class="span9">
             <div class="row-fluid">
                 <div class="span6">
-                    <h2>CPU Usage (%)</h2>
+                    <h2>CPU Usage Chart (%)</h2>
                     <div class="chart-ctnr" id="cpuChart"></div>
                 </div><!--/span-->
                 <div class="span6">
-                    <h2>RAM Usage (%)</h2>
-                    <div class="chart-ctnr" id="ramChart" ></div>
+                    <h2>Current CPU Usage (%)</h2>
+                    <span gauge="" min="0" max="100" value="cpu" label="CPU" class="gauge"></span>
                 </div><!--/span-->
             </div><!--/row-->
             <div class="row-fluid">
                 <div class="span6">
-                    <h2>HDD Usage (%)</h2>
+                    <h2>RAM Usage Chart (%)</h2>
+                    <div class="chart-ctnr" id="ramChart" ></div>
+                </div><!--/span-->
+                <div class="span6">
+                    <h2>Current RAM Usage (%)</h2>
+                    <span gauge="" min="0" max="100" value="ram" label="RAM" class="gauge"></span>
+                </div><!--/span-->
+            </div><!--/row-->
+            <div class="row-fluid">
+                <div class="span6">
+                    <h2>HDD Usage Chart (%)</h2>
                     <div class="chart-ctnr" id="hddChart" ></div>
+                </div><!--/span-->
+                <div class="span6">
+                    <h2>Current HDD Usage (%)</h2>
+                    <span gauge="" min="0" max="100" value="hdd" label="HDD" class="gauge"></span>
                 </div><!--/span-->
             </div><!--/row-->
         </div><!--/span-->
