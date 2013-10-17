@@ -31,7 +31,7 @@ angular.module('mobile')
             });
     });
 
-angular.module('machine', ['rest', 'widgets']);
+angular.module('machine', ['ng', 'rest', 'widgets']);
 
 angular.module('machine')
     .config(function ($routeProvider) {

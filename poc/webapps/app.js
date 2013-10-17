@@ -4,6 +4,8 @@ var http = require('http');
 var httpProxy = require('http-proxy');
 var config = require('./config');
 
+var machine = require('./routes/machine');
+
 var app = express();
 
 var proxy = new httpProxy.RoutingProxy();
@@ -14,12 +16,21 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
-app.use(express.static(__dirname + '/app'));
 
-// development only
-if ('development' == app.get('env')) {
+console.log('environment: ' + app.get('env'));
+
+if ('production' == app.get('env')) {
+    app.use(express.static(__dirname + '/dist'));
+} else if ('development' == app.get('env')) {
+    app.use(express.static(__dirname + '/app'));
     app.use(express.errorHandler());
 }
+
+
+// Machine Generated Data Demo Demo
+//app.get('/machine', redirectToMain);
+//app.get('/machine/main', machine.index);
+app.get('/machine', machine.data);
 
 app.get('/ws/*', function(req, res) {
     proxy.proxyRequest(req, res, {

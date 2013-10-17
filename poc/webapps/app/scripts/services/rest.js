@@ -7,18 +7,25 @@ angular.module('rest', ['ng', 'restangular'])
         return {
             getAppId: function (appName) {
                 var deferred = $q.defer();
-                Restangular.one('applications').get().then(function (response) {
+                //Restangular.one('applications').get().then(function (response) {
+                Restangular.oneUrl('applications', 'stram/v1/applications').get().then(function (response) {
                     var apps = _.where(response.apps.app, { name: appName, state: 'RUNNING' });
                     apps = _.sortBy(apps, function (app) { return parseInt(app.elapsedTime) });
                     var app = apps[0];
                     deferred.resolve(app.id);
                 });
                 return deferred.promise;
+            },
+            getMachineData: function () {
+                //Restangular.all('machine').getList().then(function (response) {
+                //    console.log(response);
+                //});
+                return Restangular.all('machine').getList();
             }
         };
     }])
     .run(function(Restangular) {
         //Restangular.setBaseUrl('/ws/v1');
-        Restangular.setBaseUrl('/stram/v1');
+        //Restangular.setBaseUrl('/stram/v1');
     });
 })();
