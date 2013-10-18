@@ -34,8 +34,8 @@ angular.module('mobile')
             var latlon = translateLatLong(item);
             map[item.phone] = {
                 phone: item.phone,
-                latitude: $filter('number')(latlon.latitude, 17),
-                longitude: $filter('number')(latlon.longitude, 17)
+                latitude: $filter('number')(latlon.latitude, 3),
+                longitude: $filter('number')(latlon.longitude, 3)
             };
             $scope.gridData = _.values(map);
             $scope.$apply();
@@ -45,9 +45,9 @@ angular.module('mobile')
             data: 'gridData',
             enableColumnResize: true,
             columnDefs: [
-                { field: "phone", displayName: 'Phone', width: '20%', sortable: false },
-                { field: "latitude", displayName: 'Latitude', width: '40%', sortable: false },
-                { field: "longitude", displayName: 'Longitude', width: '40%', sortable: false }]
+                { field: "phone", displayName: 'Phone', width: '40%', sortable: false },
+                { field: "latitude", displayName: 'Latitude', width: '30%', sortable: false },
+                { field: "longitude", displayName: 'Longitude', width: '30%', sortable: false }]
         };
     }])
     .controller('ExampleController', ['$scope', 'socket', function ($scope, socket) {

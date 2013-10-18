@@ -16,13 +16,13 @@
         </div><!--/span-->
     </div>
     <div class="row-fluid">
-        <div class="span4">
+        <div class="span3">
             <h2>Locations</h2>
             <div ng-controller="MobileGridControlller">
-                <div class="gridStyle" ng-grid="gridOptions" style="width:450px;height:300px;"></div>
+                <div class="mobile-grid" ng-grid="gridOptions"></div>
             </div>
         </div>
-        <div class="span8" ng-controller="ExampleController">
+        <div class="span9" ng-controller="ExampleController">
             <div class="google-map"
                  center="position.coords"
                  zoom="zoomProperty"

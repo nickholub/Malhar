@@ -29,6 +29,11 @@ body {
     height: 200px;
 }
 
+.mobile-grid {
+    border: 1px solid rgb(212,212,212);
+    height: 200px;
+}
+
 .bar-chart rect.bar-chart-p {
     fill: #05EEFA;
 }
