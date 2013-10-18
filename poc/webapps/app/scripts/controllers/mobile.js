@@ -64,7 +64,7 @@ angular.module('mobile')
                 { field: "longitude", displayName: 'Longitude', width: '30%', sortable: false }]
         };
     }])
-    .controller('ExampleController', ['$scope', 'socket', function ($scope, socket) {
+    .controller('MapController', ['$scope', 'socket', function ($scope, socket) {
         google.maps.visualRefresh = true;
 
         var topic = "demos.mobile.phoneLocationQueryResult";
