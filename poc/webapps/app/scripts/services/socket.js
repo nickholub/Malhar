@@ -92,6 +92,11 @@ angular.module('socket', []).factory('socket', function() {
             }
             callbacks.add(callback);
         },
+        
+        publish: function(topic, data) {
+            var message = { "type": "publish", "topic": topic, "data": data };
+            this.send(message);
+        },
 
         on: function(topic, callback) {
             var callbacks = topicMap[topic];
