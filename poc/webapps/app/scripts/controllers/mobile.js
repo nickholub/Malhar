@@ -16,7 +16,7 @@ function translateLatLong(item) {
 }
 
 angular.module('mobile')
-    .controller('MobileController', ['$scope', 'rest', function ($scope, rest) {
+    .controller('MobileController', ['$scope', 'rest', 'socket', function ($scope, rest, socket) {
         $scope.appURL = '#';
         $scope.appId = rest.getAppId(settings.mobile.appName);
         $scope.$watch('appId', function (appId) {
@@ -24,6 +24,20 @@ angular.module('mobile')
                 $scope.appURL = settings.appsURL + appId;
             }
         });
+
+        $scope.phone = '';
+        $scope.addPhone = function () {
+            var command = {
+                command : 'add',
+                phone : $scope.phone
+            };
+
+            var topic = 'demos.mobile.phoneLocationQuery';
+            var message = { "type" : "publish", "topic" : topic, "data" : command };
+            socket.send(message);
+
+            $scope.phone = '';
+        };
     }])
     .controller('MobileGridControlller', ['$scope', '$filter', 'socket', function ($scope, $filter, socket) {
         var topic = "demos.mobile.phoneLocationQueryResult";

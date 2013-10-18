@@ -18,6 +18,12 @@
     <div class="row-fluid">
         <div class="span3">
             <h2>Locations</h2>
+
+            <div class="form-horizontal">
+                <input type="number" ng-model="phone">
+                <button ng-click="addPhone();" type="button" class="btn btn-default">Add</button>
+            </div>
+
             <div ng-controller="MobileGridControlller">
                 <div class="mobile-grid" ng-grid="gridOptions"></div>
             </div>
