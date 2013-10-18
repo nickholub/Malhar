@@ -26,6 +26,7 @@ body {
 .twitter-grid {
     border: 1px solid rgb(212,212,212);
     height: 350px;
+    width: 400px;
 }
 
 .mobile-grid {

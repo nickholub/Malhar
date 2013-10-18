@@ -30,8 +30,8 @@ angular.module('app')
         $scope.gridOptions = {
             data: 'myData',
             enableColumnResize: true,
-            columnDefs: [{ field: "name", displayName: 'URL', width: '80%', sortable: false },
-                { field: "value", displayName: 'Count', width: '20%', sortable: false }]
+            columnDefs: [{ field: "name", displayName: 'URL', width: '75%', sortable: false },
+                { field: "value", displayName: 'Count', width: '25%', sortable: false }]
         };
     }])
     .controller('TwitterBarChartController', ['$scope', 'socket', function($scope, socket) {
