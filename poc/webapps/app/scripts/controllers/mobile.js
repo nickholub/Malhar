@@ -12,7 +12,7 @@ function translateLatLong(item) {
     var latitude = 37.375894 + (phone % 4 - 2) * 0.01 - lat * 0.005;
     var longitude = -121.959328 + (phone % 8 - 4) * 0.01 + lon * 0.007;
 
-    return { latitude: latitude, longitude: longitude };
+    return { latitude: latitude, longitude: longitude, label: item.phone };
 }
 
 angular.module('mobile')

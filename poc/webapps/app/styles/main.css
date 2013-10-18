@@ -56,6 +56,18 @@ body {
     margin-top: 40px;
 }
 
+.marker-label {
+    color: red;
+    background-color: white;
+    font-family: "Lucida Grande", "Arial", sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    width: 50px;
+    border: 1px solid black;
+    white-space: nowrap;
+}
+
 .widget-response {
     max-height: 340px;
     overflow:auto;

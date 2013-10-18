@@ -1,3 +1,7 @@
+/**
+ * Modified copy (using MarkerWithLabel instead of google.maps.Marker).
+ */
+
 /**!
  * The MIT License
  *
@@ -187,11 +191,24 @@
                     return;
                 }
 
+                var marker = new MarkerWithLabel({
+                    position: new google.maps.LatLng(lat, lng),
+                    draggable: true,
+                    raiseOnDrag: true,
+                    map: _instance,
+                    labelContent: label,
+                    labelAnchor: new google.maps.Point(25, 0),
+                    labelClass: "marker-label", // the CSS class for the label
+                    labelStyle: {opacity: 1.0}
+                });
+
+                /*
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(lat, lng),
                     map: _instance,
                     icon: icon
                 });
+                */
 
                 if (label) {
 
@@ -477,7 +494,7 @@
 
                         angular.forEach(newValue, function (v, i) {
                             if (!_m.hasMarker(v.latitude, v.longitude)) {
-                                _m.addMarker(v.latitude, v.longitude, v.icon, v.infoWindow);
+                                _m.addMarker(v.latitude, v.longitude, v.icon, v.infoWindow, v.label);
                             }
                         });
 
