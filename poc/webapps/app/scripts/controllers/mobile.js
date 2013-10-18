@@ -9,8 +9,8 @@ function translateLatLong(item) {
     var phone = parseInt(item.phone);
 
     //TODO magic numbers
-    var latitude = 37.36197126180853 + (phone % 4 - 2) * 0.01 - lat * 0.005;
-    var longitude = -121.92674696445465 + (phone % 8 - 4) * 0.01 + lon * 0.007;
+    var latitude = 37.40180101292334 + (phone % 4 - 2) * 0.01 - lat * 0.005;
+    var longitude = -121.9966721534729 + (phone % 8 - 4) * 0.01 + lon * 0.007;
 
     return { latitude: latitude, longitude: longitude, label: item.phone };
 }
