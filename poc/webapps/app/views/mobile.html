@@ -16,7 +16,7 @@
         </div><!--/span-->
     </div>
     <div class="row-fluid">
-        <div class="span3">
+        <div class="span3" ng-controller="MobileGridControlller">
             <h2>Locations</h2>
 
             <div class="form-horizontal">
@@ -24,9 +24,7 @@
                 <button ng-click="addPhone();" type="button" class="btn btn-default">Add</button>
             </div>
 
-            <div ng-controller="MobileGridControlller">
-                <div class="mobile-grid" ng-grid="gridOptions"></div>
-            </div>
+            <div class="mobile-grid" ng-grid="gridOptions"></div>
         </div>
         <div class="span9" ng-controller="MapController">
             <div class="google-map"

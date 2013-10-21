@@ -24,6 +24,11 @@ angular.module('mobile')
                 $scope.appURL = settings.appsURL + appId;
             }
         });
+    }])
+    .controller('MobileGridControlller', ['$scope', '$filter', 'socket', function ($scope, $filter, socket) {
+        var topic = "demos.mobile.phoneLocationQueryResult";
+
+        var map = {};
 
         $scope.phone = '';
         $scope.addPhone = function () {
@@ -36,13 +41,26 @@ angular.module('mobile')
             var message = { "type" : "publish", "topic" : topic, "data" : command };
             socket.send(message);
 
+            //map[$scope.phone] = { phone: $scope.phone };
+            //$scope.gridData = _.values(map);
+
             $scope.phone = '';
         };
-    }])
-    .controller('MobileGridControlller', ['$scope', '$filter', 'socket', function ($scope, $filter, socket) {
-        var topic = "demos.mobile.phoneLocationQueryResult";
 
-        var map = {};
+        $scope.removePhone = function(phone) {
+            var command = {
+                command : 'del',
+                phone : phone
+            };
+
+            var topic = 'demos.mobile.phoneLocationQuery';
+            var message = { "type" : "publish", "topic" : topic, "data" : command };
+            socket.send(message);
+
+            delete map[phone];
+            $scope.gridData = _.values(map);
+        };
+
         socket.subscribe(topic, function(message) {
             var item = message.data;
             var latlon = translateLatLong(item);
@@ -58,10 +76,13 @@ angular.module('mobile')
         $scope.gridOptions = {
             data: 'gridData',
             enableColumnResize: true,
+            enableRowSelection: false,
             columnDefs: [
-                { field: "phone", displayName: 'Phone', width: '40%', sortable: false },
+                { field: "phone", displayName: 'Phone', width: '30%', sortable: false },
                 { field: "latitude", displayName: 'Latitude', width: '30%', sortable: false },
-                { field: "longitude", displayName: 'Longitude', width: '30%', sortable: false }]
+                { field: "longitude", displayName: 'Longitude', width: '30%', sortable: false },
+                { field: "phone", displayName: '', cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()" ng-click="removePhone(COL_FIELD)"><i class="icon-trash"></i></div>', cellClass: 'mobile-grid-remove', width: '10%', sortable: false }
+            ]
         };
     }])
     .controller('MapController', ['$scope', 'socket', function ($scope, socket) {
