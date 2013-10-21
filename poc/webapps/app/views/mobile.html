@@ -20,14 +20,14 @@
             <h2>Locations</h2>
 
             <div class="form-horizontal">
-                <input type="number" min="9000000" max="9100000" ng-model="phone">
+                <input type="number" min="5550000" max="5559999" ng-model="phone">
                 <button ng-click="addPhone();" type="button" class="btn btn-default">Add</button>
             </div>
 
             <div class="mobile-grid" ng-grid="gridOptions"></div>
         </div>
         <div class="span9" ng-controller="MapController">
-            <div class="google-map"
+            <div class="google-map" style="height:550px;"
                  center="position.coords"
                  zoom="zoomProperty"
                  markers="markersProperty"

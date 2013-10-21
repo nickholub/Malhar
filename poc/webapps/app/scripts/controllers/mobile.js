@@ -12,7 +12,7 @@ function translateLatLong(item) {
     var latitude = 37.40180101292334 + (phone % 4 - 2) * 0.01 - lat * 0.005;
     var longitude = -121.9966721534729 + (phone % 8 - 4) * 0.01 + lon * 0.007;
 
-    return { latitude: latitude, longitude: longitude, label: item.phone };
+    return { latitude: latitude, longitude: longitude, label: item.phone, phone: item.phone };
 }
 
 angular.module('mobile')
@@ -24,11 +24,44 @@ angular.module('mobile')
                 $scope.appURL = settings.appsURL + appId;
             }
         });
-    }])
-    .controller('MobileGridControlller', ['$scope', '$filter', 'socket', function ($scope, $filter, socket) {
-        var topic = "demos.mobile.phoneLocationQueryResult";
 
+        var removed = {};
         var map = {};
+
+        var topic = "demos.mobile.phoneLocationQueryResult";
+        socket.subscribe(topic, function(message) {
+            var item = message.data;
+
+            // allow adding phones only if they were not recently removed
+            if (removed.hasOwnProperty(item.phone)) {
+                var removedTime = removed[item.phone];
+                if (removedTime < Date.now() - 5000) {
+                    delete removed[item.phone];
+                }
+            }
+
+            if (!removed.hasOwnProperty(item.phone)) {
+                var latlon = translateLatLong(item);
+                map[item.phone] = latlon;
+                $scope.$broadcast('datachanged', map);
+            }
+        });
+
+        $scope.$on('phone_added', function (event, phone) {
+            map[phone] = { phone: phone };
+            $scope.$broadcast('datachanged', map);
+        });
+
+        $scope.$on('phone_removed', function (event, phone) {
+            removed[phone] = Date.now();
+            delete map[phone];
+            $scope.$broadcast('datachanged', map);
+        });
+    }])
+    .controller('MobileGridControlller', ['$scope', '$filter', '$timeout', 'socket', function ($scope, $filter, $timeout, socket) {
+        $scope.$on('datachanged', function (event, map) {
+            $scope.gridData = _.values(map);
+        });
 
         $scope.phone = '';
         $scope.addPhone = function () {
@@ -41,8 +74,7 @@ angular.module('mobile')
             var message = { "type" : "publish", "topic" : topic, "data" : command };
             socket.send(message);
 
-            //map[$scope.phone] = { phone: $scope.phone };
-            //$scope.gridData = _.values(map);
+            //$scope.$emit('phone_added', $scope.phone);
 
             $scope.phone = '';
         };
@@ -57,21 +89,8 @@ angular.module('mobile')
             var message = { "type" : "publish", "topic" : topic, "data" : command };
             socket.send(message);
 
-            delete map[phone];
-            $scope.gridData = _.values(map);
+            $scope.$emit('phone_removed', phone);
         };
-
-        socket.subscribe(topic, function(message) {
-            var item = message.data;
-            var latlon = translateLatLong(item);
-            map[item.phone] = {
-                phone: item.phone,
-                latitude: $filter('number')(latlon.latitude, 3),
-                longitude: $filter('number')(latlon.longitude, 3)
-            };
-            $scope.gridData = _.values(map);
-            $scope.$apply();
-        });
 
         $scope.gridOptions = {
             data: 'gridData',
@@ -79,8 +98,8 @@ angular.module('mobile')
             enableRowSelection: false,
             columnDefs: [
                 { field: "phone", displayName: 'Phone', width: '30%', sortable: false },
-                { field: "latitude", displayName: 'Latitude', width: '30%', sortable: false },
-                { field: "longitude", displayName: 'Longitude', width: '30%', sortable: false },
+                { field: "latitude", displayName: 'Latitude', cellFilter: 'number:3', width: '30%', sortable: false },
+                { field: "longitude", displayName: 'Longitude', cellFilter: 'number:3', width: '30%', sortable: false },
                 { field: "phone", displayName: '', cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()" ng-click="removePhone(COL_FIELD)"><i class="icon-trash"></i></div>', cellClass: 'mobile-grid-remove', width: '10%', sortable: false }
             ]
         };
@@ -88,15 +107,8 @@ angular.module('mobile')
     .controller('MapController', ['$scope', 'socket', function ($scope, socket) {
         google.maps.visualRefresh = true;
 
-        var topic = "demos.mobile.phoneLocationQueryResult";
-
-        var map = {};
-        socket.subscribe(topic, function(message) {
-            var item = message.data;
-            var latlon = translateLatLong(item);
-            map[item.phone] = latlon;
+        $scope.$on('datachanged', function (event, map) {
             $scope.markersProperty = _.values(map); //TODO update only changed marker
-            $scope.$apply();
         });
 
         angular.extend($scope, {
