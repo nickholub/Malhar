@@ -6,6 +6,8 @@ var config = require('./config');
 
 var machine = require('./routes/machine');
 
+// var fraud = require('./routes/fraud');
+
 var app = express();
 
 var proxy = new httpProxy.RoutingProxy();
@@ -31,6 +33,8 @@ if ('production' == app.get('env')) {
 //app.get('/machine', redirectToMain);
 //app.get('/machine/main', machine.index);
 app.get('/machine', machine.data);
+
+// app.get('/fraud/alerts', fraud.getAlerts);
 
 app.get('/ws/*', function(req, res) {
     proxy.proxyRequest(req, res, {

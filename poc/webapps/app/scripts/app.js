@@ -45,7 +45,7 @@ angular.module('machine')
             });
     });
 
-angular.module('fraud', ['rest', 'widgets']);
+angular.module('fraud', ['rest', 'widgets', 'socket']);
 
 angular.module('fraud')
     .config(function($routeProvider) {

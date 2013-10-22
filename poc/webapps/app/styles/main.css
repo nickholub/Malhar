@@ -112,3 +112,40 @@ body {
     background: #11506d;
 }
 
+/* Fraud Styles */
+.generate-tx-btn-wrap.span3, .generate-tx-desc.span9 {
+    display:inline-block;
+    vertical-align: middle;
+    float:none;
+}
+.generate-tx-btn-wrap.span3 {
+    text-align:center;
+}
+#alertDisplayBox {
+    padding:10px;
+    max-height:500px;
+    overflow:auto;
+}
+article.alert-msg {
+    padding: 10px 25px;
+    border-radius: 4px;
+    color: #000;
+    text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.6);
+    margin-bottom:10px;
+}
+article.alert-msg.medium {
+    background: #FF7000;
+    box-shadow: inset 0 -2px 20px 0 #EEBC6B;
+}
+article.alert-msg.high {
+    background: #FF2E22;
+    box-shadow: inset 0 -2px 20px 0 #CE2319;
+}
+article.alert-msg.low {
+    background: #FFF971;
+    box-shadow: inset 0 -2px 20px 0 #EED306;
+}
+article.alert-msg h1{
+    font-size:18px;
+    margin:0;
+}
