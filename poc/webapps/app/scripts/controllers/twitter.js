@@ -29,9 +29,7 @@ angular.module('app')
         });
     }])
     .controller('TwitterGridControlller', ['$scope', 'socket', function ($scope, socket) {
-        var topic = "demos.twitter.topURLs";
-
-        socket.subscribe(topic, function(data) {
+        socket.subscribe(settings.twitter.topic, function(data) {
             var list = [];
             jQuery.each(data.data, function(key, value) {
                 list.push( { name: key, value: parseInt(value) } );
@@ -51,7 +49,7 @@ angular.module('app')
         };
     }])
     .controller('TwitterBarChartController', ['$scope', 'socket', function($scope, socket) {
-        socket.on('demos.twitter.topURLs', function(data) {
+        socket.on(settings.twitter.topic, function(data) {
             var list = [];
             jQuery.each(data.data, function(key, value) {
                 list.push( { name: key, value: parseInt(value) } );

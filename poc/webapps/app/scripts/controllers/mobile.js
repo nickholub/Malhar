@@ -44,10 +44,8 @@ angular.module('mobile')
         var removed = {};
         var map = {};
 
-        var topic = "demos.mobile.phoneLocationQueryResult";
-        socket.subscribe(topic, function(message) {
+        socket.subscribe(settings.mobile.topic.out, function(message) {
             var item = message.data;
-            console.log(item);
 
             // allow adding phones only if they were not recently removed
             if (removed.hasOwnProperty(item.phone)) {
@@ -87,8 +85,7 @@ angular.module('mobile')
                 phone : $scope.phone
             };
 
-            var topic = 'demos.mobile.phoneLocationQuery';
-            var message = { "type" : "publish", "topic" : topic, "data" : command };
+            var message = { "type" : "publish", "topic" : settings.mobile.topic.in, "data" : command };
             socket.send(message);
 
             //$scope.$emit('phone_added', $scope.phone);
@@ -102,8 +99,7 @@ angular.module('mobile')
                 phone : phone
             };
 
-            var topic = 'demos.mobile.phoneLocationQuery';
-            var message = { "type" : "publish", "topic" : topic, "data" : command };
+            var message = { "type" : "publish", "topic" : settings.mobile.topic.in, "data" : command };
             socket.send(message);
 
             $scope.$emit('phone_removed', phone);
