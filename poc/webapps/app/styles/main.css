@@ -19,19 +19,28 @@ body {
     }
 }
 
+.icon-trash {
+    background-image: url("../img/glyphicons-halflings.png");
+}
+
 .app-title {
     margin-top: 0;
 }
 
-.gridStyle {
+.twitter-grid {
     border: 1px solid rgb(212,212,212);
+    height: 350px;
     width: 400px;
-    height: 200px;
 }
 
 .mobile-grid {
     border: 1px solid rgb(212,212,212);
-    height: 200px;
+    height: 450px;
+}
+
+.mobile-grid-remove {
+    text-align: center;
+    cursor: pointer;
 }
 
 .bar-chart rect.bar-chart-p {
