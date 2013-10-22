@@ -18,13 +18,19 @@ angular.module('fraud')
         });
         
         // Options for merchant, terminal, zip, card, bin
+        $scope.alertTypeTitles = {
+            "smallThenLarge": "Suspicious Transaction Sequence",
+            "sameCard": "Same Card Multiple Times",
+            "sameBankId": "Same Bank Number Multiple Times",
+            "aboveAvg": "Above Average Transaction"
+        }
         $scope.merchants = ['Wal-Mart', 'Target', 'Amazon', 'Apple', 'Sears', 'Macys', 'JCPenny', 'Levis'];
         $scope.terminals = [1, 2, 3, 4, 5, 6, 7, 8];
         $scope.zips      = [94086, 94087, 94088, 94089, 94090, 94091, 94092, 94093]
         $scope.actions   = [
             {
                 id: 1,
-                subtitle: 'suspicious transaction sequence',
+                subtitle: $scope.alertTypeTitles.smallThenLarge,
                 description: 'This anomaly is when one credit card is used for a small purchase, then immediately again for a larger purchase. The idea here is that a scammer will first try a small purchase to ensure that the card works, then proceed with a larger purchase upon success.',
                 generateTxns: function(e) {
                     
@@ -55,7 +61,7 @@ angular.module('fraud')
             },
             {
                 id: 2,
-                subtitle: 'same card number multiple times',
+                subtitle: $scope.alertTypeTitles.sameCard,
                 description: 'This anomaly is when one credit card is used for multiple transactions across one or more vendors within a short time interval.',
                 generateTxns: function() {
                     
@@ -80,7 +86,7 @@ angular.module('fraud')
             },
             {
                 id: 3,
-                subtitle: 'same BIN used multiple times',
+                subtitle: $scope.alertTypeTitles.sameBankId,
                 description: 'This anomaly is when several transactions are made with cards sharing the same Bank Identification Number (first 12 digits). An employee at a bank may use this tactic to attempt fraud.',
                 generateTxns: function() {
                     var bin = getRandomBin();
@@ -103,8 +109,8 @@ angular.module('fraud')
             },
             {
                 id: 4,
-                subtitle: 'spike in average transaction amount',
-                description: 'This anomaly is when the average transaction amount rises by a significant amount.',
+                subtitle: $scope.alertTypeTitles.aboveAvg,
+                description: 'This anomaly is when a transaction at a given merchant significantly exceeds that merchant\'s average transaction amount.',
                 generateTxns: function() {
                     var bin = getRandomBin();
                     
@@ -128,19 +134,10 @@ angular.module('fraud')
         
         // subscribe to appropriate topic for alerts
         $scope.appId.then(function(appId) {
-            socket.subscribe('demos.app.frauddetect.ccFraudAlert', function(data) {
-                if (data.data.userGenerated === "true" || data.data.userGenerated === true) {
-                    console.log('pushing to alerts');
-                    $scope.alerts.push(data.data);
+            socket.subscribe('demos.app.frauddetect.fraudDetect', function(res) {
+                if (res.data.userGenerated === "true" || res.data.userGenerated === true) {
+                    displayAlert(res.data);
                 }
-            });
-            socket.subscribe('demos.app.frauddetect.avgFraudAlert', function(data) {
-                if (data.data.userGenerated === "true" || data.data.userGenerated === true) {
-                    console.log('avgFraudAlert triggered: ', data);
-                }
-            });
-            socket.subscribe('demos.app.frauddetect.submitTransaction', function(data) {
-                console.log('transaction has been sent');
             });
         });
         
@@ -163,6 +160,23 @@ angular.module('fraud')
             var base = Math.floor(Math.random() * 400000) + 10000000;
             var baseString = base + '';
             return baseString.substring(0, 4) + " " + baseString.substring(4);
+        }
+        function displayAlert(data) {
+            var alertTitle = $scope.alertTypeTitles[data.alertType];
+            var html = [
+                '<article class="alert-msg medium" style="display:none">',
+                    '<h1>' + alertTitle + '</h1>',
+                    '<p>' + data.message + '</p>',
+                '</article>'
+            ].join('');
+            var $el = $(html);
+            $('#alertDisplayBox').prepend($el);
+            $el
+                .slideDown()
+                .animate({ 'opacity': 0.5 }, 180)
+                .animate({ 'opacity': 1 }, 180)
+                .animate({ 'opacity': 0.5 }, 180)
+                .animate({ 'opacity': 1 }, 180)
         }
     }]);
 

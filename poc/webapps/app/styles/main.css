@@ -135,17 +135,20 @@ article.alert-msg {
 }
 article.alert-msg.medium {
     background: #FF7000;
-    box-shadow: inset 0 -2px 20px 0 #EEBC6B;
+    box-shadow: inset 0 -2px 20px 0 #EEBC6B, 0px 1px 3px rgba(0,0,0,0.3);
 }
 article.alert-msg.high {
     background: #FF2E22;
-    box-shadow: inset 0 -2px 20px 0 #CE2319;
+    box-shadow: inset 0 -2px 20px 0 #CE2319, 0px 1px 3px rgba(0,0,0,0.3);
 }
 article.alert-msg.low {
     background: #FFF971;
-    box-shadow: inset 0 -2px 20px 0 #EED306;
+    box-shadow: inset 0 -2px 20px 0 #EED306, 0px 1px 3px rgba(0,0,0,0.3);
 }
 article.alert-msg h1{
     font-size:18px;
     margin:0;
+}
+article.alert-msg h1 span.alertType {
+    
 }
