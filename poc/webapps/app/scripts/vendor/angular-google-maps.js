@@ -193,7 +193,7 @@
 
                 var marker = new MarkerWithLabel({
                     position: new google.maps.LatLng(lat, lng),
-                    draggable: true,
+                    draggable: false,
                     raiseOnDrag: true,
                     map: _instance,
                     labelContent: label,
