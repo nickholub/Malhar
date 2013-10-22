@@ -19,8 +19,20 @@ body {
     }
 }
 
-.icon-trash {
+[class^="icon-"], [class*=" icon-"] {
     background-image: url("../img/glyphicons-halflings.png");
+}
+
+h4.ui-pnotify-title { 
+    display: inline;
+    font-size:16px;
+}
+.ui-pnotify-text {
+    font-size:12px;
+}
+.ui-pnotify-icon, .ui-pnotify-icon span {
+    display: inline-block;
+    float:none;
 }
 
 .app-title {
