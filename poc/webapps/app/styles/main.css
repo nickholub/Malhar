@@ -144,7 +144,7 @@ h4.ui-pnotify-title {
 }
 #alertDisplayBox {
     padding:10px;
-    max-height:500px;
+    height:418px;
     overflow:auto;
 }
 article.alert-msg {
@@ -164,7 +164,7 @@ article.alert-msg.high {
 }
 article.alert-msg.low {
     background: #FFF971;
-    box-shadow: inset 0 -2px 20px 0 #EED306, 0px 1px 3px rgba(0,0,0,0.3);
+    box-shadow:inset 0 -4px 30px -6px #EED306, 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
 article.alert-msg h1{
     font-size:18px;
