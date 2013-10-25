@@ -131,7 +131,7 @@ angular.module('fraud')
                     }, 200);
                     
                     $.pnotify({
-                        title: '60 Transactions Being Sent',
+                        title: 'Several Transactions Being Sent',
                         text: '<strong>Bank ID:</strong> ' + bin + ', <strong>Merchant:</strong> ' + merchant,
                         type: 'success'
                     });
@@ -147,21 +147,59 @@ angular.module('fraud')
                 description: 'This anomaly is when a transaction at a given merchant significantly exceeds that merchant\'s average transaction amount.',
                 generateTxns: function() {
                     console.log('getting randomStats');
+                    // $.get('/fraud/randomStats').done(function(res) {
+                    //     var bin = getRandomBin();
+                    //     var merchantId = res.merchantId;
+                    //     var terminalId = res.terminalId;
+                    //     var zipCode = res.zipCode;
+                    //     var amount = roundToPrice(res.sma + 35000);
+                    //     
+                    //     for (var i = 5; i >= 0; i--) {
+                    //         submitTransaction({
+                    //             'zipCode': zipCode,
+                    //             'merchantId': merchantId, 
+                    //             'terminalId': terminalId,
+                    //             'bankIdNum': getRandomBin(),
+                    //             'ccNum': getRandomCard(),
+                    //             'amount': 20 + Math.round(Math.random() * 10)
+                    //         }, true);
+                    //     }
+                    //     
+                    //     setTimeout(function() {
+                    //         submitTransaction({
+                    //             'zipCode': zipCode,
+                    //             'merchantId': merchantId, 
+                    //             'terminalId': terminalId,
+                    //             'bankIdNum': getRandomBin(),
+                    //             'ccNum': getRandomCard(),
+                    //             'amount': amount
+                    //         });
+                    //     }, 3000)
+                    //     
+                    // });
+                    $.pnotify({
+                        'type': 'info',
+                        'title': 'Retrieving Average Information'
+                    });
                     $.get('/fraud/randomStats').done(function(res) {
+
                         var bin = getRandomBin();
                         var merchantId = res.merchantId;
                         var terminalId = res.terminalId;
                         var zipCode = res.zipCode;
-                        var amount = roundToPrice(res.sma + 35000);
-                    
-                        submitTransaction({
-                            'zipCode': zipCode,
-                            'merchantId': merchantId, 
-                            'terminalId': terminalId,
-                            'bankIdNum': getRandomBin(),
-                            'ccNum': getRandomCard(),
-                            'amount': amount
-                        });
+                        var amount = roundToPrice(res.sma + 45000);
+                        
+                        setTimeout(function() {
+                            submitTransaction({
+                                'zipCode': zipCode,
+                                'merchantId': merchantId, 
+                                'terminalId': terminalId,
+                                'bankIdNum': getRandomBin(),
+                                'ccNum': getRandomCard(),
+                                'amount': amount
+                            });
+                        }, 1000)
+                        
                     });
                 }
             }
@@ -335,21 +373,21 @@ angular.module('fraud')
         });
         
         // Start interval to poll for alerts count
-        // setInterval(function() {
-        //     
-        //     $.get('/fraud/alertCount').done(function(res) {
-        //         
-        //         var countStat = _.find($scope.stats, function(obj) {
-        //             return obj.id == 'numFrauds';
-        //         });
-        //         
-        //         var value = _.reduce(res, function(memo, val, key) { return memo + val }, 0);
-        //         
-        //         countStat.value = commaGroups(value); 
-        //         
-        //     });
-        //     
-        // }, 2000);
+        setInterval(function() {
+            
+            $.get('/fraud/alertCount').done(function(res) {
+                
+                var countStat = _.find($scope.stats, function(obj) {
+                    return obj.id == 'numFrauds';
+                });
+                
+                var value = _.reduce(res, function(memo, val, key) { return memo + val }, 0);
+                
+                countStat.value = commaGroups(value); 
+                
+            });
+            
+        }, 2000);
     }]);
 
 })();
