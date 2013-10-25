@@ -287,7 +287,7 @@ angular.module('fraud')
                         '<article class="alert-msg low" style="display:none">',
                             '<h1>' + alertTitle + '</h1>',
                             '<p>' + data.message + '</p>',
-                            '<div><a href="#" class="btn view-txn-btn" data-txidx="' + index + '">view large transaction</a></div>',
+                            '<div><a href="#" class="btn view-txn-btn" data-txidx="' + index + '">view details</a></div>',
                         '</article>'
                     ].join('');
                 break;
@@ -297,7 +297,7 @@ angular.module('fraud')
                         '<article class="alert-msg high" style="display:none">',
                             '<h1>' + alertTitle + '</h1>',
                             '<p>' + data.message + '</p>',
-                            // '<div><a href="#" class="btn view-txn-btn" data-txidx="' + index + '">view transaction</a></div>',
+                            '<div><a href="#" class="btn view-txn-btn" data-txidx="' + index + '">view details</a></div>',
                         '</article>'
                     ].join('');
                 break;
@@ -306,7 +306,7 @@ angular.module('fraud')
                         '<article class="alert-msg medium" style="display:none">',
                             '<h1>' + alertTitle + '</h1>',
                             '<p>' + data.message + '</p>',
-                            // '<div><a href="#" class="btn view-txn-btn" data-txidx="' + index + '">view transaction</a></div>',
+                            '<div><a href="#" class="btn view-txn-btn" data-txidx="' + index + '">view details</a></div>',
                         '</article>'
                     ].join('');
                 break;
@@ -352,6 +352,32 @@ angular.module('fraud')
                         '<strong>Time:</strong> ' + new Date(1*info.time).toLocaleString() + '<br/>'
                     ].join('');
                     
+                    break;
+                
+                case "sameBankId":
+                    var info = alert.alertData;
+                    html = [
+                        '<strong>Transaction Count:</strong> ' + info.count + '<br/>',
+                        '<strong>Bank ID Number:</strong> ' + info.bankIdNum + '<br/>',
+                        '<strong>Zip Code:</strong> ' + info.zipCode + '<br/>',
+                        '<strong>Merchant:</strong> ' + info.merchantId + ' (' + info.merchantType.toLowerCase().replace('_', ' ') + ')' + '<br/>',
+                        '<strong>Terminal:</strong> ' + info.terminalId + '<br/>',
+                        '<strong>Time:</strong> ' + new Date(1*info.time).toLocaleString() + '<br/>'
+                    ].join('');
+                    
+                    break;
+                    
+                case "aboveAvg":
+                    var info = alert.alertData;
+                    html = [
+                        '<strong>Dollar Amount:</strong> $' + makeMoney(info.amount) + '<br/>',
+                        '<strong>Last Average:</strong> $' + makeMoney(info.lastSmaValue) + '<br/>',
+                        '<strong>Difference:</strong> $' + makeMoney(info.change) + '<br/>',
+                        '<strong>Zip Code:</strong> ' + info.zipCode + '<br/>',
+                        '<strong>Merchant:</strong> ' + info.merchantId + ' (' + info.merchantType.toLowerCase().replace('_', ' ') + ')' + '<br/>',
+                        '<strong>Terminal:</strong> ' + info.terminalId + '<br/>',
+                        '<strong>Time:</strong> ' + new Date(1*info.time).toLocaleString() + '<br/>'
+                    ].join('');
                     break;
             }
             return html;
