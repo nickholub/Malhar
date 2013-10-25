@@ -42,9 +42,9 @@ angular.module('fraud')
         }
         $scope.stats = [
             { id: 'totalTxns',          topic: 'demos.app.frauddetect.totalTransactions', value: 0, label: 'Total Transactions' },
-            { id: 'amtInLastSecond',    topic: 'demos.app.frauddetect.txLastSecond',      value: 0, label: '$s / sec' },
+            { id: 'amtInLastSecond',    topic: 'demos.app.frauddetect.txLastSecond',      value: 0, label: 'Total Dollars / sec' },
             // { id: 'amtInLastHour',      topic: 'demos.app.frauddetect.txLastHour',        value: 0, label: 'Total for Last Hour' },
-            { id: 'avgAmtInLastSecond', topic: 'demos.app.frauddetect.avgLastSecond',     value: 0, label: 'Avg $ Amt / sec' },
+            { id: 'avgAmtInLastSecond', topic: 'demos.app.frauddetect.avgLastSecond',     value: 0, label: 'Avg Transaction Amount / sec' },
             { id: 'numFrauds',          topic: 'demos.app.frauddetect.totalFrauds',       value: 0, label: 'No. of Anomalies Detected' },
             // { id: 'avgScore',           topic: 'demos.app.frauddetect.avgScore',          value: 0, label: 'Average Score' }
         ];
@@ -55,6 +55,7 @@ angular.module('fraud')
             {
                 id: 1,
                 subtitle: $scope.alertTypeTitles.smallThenLarge,
+                severity: 'low',
                 description: 'This anomaly is when one credit card is used for a small purchase, then immediately again for a larger purchase. The idea here is that a scammer will first try a small purchase to ensure that the card works, then proceed with a larger purchase upon success.',
                 generateTxns: function(e) {
                     
@@ -112,7 +113,8 @@ angular.module('fraud')
             {
                 id: 2,
                 subtitle: $scope.alertTypeTitles.sameBankId,
-                description: 'This anomaly is when several transactions are made with cards sharing the same Bank Identification Number (first 8 digits). An employee at a bank may use this tactic to attempt fraud.',
+                severity: 'high',
+                description: 'This anomaly is detected when several transactions are made by cards issued by the same bank at the same terminal ID over moving window of 30 sec.',
                 generateTxns: function() {
                     var bin = getRandomBin().replace(/\d{4}$/, '1111');
                     var zipCode = getRandom('zips');
@@ -144,6 +146,7 @@ angular.module('fraud')
             {
                 id: 3,
                 subtitle: $scope.alertTypeTitles.aboveAvg,
+                severity: 'medium',
                 description: 'This anomaly is when a transaction at a given merchant significantly exceeds that merchant\'s average transaction amount.',
                 generateTxns: function() {
                     console.log('getting randomStats');
