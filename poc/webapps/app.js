@@ -22,7 +22,7 @@ var config = require('./config');
 
 var machine = require('./routes/machine');
 
-// var fraud = require('./routes/fraud');
+var fraud = require('./routes/fraud');
 
 var app = express();
 
@@ -50,7 +50,9 @@ if ('production' == app.get('env')) {
 //app.get('/machine/main', machine.index);
 app.get('/machine', machine.data);
 
-// app.get('/fraud/alerts', fraud.getAlerts);
+app.get('/fraud/alertCount', fraud.getAlertCount);
+app.get('/fraud/randomStats', fraud.getRecentStats);
+
 
 app.get('/ws/*', function(req, res) {
     proxy.proxyRequest(req, res, {

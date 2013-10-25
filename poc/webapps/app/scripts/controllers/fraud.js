@@ -40,10 +40,6 @@ angular.module('fraud')
             "sameBankId": "Same Bank Number Multiple Times",
             "aboveAvg": "Above Average Transaction"
         }
-        amtInLastSecond: "299299942"
-        avgAmtInLastSecond: "21378.57"
-        totalTxns: "1070000"
-        txnsInLastSecond: "14000"
         $scope.stats = [
             { id: 'totalTxns',          topic: 'demos.app.frauddetect.totalTransactions', value: 0, label: 'Total Transactions' },
             { id: 'amtInLastSecond',    topic: 'demos.app.frauddetect.txLastSecond',      value: 0, label: '$s / sec' },
@@ -119,13 +115,15 @@ angular.module('fraud')
                 description: 'This anomaly is when several transactions are made with cards sharing the same Bank Identification Number (first 12 digits). An employee at a bank may use this tactic to attempt fraud.',
                 generateTxns: function() {
                     var bin = getRandomBin().replace(/\d{4}$/, '1111');
+                    var zipCode = getRandom('zips');
+                    var terminalId = getRandom('terminals');
                     var merchant = getRandom('merchants');
                     
                     var intval = setInterval(function() {
                         submitTransaction({
-                            'zipCode': getRandom('zips'),
+                            'zipCode': zipCode,
                             'merchantId': merchant, 
-                            'terminalId': getRandom('terminals'),
+                            'terminalId': terminalId,
                             'bankIdNum': bin,
                             'ccNum': getRandomCard(),
                             'amount': roundToPrice(10 + Math.random() * 1000)
@@ -140,7 +138,7 @@ angular.module('fraud')
                     
                     setTimeout(function() {
                         clearInterval(intval);
-                    }, 6000);
+                    }, 15000);
                 }
             },
             {
@@ -148,15 +146,21 @@ angular.module('fraud')
                 subtitle: $scope.alertTypeTitles.aboveAvg,
                 description: 'This anomaly is when a transaction at a given merchant significantly exceeds that merchant\'s average transaction amount.',
                 generateTxns: function() {
-                    var bin = getRandomBin();
+                    $.get('/fraud/randomStats').done(function(res) {
+                        var bin = getRandomBin();
+                        var merchantId = res.merchantId;
+                        var terminalId = res.terminalId;
+                        var zipCode = res.zipCode;
+                        var amount = roundToPrice(res.sma + 35000);
                     
-                    submitTransaction({
-                        'zipCode': getRandom('zips'),
-                        'merchantId': getRandom('merchants'), 
-                        'terminalId': getRandom('terminals'),
-                        'bankIdNum': getRandomBin(),
-                        'ccNum': getRandomCard(),
-                        'amount': roundToPrice(800000 + Math.random() * 1000)
+                        submitTransaction({
+                            'zipCode': zipCode,
+                            'merchantId': merchantId, 
+                            'terminalId': terminalId,
+                            'bankIdNum': getRandomBin(),
+                            'ccNum': getRandomCard(),
+                            'amount': amount
+                        });
                     });
                 }
             }
@@ -245,7 +249,16 @@ angular.module('fraud')
                         '</article>'
                     ].join('');
                 break;
-                // case 'sameBankId':
+                case 'sameBankId':
+                    console.log('same bank', data);
+                    html = [
+                        '<article class="alert-msg high" style="display:none">',
+                            '<h1>' + alertTitle + '</h1>',
+                            '<p>' + data.message + '</p>',
+                            // '<div><a href="#" class="btn view-txn-btn" data-txidx="' + index + '">view transaction</a></div>',
+                        '</article>'
+                    ].join('');
+                break;
                 default:
                     html = [
                         '<article class="alert-msg medium" style="display:none">',
@@ -319,6 +332,23 @@ angular.module('fraud')
             $('#txn-modal .modal-body').html(genTxnDisplayMarkup(alert));
             $('#txn-modal').modal();
         });
+        
+        // Start interval to poll for alerts count
+        setInterval(function() {
+            
+            $.get('/fraud/alertCount').done(function(res) {
+                
+                var countStat = _.find($scope.stats, function(obj) {
+                    return obj.id == 'numFrauds';
+                });
+                
+                var value = _.reduce(res, function(memo, val, key) { return memo + val }, 0);
+                
+                countStat.value = commaGroups(value); 
+                
+            });
+            
+        }, 2000);
     }]);
 
 })();

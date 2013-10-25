@@ -159,8 +159,8 @@ article.alert-msg.medium {
     box-shadow: inset 0 -2px 20px 0 #EEBC6B, 0px 1px 3px rgba(0,0,0,0.3);
 }
 article.alert-msg.high {
-    background: #FF2E22;
-    box-shadow: inset 0 -2px 20px 0 #CE2319, 0px 1px 3px rgba(0,0,0,0.3);
+  background: #FF5E54;
+  box-shadow: inset 0 -2px 20px 0 #D14D45, 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
 article.alert-msg.low {
     background: #FFF971;
