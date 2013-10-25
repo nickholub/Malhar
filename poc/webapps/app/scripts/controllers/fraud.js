@@ -388,6 +388,10 @@ angular.module('fraud')
             });
             
         }, 2000);
+        
+        $scope.clearFrauds = function() {
+            $('#alertDisplayBox').html("");
+        }
     }]);
 
 })();

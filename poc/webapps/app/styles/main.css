@@ -173,3 +173,6 @@ article.alert-msg h1{
 article.alert-msg h1 span.alertType {
     
 }
+button.clearFraudsBtn {
+  float:right;
+}
