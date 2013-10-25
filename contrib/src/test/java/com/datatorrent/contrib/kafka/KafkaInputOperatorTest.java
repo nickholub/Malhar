@@ -23,8 +23,10 @@ import com.datatorrent.api.LocalMode;
 import com.datatorrent.api.Operator;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -96,12 +98,14 @@ public class KafkaInputOperatorTest extends KafkaOperatorTestBase
    * 
    * @throws Exception
    */
-  public void testKafkaInputOperator(boolean isSimple, String consumerType, int sleepTime, final int totalCount) throws Exception
+  public void testKafkaInputOperator(boolean isSimple, int sleepTime, final int totalCount, KafkaConsumer consumer) throws Exception
   {
     // initial the latch for this test
     latch = new CountDownLatch(1);
-    // Start producer
-    KafkaProducer p = new KafkaProducer("topic1", isSimple);
+    
+    
+ // Start producer
+    KafkaTestProducer p = new KafkaTestProducer(TEST_TOPIC);
     p.setSendCount(totalCount);
     new Thread(p).start();
 
@@ -109,19 +113,16 @@ public class KafkaInputOperatorTest extends KafkaOperatorTestBase
     LocalMode lma = LocalMode.newInstance();
     DAG dag = lma.getDAG();
 
-    Properties props = new Properties();
-    props.put("zk.connect", "localhost:2182");
-    props.put("groupid", "group1");
+
 
     // Create KafkaSinglePortStringInputOperator
     KafkaSinglePortStringInputOperator node = dag.addOperator("Kafka message consumer", KafkaSinglePortStringInputOperator.class);
-    node.setConfigProperties(props);
-    if (consumerType.equals("standard")) {
-      node.setConsumerType("standard");
-    } else {
-      node.setConsumerType("simple");
-    }
-
+    consumer.setTopic(TEST_TOPIC);
+    Set<String> brokerSet = new HashSet<String>();
+    brokerSet.add("localhost:9092");
+    consumer.setBrokerSet(brokerSet);
+    node.setConsumer(consumer);
+    
     // Create Test tuple collector
     CollectorModule<String> collector = dag.addOperator("TestMessageCollector", new CollectorModule<String>());
 
@@ -133,25 +134,52 @@ public class KafkaInputOperatorTest extends KafkaOperatorTestBase
     lc.setHeartbeatMonitoringEnabled(false);
 
     lc.runAsync();
-    // 10k tuples takes 13 sec => 770 tuple/sec
-    // wait for the job to finish timeout in 26000 millisecods
-    latch.await(26000, TimeUnit.MILLISECONDS);
-
-    lc.shutdown();
-
+    
+    // Wait 30s for consumer finish consuming all the messages
+    Assert.assertTrue("TIMEOUT: 30s ", latch.await(30000, TimeUnit.MILLISECONDS));
+    
     // Check results
     Assert.assertEquals("Collections size", 1, collections.size());
     Assert.assertEquals("Tuple count", totalCount, collections.get(collector.inputPort.id).size());
     logger.debug(String.format("Number of emitted tuples: %d", collections.get(collector.inputPort.id).size()));
-
+    
     p.close();
+    lc.shutdown();
   }
 
   @Test
-  public void testKafkaInputOperator_standard() throws Exception
+  public void testKafkaInputOperator_Highleverl() throws Exception
   {
     int totalCount = 10000;
-    testKafkaInputOperator(false, "standard", 1000, totalCount);
+    Properties props = new Properties();
+    props.put("zookeeper.connect", "localhost:" + KafkaOperatorTestBase.TEST_ZOOKEEPER_PORT);
+    props.put("group.id", "group1");
+    props.put("consumer.id", "default_consumer");
+    // This damn property waste me 2 days! It's a 0.8 new property. "smallest" means
+    // reset the consumer to the beginning of the message that is not consumed yet
+    // otherwise it wont get any of those the produced before!
+    props.put("auto.offset.reset", "smallest");
+    testKafkaInputOperator(false, 1000, totalCount, new HighlevelKafkaConsumer(props));
+  }
+  
+  @Test
+  public void testKafkaInputOperator_Simple() throws Exception
+  {
+    int totalCount = 10000;
+    testKafkaInputOperator(false, 1000, totalCount,new SimpleKafkaConsumer());
+  }
+  
+  @Test
+  public void testKafkaInputOperator_Invalid() throws Exception
+  {
+    int totalCount = 10000;
+    SimpleKafkaConsumer consumer = new SimpleKafkaConsumer();
+    try{
+      testKafkaInputOperator(false, 1000, totalCount,consumer);
+    }catch(Exception e){
+      // invalid host setup expect to fail here
+      Assert.assertEquals("Error creating local cluster", e.getMessage());
+    }
   }
 
   @Override
