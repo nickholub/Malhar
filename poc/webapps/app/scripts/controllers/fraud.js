@@ -83,36 +83,36 @@ angular.module('fraud')
                     
                 }
             },
+            // {
+            //     id: 2,
+            //     subtitle: $scope.alertTypeTitles.sameCard,
+            //     description: 'This anomaly is when one credit card is used for multiple transactions across one or more vendors within a short time interval.',
+            //     generateTxns: function() {
+            //         
+            //         var bin = getRandomBin();
+            //         var card = getRandomCard();
+            //         var merchant = getRandom('merchants');
+            //         
+            //         var intval = setInterval(function() {
+            //             submitTransaction({
+            //                 'zipCode': getRandom('zips'),
+            //                 'merchantId': merchant, 
+            //                 'terminalId': getRandom('terminals'),
+            //                 'bankIdNum': bin,
+            //                 'ccNum': card,
+            //                 'amount': roundToPrice(10 + Math.random() * 1000)
+            //             });
+            //         }, 1000);
+            //         
+            //         setTimeout(function() {
+            //             clearInterval(intval);
+            //         }, 8000);
+            //     }
+            // },
             {
                 id: 2,
-                subtitle: $scope.alertTypeTitles.sameCard,
-                description: 'This anomaly is when one credit card is used for multiple transactions across one or more vendors within a short time interval.',
-                generateTxns: function() {
-                    
-                    var bin = getRandomBin();
-                    var card = getRandomCard();
-                    var merchant = getRandom('merchants');
-                    
-                    var intval = setInterval(function() {
-                        submitTransaction({
-                            'zipCode': getRandom('zips'),
-                            'merchantId': merchant, 
-                            'terminalId': getRandom('terminals'),
-                            'bankIdNum': bin,
-                            'ccNum': card,
-                            'amount': roundToPrice(10 + Math.random() * 1000)
-                        });
-                    }, 1000);
-                    
-                    setTimeout(function() {
-                        clearInterval(intval);
-                    }, 8000);
-                }
-            },
-            {
-                id: 3,
                 subtitle: $scope.alertTypeTitles.sameBankId,
-                description: 'This anomaly is when several transactions are made with cards sharing the same Bank Identification Number (first 12 digits). An employee at a bank may use this tactic to attempt fraud.',
+                description: 'This anomaly is when several transactions are made with cards sharing the same Bank Identification Number (first 8 digits). An employee at a bank may use this tactic to attempt fraud.',
                 generateTxns: function() {
                     var bin = getRandomBin().replace(/\d{4}$/, '1111');
                     var zipCode = getRandom('zips');
@@ -128,7 +128,7 @@ angular.module('fraud')
                             'ccNum': getRandomCard(),
                             'amount': roundToPrice(10 + Math.random() * 1000)
                         }, true);
-                    }, 100);
+                    }, 200);
                     
                     $.pnotify({
                         title: '60 Transactions Being Sent',
@@ -138,14 +138,15 @@ angular.module('fraud')
                     
                     setTimeout(function() {
                         clearInterval(intval);
-                    }, 15000);
+                    }, 11000);
                 }
             },
             {
-                id: 4,
+                id: 3,
                 subtitle: $scope.alertTypeTitles.aboveAvg,
                 description: 'This anomaly is when a transaction at a given merchant significantly exceeds that merchant\'s average transaction amount.',
                 generateTxns: function() {
+                    console.log('getting randomStats');
                     $.get('/fraud/randomStats').done(function(res) {
                         var bin = getRandomBin();
                         var merchantId = res.merchantId;
@@ -334,21 +335,21 @@ angular.module('fraud')
         });
         
         // Start interval to poll for alerts count
-        setInterval(function() {
-            
-            $.get('/fraud/alertCount').done(function(res) {
-                
-                var countStat = _.find($scope.stats, function(obj) {
-                    return obj.id == 'numFrauds';
-                });
-                
-                var value = _.reduce(res, function(memo, val, key) { return memo + val }, 0);
-                
-                countStat.value = commaGroups(value); 
-                
-            });
-            
-        }, 2000);
+        // setInterval(function() {
+        //     
+        //     $.get('/fraud/alertCount').done(function(res) {
+        //         
+        //         var countStat = _.find($scope.stats, function(obj) {
+        //             return obj.id == 'numFrauds';
+        //         });
+        //         
+        //         var value = _.reduce(res, function(memo, val, key) { return memo + val }, 0);
+        //         
+        //         countStat.value = commaGroups(value); 
+        //         
+        //     });
+        //     
+        // }, 2000);
     }]);
 
 })();

@@ -28,7 +28,10 @@ angular.module('rest', ['ng', 'restangular'])
                     var apps = _.where(response.apps.app, { name: appName, state: 'RUNNING' });
                     apps = _.sortBy(apps, function (app) { return parseInt(app.elapsedTime) });
                     var app = apps[0];
-                    deferred.resolve(app.id);
+                    app.toString = function() {
+                        return this.id;
+                    }
+                    deferred.resolve(app);
                 });
                 return deferred.promise;
             },
