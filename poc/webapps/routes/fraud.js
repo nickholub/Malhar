@@ -35,7 +35,12 @@ function getAlertCount(req, res) {
         alertNames,
         
         function(key,cb) {
-            db.collection(key).count(cb);
+            if (req.query.since) {
+                console.log('since was specified in getAlertCount');
+                db.collection(key).find({ time: { $gt: req.query.since*1 } }).count(cb);
+            } else {
+                db.collection(key).count(cb);
+            }
         },
 
         function(err, response) {

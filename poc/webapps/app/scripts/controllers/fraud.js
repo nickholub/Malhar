@@ -41,10 +41,10 @@ angular.module('fraud')
             "aboveAvg": "Above Average Transaction"
         }
         $scope.stats = [
-            { id: 'totalTxns',          topic: 'demos.app.frauddetect.totalTransactions', value: 0, label: 'Total Transactions' },
+            { id: 'totalTxns',          topic: 'demos.app.frauddetect.totalTransactions', value: 0, label: 'Total Txns' },
             { id: 'amtInLastSecond',    topic: 'demos.app.frauddetect.txLastSecond',      value: 0, label: 'Total Dollars / sec' },
             // { id: 'amtInLastHour',      topic: 'demos.app.frauddetect.txLastHour',        value: 0, label: 'Total for Last Hour' },
-            { id: 'avgAmtInLastSecond', topic: 'demos.app.frauddetect.avgLastSecond',     value: 0, label: 'Avg Transaction Amount / sec' },
+            { id: 'avgAmtInLastSecond', topic: 'demos.app.frauddetect.avgLastSecond',     value: 0, label: 'Avg Txn Amount / sec' },
             { id: 'numFrauds',          topic: 'demos.app.frauddetect.totalFrauds',       value: 0, label: 'No. of Anomalies Detected' },
             // { id: 'avgScore',           topic: 'demos.app.frauddetect.avgScore',          value: 0, label: 'Average Score' }
         ];
@@ -391,6 +391,20 @@ angular.module('fraud')
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             return parts.join(".");
         }
+        function updateFraudCount() {
+            $.get('/fraud/alertCount?since=' + (+new Date() - 1000000)).done(function(res) {
+                
+                var countStat = _.find($scope.stats, function(obj) {
+                    return obj.id == 'numFrauds';
+                });
+                
+                var value = _.reduce(res, function(memo, val, key) { return memo + val }, 0);
+                
+                countStat.value = commaGroups(value); 
+                
+                setTimeout(updateFraudCount, 2000);
+            });
+        }
         
         // Set up viewing transaction modal
         $('#alertDisplayBox').on('click', '.view-txn-btn', function(evt) {
@@ -402,21 +416,7 @@ angular.module('fraud')
         });
         
         // Start interval to poll for alerts count
-        setInterval(function() {
-            
-            $.get('/fraud/alertCount').done(function(res) {
-                
-                var countStat = _.find($scope.stats, function(obj) {
-                    return obj.id == 'numFrauds';
-                });
-                
-                var value = _.reduce(res, function(memo, val, key) { return memo + val }, 0);
-                
-                countStat.value = commaGroups(value); 
-                
-            });
-            
-        }, 2000);
+        updateFraudCount();
         
         $scope.clearFrauds = function() {
             $('#alertDisplayBox').html("");
