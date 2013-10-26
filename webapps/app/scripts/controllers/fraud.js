@@ -25,11 +25,11 @@ angular.module('fraud')
         // topic for publishing transactions
         var txTopic = 'demos.app.frauddetect.submitTransaction';
 
-        $scope.appId = rest.getAppId(settings.fraud.appName);
+        $scope.app = rest.getApp(settings.fraud.appName);
 
-        $scope.$watch('appId', function (appId) {
-            if (appId) {
-                $scope.appURL = settings.appsURL + appId;
+        $scope.$watch('app', function (app) {
+            if (app) {
+                $scope.appURL = settings.appsURL + app.id;
             }
         });
         
