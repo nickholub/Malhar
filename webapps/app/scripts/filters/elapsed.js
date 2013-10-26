@@ -73,15 +73,21 @@ angular.module('widgets').filter('elapsed', function() {
 
             var crossedThreshold = false;
             for (var i=0; i < levels.length; i++) {
-                if ( options.maxUnit === levels[i].singular ) crossedThreshold = true;
-                if ( remaining < levels[i].ms || !crossedThreshold ) continue;
+                if ( options.maxUnit === levels[i].singular ) {
+                    crossedThreshold = true;
+                }
+                if ( remaining < levels[i].ms || !crossedThreshold ) {
+                    continue;
+                }
                 level++;
                 var num = Math.floor( remaining / levels[i].ms );
-                var label = num == 1 ? levels[i].singular : levels[i].plural ;
+                var label = num === 1 ? levels[i].singular : levels[i].plural ;
                 string += num + " " + label + separator;
                 remaining %= levels[i].ms;
-                if ( level >= max_levels ) break;
-            };
+                if ( level >= max_levels ) {
+                    break;
+                }
+            }
             string = string.substring(0, string.length - separator.length);
         }
 
