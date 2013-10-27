@@ -45,7 +45,7 @@ function drawChart(data, options) {
 }
 
 angular.module('machine')
-    .controller('MachineController', ['$scope', '$timeout', 'rest', function ($scope, $timeout, rest) {
+    .controller('MachineController', ['$scope', '$timeout', '$location', 'rest', function ($scope, $timeout, $location, rest) {
         $scope.app = rest.getApp(settings.machine.appName);
 
         $scope.$watch('app', function (app) {
@@ -70,6 +70,13 @@ angular.module('machine')
             var r = settings.machine.range[name];
             return _.range(r.start, r.stop + 1);
         };
+
+        $scope.reload = function () {
+            //$location.path('/home/2/customer/5');
+            //console.log(window.location);
+            //TODO
+            window.location.href = window.location.pathname = '?customer=5';
+        }
 
         $scope.$watch('machineData', function (data) {
             if (data && (data.length > 0)) {
@@ -105,7 +112,8 @@ angular.module('machine')
             };
 
             $scope.machineData = rest.getMachineData(query);
-            $timeout(fetchMachineData, 1000);
+            //TODO
+            //$timeout(fetchMachineData, 1000);
         }
 
         fetchMachineData();
