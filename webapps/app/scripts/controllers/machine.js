@@ -45,7 +45,7 @@ function drawChart(data, options) {
 }
 
 angular.module('machine')
-    .controller('MachineController', ['$scope', '$timeout', '$location', 'rest', function ($scope, $timeout, $location, rest) {
+    .controller('MachineController', ['$scope', '$timeout', '$location', '$routeParams', 'rest', function ($scope, $timeout, $location, $routeParams, rest) {
         $scope.app = rest.getApp(settings.machine.appName);
 
         $scope.$watch('app', function (app) {
@@ -53,14 +53,6 @@ angular.module('machine')
                 $scope.appURL = settings.appsURL + app.id;
             }
         });
-
-        $scope.customer = "";
-        $scope.product = "";
-        $scope.os = "";
-        $scope.software1 = "";
-        $scope.software2 = "";
-        $scope.deviceId = "";
-        $scope.lookback = 30;
 
         $scope.cpu = 0;
         $scope.ram = 0;
@@ -71,11 +63,60 @@ angular.module('machine')
             return _.range(r.start, r.stop + 1);
         };
 
+        function setupSelect(name, label) {
+            var rangeValues = $scope.range(name);
+            var list = _.map(rangeValues, function (value) {
+                return {
+                    value: String(value),
+                    label: label + ' ' + value
+                }
+            });
+            list.splice(0, 0, { value: "", label: 'ALL '});
+
+            $scope.select[name] = list;
+
+            var selected = null;
+
+            if ($routeParams[name]) {
+                selected = _.findWhere(list, { value: $routeParams[name] });
+            }
+
+            if (selected) {
+                $scope[name] = selected;
+            } else {
+                $scope[name] = list[0];
+            }
+        }
+
+        $scope.select = {};
+        setupSelect('customer', 'Customer');
+        setupSelect('product', 'Product');
+        setupSelect('os', 'OS');
+        setupSelect('software1', 'Software1 Version');
+        setupSelect('software2', 'Software2 Version');
+        setupSelect('deviceId', 'Device ID');
+        $scope.lookback = $routeParams.lookback ? parseInt($routeParams.lookback) : 30;
+
+        function getParams() {
+            return {
+                customer: $scope.customer.value,
+                product: $scope.product.value,
+                os: $scope.os.value,
+                software1: $scope.software1.value,
+                software2: $scope.software2.value,
+                deviceId: $scope.deviceId.value,
+                lookback: $scope.lookback
+            }
+        }
+
         $scope.reload = function () {
             //$location.path('/home/2/customer/5');
             //console.log(window.location);
             //TODO
-            window.location.href = window.location.pathname = '?customer=5';
+            window.location.href = window.location.pathname + '#/?' + jQuery.param(getParams());
+
+            //window.location.href = window.location.pathname + '#/?customer=' + $scope.customer.value
+            //    + '&product=' + $scope.product.value;
         }
 
         $scope.$watch('machineData', function (data) {
@@ -101,19 +142,8 @@ angular.module('machine')
         });
 
         function fetchMachineData () {
-            var query = {
-                customer: $scope.customer,
-                product: $scope.product,
-                os: $scope.os,
-                software1: $scope.software1,
-                software2: $scope.software2,
-                deviceId: $scope.deviceId,
-                lookback: $scope.lookback
-            };
-
-            $scope.machineData = rest.getMachineData(query);
-            //TODO
-            //$timeout(fetchMachineData, 1000);
+            $scope.machineData = rest.getMachineData(getParams());
+            $timeout(fetchMachineData, 1000);
         }
 
         fetchMachineData();
