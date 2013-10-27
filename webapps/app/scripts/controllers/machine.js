@@ -142,8 +142,10 @@ angular.module('machine')
         });
 
         function fetchMachineData () {
-            $scope.machineData = rest.getMachineData(getParams());
-            $timeout(fetchMachineData, 1000);
+            rest.getMachineData(getParams()).then(function (response) {
+                $scope.machineData = response;
+                $timeout(fetchMachineData, 1000);
+            });
         }
 
         fetchMachineData();
