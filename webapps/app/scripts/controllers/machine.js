@@ -46,6 +46,8 @@ function drawChart(data, options) {
 
 angular.module('machine')
     .controller('MachineController', ['$scope', '$timeout', '$location', '$routeParams', 'rest', function ($scope, $timeout, $location, $routeParams, rest) {
+        var queryParams = new URI(window.location.href).query(true);
+
         $scope.app = rest.getApp(settings.machine.appName);
 
         $scope.$watch('app', function (app) {
@@ -77,8 +79,8 @@ angular.module('machine')
 
             var selected = null;
 
-            if ($routeParams[name]) {
-                selected = _.findWhere(list, { value: $routeParams[name] });
+            if (queryParams[name]) {
+                selected = _.findWhere(list, { value: queryParams[name] });
             }
 
             if (selected) {
@@ -95,7 +97,7 @@ angular.module('machine')
         setupSelect('software1', 'Software1 Version');
         setupSelect('software2', 'Software2 Version');
         setupSelect('deviceId', 'Device ID');
-        $scope.lookback = $routeParams.lookback ? parseInt($routeParams.lookback) : 30;
+        $scope.lookback = queryParams.lookback ? parseInt(queryParams.lookback) : 30;
 
         function getParams() {
             return {
@@ -113,7 +115,7 @@ angular.module('machine')
             //$location.path('/home/2/customer/5');
             //console.log(window.location);
             //TODO
-            window.location.href = window.location.pathname + '#/?' + jQuery.param(getParams());
+            window.location.href = window.location.pathname + '?' + jQuery.param(getParams());
 
             //window.location.href = window.location.pathname + '#/?customer=' + $scope.customer.value
             //    + '&product=' + $scope.product.value;
@@ -147,7 +149,6 @@ angular.module('machine')
                 $timeout(fetchMachineData, 1000);
             });
         }
-
         fetchMachineData();
     }]);
 
