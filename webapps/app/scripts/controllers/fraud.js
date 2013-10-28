@@ -78,7 +78,7 @@ angular.module('fraud')
                             'terminalId': getRandom('terminals'),
                             'bankIdNum': bin,
                             'ccNum': card,
-                            'amount': 800.00
+                            'amount': 600.00
                         });
                     }, 5000)
                     
@@ -190,7 +190,7 @@ angular.module('fraud')
                         var merchantId = res.merchantId;
                         var terminalId = res.terminalId;
                         var zipCode = res.zipCode;
-                        var amount = roundToPrice(res.sma + 800);
+                        var amount = roundToPrice(res.sma + 1500);
                         
                         setTimeout(function() {
                             submitTransaction({
