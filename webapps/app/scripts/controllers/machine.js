@@ -49,7 +49,6 @@ angular.module('machine')
         var queryParams = new URI(window.location.href).query(true);
 
         $scope.app = rest.getApp(settings.machine.appName);
-
         $scope.$watch('app', function (app) {
             if (app) {
                 $scope.appURL = settings.appsURL + app.id;
