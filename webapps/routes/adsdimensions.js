@@ -42,6 +42,7 @@ exports.data = function (req, res) {
 
 function getMinutes(query, resCallback) {
   var lookback = query.lookback;
+  var includeLastMinute = ('true' === query.includeLastMinute);
   var lastTimestamp = query.lastTimestamp;
   var keyParams = [query.publisher, query.advertiser, query.adunit];
 
@@ -80,8 +81,6 @@ function getMinutes(query, resCallback) {
     });
   }
 
-  //console.log(minuteKeys);
-
   var multi = client.multi();
   minuteKeys.forEach(function(key) {
     multi.hgetall(key.key);
@@ -109,6 +108,10 @@ function getMinutes(query, resCallback) {
 
     var lastKey = (lastIndex >= 0) ? minuteKeys[lastIndex].key : 'none';
     var lastKeyQueried = _.last(minuteKeys).key;
+
+    if (minutes.length && !includeLastMinute) {
+      minutes.pop();
+    }
 
     var result = {
       minutes: minutes,

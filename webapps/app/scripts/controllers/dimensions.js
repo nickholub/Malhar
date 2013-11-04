@@ -59,7 +59,8 @@
       publisher: $scope.publisher.value,
       advertiser: $scope.advertiser.value,
       adunit: $scope.adunit.value,
-      lookback: $scope.lookback
+      lookback: $scope.lookback,
+      includeLastMinute: $scope.includeLastMinute
     };
   }
 
@@ -160,6 +161,7 @@
       });
 
       $scope.pollInterval = settings.dimensions.pollInterval;
+      $scope.includeLastMinute = false;
 
       $scope.range = function (name) {
         var r = settings.dimensions.range[name];
@@ -272,22 +274,22 @@
         reloadCharts();
       }, true);
 
-      function watchWithDelay(model) {
+      function watchWithDelay(model, delay) {
         var timeout;
         var firstUpdate = true;
         $scope.$watch(model, function () {
           if (!firstUpdate) { // skip first change since there is a watch for select fields
             clearTimeout(timeout);
-            timeout = setTimeout(reloadCharts, 500);
+            timeout = setTimeout(reloadCharts, delay);
           } else {
             firstUpdate = false;
           }
         });
       }
 
-      watchWithDelay('lookback');
-      watchWithDelay('pollInterval');
-
+      watchWithDelay('lookback', 500);
+      watchWithDelay('pollInterval', 500);
+      watchWithDelay('includeLastMinute', 0); //TODO no delay necessary
     }]);
 
 })();
