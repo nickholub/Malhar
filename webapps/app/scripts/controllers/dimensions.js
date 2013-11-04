@@ -135,8 +135,7 @@
           }
 
           that.callback(that.dataCache);
-
-          var nextTimeout = settings.dimensions.pollInterval - (Date.now() - that.requestStartTime);
+          var nextTimeout = that.scope.pollInterval * 1000 - (Date.now() - that.requestStartTime);
           nextTimeout = Math.max(0, nextTimeout);
 
           that.timeout = setTimeout(that.fetchDimensionsData.bind(that), nextTimeout);
@@ -160,9 +159,7 @@
         }
       });
 
-      $scope.cpu = 0;
-      $scope.ram = 0;
-      $scope.hdd = 0;
+      $scope.pollInterval = settings.dimensions.pollInterval;
 
       $scope.range = function (name) {
         var r = settings.dimensions.range[name];
@@ -206,12 +203,6 @@
       };
 
       function updateCharts(data) {
-        if (data && (data.length > 0)) {
-          var current = _.last(data);
-          $scope.cpu = parseFloat(current.cpu);
-          $scope.ram = parseFloat(current.ram);
-          $scope.hdd = parseFloat(current.hdd);
-        }
         $scope.costChart = {
           data: chartData(data, 'cost'),
           options: chartOptions,
@@ -281,18 +272,22 @@
         reloadCharts();
       }, true);
 
-      var lookbackTimeout;
+      function watchWithDelay(model) {
+        var timeout;
+        var firstUpdate = true;
+        $scope.$watch(model, function () {
+          if (!firstUpdate) { // skip first change since there is a watch for select fields
+            clearTimeout(timeout);
+            timeout = setTimeout(reloadCharts, 500);
+          } else {
+            firstUpdate = false;
+          }
+        });
+      }
 
-      var firstUpdate = true;
+      watchWithDelay('lookback');
+      watchWithDelay('pollInterval');
 
-      $scope.$watch('lookback', function () {
-        if (!firstUpdate) { // skip first change since there is a watch for select fields
-          clearTimeout(lookbackTimeout);
-          lookbackTimeout = setTimeout(reloadCharts, 500);
-        } else {
-          firstUpdate = false;
-        }
-      });
     }]);
 
 })();

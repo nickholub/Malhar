@@ -41,6 +41,14 @@
                         </li>
 
                         <li>
+                            <label for="pollInterval">Poll Interval:</label>
+                            <div class="input-append">
+                                <input type="number" ng-model="pollInterval" min="1" id="pollInterval" class="input-small"/>
+                                <span class="add-on">Sec</span>
+                            </div>
+                        </li>
+
+                        <li>
                             <label for="lookback">Look Back:</label>
                             <div class="input-append">
                                 <input type="number" ng-model="lookback" min="2" id="lookback" class="input-small"/>
