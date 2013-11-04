@@ -23,7 +23,8 @@ exports.testFetchData = function(test) {
   test.expect(1);
   var req = {
     query: {
-      lookback: 10
+      lookback: 10,
+      includeLastMinute: 'true'
     }
   };
   adsdimensions.data(req, {
@@ -40,6 +41,7 @@ exports.testLastTimestamp = function(test) {
   var req = {
     query: {
       lookback: 10,
+      includeLastMinute: 'true',
       lastTimestamp: Date.now() - minuteCount * 60 * 1000
     }
   };
