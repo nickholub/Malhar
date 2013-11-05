@@ -19,7 +19,7 @@
     <div class="row-fluid">
         <div class="span2">
             <div class="well sidebar-nav">
-                <ul class="nav nav-list machine-nav">
+                <ul class="nav nav-list params-nav">
                     <li class="nav-header">Dimensions</li>
                     <form method="GET">
                         <li>
@@ -77,16 +77,16 @@
         </div><!--/span-->
         <div class="span10">
             <div class="row-fluid">
-                <div class="span12 machine-response">
+                <div class="span12 network-response">
                     <span ng-show="lastResponse">
-                        <span class="machine-response-label">Network Last Response:</span>
-                        <span class="machine-response-stat">{{lastResponse|date:'HH:mm:ss'}}</span>
+                        <span class="network-response-label">Network Last Response:</span>
+                        <span class="network-response-stat">{{lastResponse|date:'HH:mm:ss'}}</span>
                     </span>
                     <span ng-show="responseTime">
-                        <span class="machine-response-label" >Network Response Time:</span>
-                        <span class="machine-response-stat">{{responseTime|number}} ms</span>
+                        <span class="network-response-label" >Network Response Time:</span>
+                        <span class="network-response-stat">{{responseTime|number}} ms</span>
                     </span>
-                    <span class="machine-response-label machine-response-loading" ng-show="requestProgress > 1">
+                    <span class="network-response-label network-response-loading" ng-show="requestProgress > 1">
                         Loading: {{requestProgress|number}} sec
                     </span>
 
@@ -94,8 +94,8 @@
             </div>
             <div class="row-fluid">
                 <div class="span8">
-                    <h4 class="machine-chart-title">CPU Usage (%)</h4>
-                    <line-chart chart="cpuChart" class="machine-line-chart"></line-chart>
+                    <h4 class="chart-title">CPU Usage (%)</h4>
+                    <line-chart chart="cpuChart" class="line-chart"></line-chart>
                 </div><!--/span-->
                 <div class="span4">
                     <h4>Current CPU Usage (%)</h4>
@@ -104,8 +104,8 @@
             </div><!--/row-->
             <div class="row-fluid">
                 <div class="span8">
-                    <h4 class="machine-chart-title">RAM Usage (%)</h4>
-                    <line-chart chart="ramChart" class="machine-line-chart"></line-chart>
+                    <h4 class="chart-title">RAM Usage (%)</h4>
+                    <line-chart chart="ramChart" class="line-chart"></line-chart>
                 </div><!--/span-->
                 <div class="span4">
                     <h4>Current RAM Usage (%)</h4>
@@ -114,8 +114,8 @@
             </div><!--/row-->
             <div class="row-fluid">
                 <div class="span8">
-                    <h4 class="machine-chart-title">HDD Usage (%)</h4>
-                    <line-chart chart="hddChart" class="machine-line-chart"></line-chart>
+                    <h4 class="chart-title">HDD Usage (%)</h4>
+                    <line-chart chart="hddChart" class="line-chart"></line-chart>
                 </div><!--/span-->
                 <div class="span4">
                     <h4>Current HDD Usage (%)</h4>
@@ -124,40 +124,40 @@
             </div><!--/row-->
             <div class="row-fluid">
                 <div class="span8">
-                    <h4 class="machine-chart-title">Server Polling Statistics</h4>
+                    <h4 class="chart-title">Server Polling Statistics</h4>
                     <div>
-                        <span class="machine-response-label">Network Last Response:</span>
-                        <span class="machine-response-stat">{{lastResponse|date:'HH:mm:ss'}}</span>
-                        <span class="machine-response-label machine-response-loading" ng-show="requestProgress > 1">
+                        <span class="network-response-label">Network Last Response:</span>
+                        <span class="network-response-stat">{{lastResponse|date:'HH:mm:ss'}}</span>
+                        <span class="network-response-label network-response-loading" ng-show="requestProgress > 1">
                             Loading: {{requestProgress|number}} sec
                         </span>
                     </div>
                     <div>
-                        <span class="machine-response-label">Network Response Time:</span>
+                        <span class="network-response-label">Network Response Time:</span>
                         <span>{{responseTime|number}} ms</span>
                     </div>
                     <div>
-                        <span class="machine-response-label" >Minutes cached:</span>
+                        <span class="network-response-label" >Minutes cached:</span>
                         <span>{{minutesCached}}</span>
                     </div>
                     <div>
-                        <span class="machine-response-label" >Minutes received:</span>
+                        <span class="network-response-label" >Minutes received:</span>
                         <span>{{minutesReceived}}</span>
                     </div>
                     <div>
-                        <span class="machine-response-label" >Keys Queried:</span>
+                        <span class="network-response-label" >Keys Queried:</span>
                         <span>{{response.keysQueried}}</span>
                     </div>
                     <div>
-                        <span class="machine-response-label" >Last Key Queried:</span>
+                        <span class="network-response-label" >Last Key Queried:</span>
                         <span>{{response.lastKeyQueried}}</span>
                     </div>
                     <div>
-                        <span class="machine-response-label" >Last Key with Data:</span>
+                        <span class="network-response-label" >Last Key with Data:</span>
                         <span>{{response.lastKey}}</span>
                     </div>
                     <div>
-                        <span class="machine-response-label">Redis Query Time:</span>
+                        <span class="network-response-label">Redis Query Time:</span>
                         <span>{{response.queryTime|number}} ms</span>
                     </div>
                 </div><!--/span-->
