@@ -70,7 +70,7 @@ angular.module('rest', ['ng', 'restangular'])
             },
 
           getDimensionsData: function (query) {
-            var promise = Restangular.all('dimensions').get(query);
+            var promise = Restangular.one('dimensions').get(query);
 
             promise.then(null, function (response) {
               jQuery.pnotify({
