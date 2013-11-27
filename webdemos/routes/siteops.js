@@ -24,6 +24,7 @@ var demoEnabled = (config.siteops.redis.port && config.siteops.redis.host);
 
 if (demoEnabled) {
     client = redis.createClient(config.siteops.redis.port, config.siteops.redis.host);
+    client.select(config.siteops.redis.dbIndex);
 }
 
 exports.index = function(req, res) {
@@ -217,23 +218,20 @@ function getServerLoadMinuteKeys(keyTemplate) {
     return keys;
 }
 
-function RedisService(client, dbIndex) {
+function RedisService(client, keyIndex) {
     this.client = client;
-    this.dbIndex = dbIndex;
+    this.keyIndex = keyIndex;
 }
 
 RedisService.prototype.fetchMinuteTotals = function(keys, time, callback) {
     var multi = this.client.multi();
-    multi.select(this.dbIndex);
     keys.forEach(function(key) {
-        multi.hgetall(key);
-    });
+        multi.hgetall(this.keyIndex + '##' + key);
+    }.bind(this));
 
     multi.exec(function (err, replies) {
-        // reply 0 - select command
-        // reply 1..n - hgetall commands
         var total = 0;
-        for (var i = 1; i < replies.length; i++) {
+        for (var i = 0; i < replies.length; i++) {
             var hash = replies[i];
             if (hash) {
                 total += parseInt(hash[1]);
@@ -251,25 +249,21 @@ RedisService.prototype.fetchMinuteTotals = function(keys, time, callback) {
 
 RedisService.prototype.fetchValue = function (callback) {
     var multi = this.client.multi();
-    multi.select(this.dbIndex);
-    multi.get(1);
+    multi.get(this.keyIndex + '##1');
     multi.exec(function (err, replies) {
-        var value = parseInt(replies[1]);
+        var value = parseInt(replies[0]);
         callback(value);
     });
 }
 
 RedisService.prototype.fetchTop10 = function(callback) {
     var multi = this.client.multi();
-    multi.select(this.dbIndex);
     for (var i = 0; i < 10; i++) {
-        multi.get(i);
+        multi.get(this.keyIndex + '##' + i);
     }
 
     multi.exec(function (err, replies) {
-        // reply 0 - select command
-        // reply 1..n - get commands
-        var top10 = replies.slice(1);
+        var top10 = replies;
         callback(top10);
     });
 }
