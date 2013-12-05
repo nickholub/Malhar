@@ -24,6 +24,7 @@ import com.datatorrent.api.DAG;
 import com.datatorrent.api.DAG.Locality;
 import com.datatorrent.api.Operator;
 import com.datatorrent.api.Operator.InputPort;
+import com.datatorrent.api.Operator.OutputPort;
 import com.datatorrent.api.StreamingApplication;
 import com.datatorrent.contrib.machinedata.data.MachineKey;
 import com.datatorrent.contrib.machinedata.data.ResourceType;
@@ -42,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Resource monitor application.
  * </p>
- * 
+ *
  * @since 0.3.5
  */
 
@@ -58,73 +59,73 @@ public class Application implements StreamingApplication
   private boolean isWebsocket = false;
   private int QUEUE_CAPACITY = 32 * 1024;
 
-  public InputReceiver getRandomInformationTupleGenerator(String name, DAG dag)
+  /**
+   * This method returns new InputReceiver Operator
+   * @param name the name of the operator in DAG
+   * @param dag the DAG instance
+   * @return InputReceiver
+   */
+  private InputReceiver getRandomInformationTupleGenerator(String name, DAG dag)
   {
     InputReceiver oper = dag.addOperator(name, InputReceiver.class);
-    dag.getOperatorMeta(name).getAttributes().attr(Context.OperatorContext.APPLICATION_WINDOW_COUNT).set(appWindowCountMinute);
+    dag.setAttribute(oper, Context.OperatorContext.APPLICATION_WINDOW_COUNT, appWindowCountMinute);
     return oper;
   }
 
-  public MachineInfoBucketOperator getMachineInfoBucketOperator(String name, DAG dag)
-  {
-    return dag.addOperator(name, MachineInfoBucketOperator.class);
-  }
-
-  public MachineInfoAveragingPrerequisitesOperator getMachineInfoAveragingPrerequisitesOperator(String name, DAG dag)
+  /**
+   * This method returns new MachineInfoAveragingPrerequisitesOperator Operator
+   * @param name the name of the operator in DAG
+   * @param dag the DAG instance
+   * @return MachineInfoAveragingPrerequisitesOperator
+   */
+  private MachineInfoAveragingPrerequisitesOperator getMachineInfoAveragingPrerequisitesOperator(String name, DAG dag)
   {
     MachineInfoAveragingPrerequisitesOperator oper = dag.addOperator(name, MachineInfoAveragingPrerequisitesOperator.class);
-    dag.getOperatorMeta(name).getAttributes().attr(Context.OperatorContext.APPLICATION_WINDOW_COUNT).set(appWindowCountMinute);
+    dag.setAttribute(oper, Context.OperatorContext.APPLICATION_WINDOW_COUNT, appWindowCountMinute);
     return oper;
   }
 
-  public MachineInfoAveragingOperator getMachineInfoAveragingOperator(String name, DAG dag)
+  /**
+   * This method returns new MachineInfoAveragingOperator Operator
+   * @param name the name of the operator in DAG
+   * @param dag the DAG instance
+   * @return MachineInfoAveragingOperator
+   */
+  private MachineInfoAveragingOperator getMachineInfoAveragingOperator(String name, DAG dag)
   {
     MachineInfoAveragingOperator oper = dag.addOperator(name, MachineInfoAveragingOperator.class);
-    dag.getOperatorMeta(name).getAttributes().attr(Context.OperatorContext.APPLICATION_WINDOW_COUNT).set(appWindowCountMinute);
+    dag.setAttribute(oper, Context.OperatorContext.APPLICATION_WINDOW_COUNT, appWindowCountMinute);
     return oper;
   }
 
-  public AlertGeneratorOperator getAlertGeneratorOperator(String name, DAG dag)
+  /**
+   * This method returns new RedisOutputOperator Operator
+   * @param name the name of the operator in DAG
+   * @param dag the DAG instance
+   * @param conf the configuration object
+   * @param database the database instance id
+   * @return RedisOutputOperator
+   */
+  private RedisOutputOperator<MachineKey, Map<String, String>> getRedisOutputOperator(String name, DAG dag, Configuration conf, int database)
   {
-    AlertGeneratorOperator oper = dag.addOperator(name, AlertGeneratorOperator.class);
-    dag.getOperatorMeta(name).getAttributes().attr(Context.OperatorContext.APPLICATION_WINDOW_COUNT).set(appWindowCountMinute);
-    return oper;
-  }
-
-  public RedisOutputOperator<MachineKey, Map<ResourceType, Double>> getRedisOutputOperator(String name, DAG dag, Configuration conf, int database)
-  {
-    RedisOutputOperator<MachineKey, Map<ResourceType, Double>> oper = dag.addOperator(name, new RedisOutputOperator<MachineKey, Map<ResourceType, Double>>());
+    RedisOutputOperator<MachineKey, Map<String, String>> oper = dag.addOperator(name, new RedisOutputOperator<MachineKey, Map<String, String>>());
     String host = conf.get("machinedata.redis.host", "localhost");
     int port = conf.getInt("machinedata.redis.port", 6379);
     oper.setHost(host);
     oper.setPort(port);
     oper.setDatabase(database);
-    dag.getOperatorMeta(name).getAttributes().attr(Context.OperatorContext.APPLICATION_WINDOW_COUNT).set(appWindowCountMinute);
+    dag.setAttribute(oper, Context.OperatorContext.APPLICATION_WINDOW_COUNT, appWindowCountMinute);
     return oper;
   }
 
-  public InputPort<Object> getConsole(String name, DAG dag, String prefix)
-  {
-    ConsoleOutputOperator oper = dag.addOperator(name, ConsoleOutputOperator.class);
-    oper.setStringFormat(prefix + ": %s");
-    return oper.input;
-  }
-
-  public ConsoleOutputOperator getConsoleOperator(String name, DAG dag, String prefix)
-  {
-    ConsoleOutputOperator oper = dag.addOperator(name, ConsoleOutputOperator.class);
-    oper.setStringFormat(prefix + ": %s");
-    return oper;
-  }
-
-  public InputPort<Object> getFormattedConsole(String name, DAG dag, String format)
-  {
-    ConsoleOutputOperator oper = dag.addOperator(name, ConsoleOutputOperator.class);
-    oper.setStringFormat(format);
-    return oper.input;
-  }
-
-  public SmtpOutputOperator getSmtpOutputOperator(String name, DAG dag, Configuration conf)
+  /**
+   * This method returns new SmtpOutputOperator Operator
+   * @param name the name of the operator in DAG
+   * @param dag the DAG instance
+   * @param conf the configuration object
+   * @return SmtpOutputOperator
+   */
+  private SmtpOutputOperator getSmtpOutputOperator(String name, DAG dag, Configuration conf)
   {
     SmtpOutputOperator mailOper = new SmtpOutputOperator();
 
@@ -152,21 +153,37 @@ public class Application implements StreamingApplication
 
   }
 
+  /**
+   * This methods the QUEUE_CAPACITY for the given InputPort
+   * @param dag the DAG instance
+   * @param inputPort the InputPort whose QUEUE_CAPACITY has to be updated
+   */
   private void setDefaultInputPortQueueCapacity(DAG dag, InputPort inputPort)
   {
     dag.setInputPortAttribute(inputPort, PortContext.QUEUE_CAPACITY, QUEUE_CAPACITY);
   }
 
-  private void setDefaultOutputPortQueueCapacity(DAG dag, Operator.OutputPort outputPort)
+  /**
+   * This methods the QUEUE_CAPACITY for the given OutputPort
+   * @param dag the DAG instance
+   * @param outputPort the OutputPort whose QUEUE_CAPACITY has to be updated
+   */
+  private void setDefaultOutputPortQueueCapacity(DAG dag, OutputPort outputPort)
   {
     dag.setOutputPortAttribute(outputPort, PortContext.QUEUE_CAPACITY, QUEUE_CAPACITY);
   }
 
+  /**
+   * This function sets up the DAG for calculating the average
+   * @param dag the DAG instance
+   * @param conf the configuration instance
+   * @return MachineInfoAveragingPrerequisitesOperator
+   */
   private MachineInfoAveragingPrerequisitesOperator addAverageCalculation(DAG dag, Configuration conf)
   {
     MachineInfoAveragingPrerequisitesOperator prereqAverageOper = getMachineInfoAveragingPrerequisitesOperator("PrereqAverage", dag);
     dag.setInputPortAttribute(prereqAverageOper.inputPort, PortContext.PARTITION_PARALLEL, true);
-    dag.getOperatorMeta("PrereqAverage").getAttributes().attr(Context.OperatorContext.APPLICATION_WINDOW_COUNT).set(appWindowCountMinute);
+    dag.setAttribute(prereqAverageOper, Context.OperatorContext.APPLICATION_WINDOW_COUNT, appWindowCountMinute);
 
     setDefaultInputPortQueueCapacity(dag, prereqAverageOper.inputPort);
     setDefaultOutputPortQueueCapacity(dag, prereqAverageOper.outputPort);
@@ -177,10 +194,10 @@ public class Application implements StreamingApplication
     setDefaultInputPortQueueCapacity(dag, averageOperator.inputPort);
     setDefaultOutputPortQueueCapacity(dag, averageOperator.outputPort);
 
-    RedisOutputOperator<MachineKey, Map<ResourceType, Double>> redisAvgOperator = getRedisOutputOperator("RedisAverageOutput", dag, conf, conf.getInt("machinedata.redis.db", 5));
+    RedisOutputOperator<MachineKey, Map<String, String>> redisAvgOperator = getRedisOutputOperator("RedisAverageOutput", dag, conf, conf.getInt("machinedata.redis.db", 5));
     setDefaultInputPortQueueCapacity(dag, redisAvgOperator.inputInd);
     dag.setInputPortAttribute(redisAvgOperator.inputInd, PortContext.PARTITION_PARALLEL, true);
-    dag.addStream("avg_output", averageOperator.outputPort, redisAvgOperator.inputInd);    
+    dag.addStream("avg_output", averageOperator.outputPort, redisAvgOperator.inputInd);
 
     SmtpOutputOperator smtpOutputOperator = getSmtpOutputOperator("SmtpAvgOperator", dag, conf);
 
@@ -191,10 +208,16 @@ public class Application implements StreamingApplication
 
   }
 
+  /**
+   * This function sets up the DAG for calculating the percentile/sd/max/min
+   * @param dag the DAG instance
+   * @param conf the configuration instance
+   * @return CalculatorOperator
+   */
   private CalculatorOperator addCalculator(DAG dag, Configuration conf)
   {
     CalculatorOperator oper = dag.addOperator("Calculator", CalculatorOperator.class);
-    dag.getOperatorMeta("Calculator").getAttributes().attr(Context.OperatorContext.APPLICATION_WINDOW_COUNT).set(appWindowCountMinute);
+    dag.setAttribute(oper, Context.OperatorContext.APPLICATION_WINDOW_COUNT, appWindowCountMinute);
     int partitions = conf.getInt(Application.class.getName() + ".calculatorPartitions", 5);
     dag.setAttribute(oper, OperatorContext.INITIAL_PARTITION_COUNT, partitions);
 
@@ -202,7 +225,7 @@ public class Application implements StreamingApplication
 
     // Percentile
     setDefaultOutputPortQueueCapacity(dag, oper.percentileOutputPort);
-    
+
     ConsoleOutputOperator console = dag.addOperator("console_percentile", ConsoleOutputOperator.class);
     setDefaultInputPortQueueCapacity(dag, console.input);
     console.silent = true;
@@ -218,7 +241,7 @@ public class Application implements StreamingApplication
     setDefaultInputPortQueueCapacity(dag, console1.input);
     console.silent = true;
     dag.addStream("sd_output", oper.sdOutputPort, console1.input);
-    
+
     // TODO: Change back to redis
 //    RedisOutputOperator redisSDOperator = getRedisOutputOperator("RedisSDOutput", dag, conf, conf.getInt("machinedata.sd.redis.db", 33));
 //    setDefaultInputPortQueueCapacity(dag, redisSDOperator.inputInd);
@@ -226,12 +249,12 @@ public class Application implements StreamingApplication
 
     // Max
     setDefaultOutputPortQueueCapacity(dag, oper.maxOutputPort);
-    
+
     ConsoleOutputOperator console2 = dag.addOperator("console_max", ConsoleOutputOperator.class);
     setDefaultInputPortQueueCapacity(dag, console2.input);
     console.silent = true;
     dag.addStream("max_output", oper.maxOutputPort, console2.input);
-    
+
     /*TODO: change back to Redis
     RedisOutputOperator redisMaxOutput = getRedisOutputOperator("RedisMaxOutput", dag, conf, conf.getInt("machinedata.max.redis.db", 32));
     setDefaultInputPortQueueCapacity(dag, redisMaxOutput.inputInd);
@@ -256,27 +279,28 @@ public class Application implements StreamingApplication
 
     dag.setAttribute(DAG.APPLICATION_NAME, "MachineData-DemoApplication");
     dag.setAttribute(DAG.DEBUG, false);
-    dag.getAttributes().attr(DAG.STREAMING_WINDOW_SIZE_MILLIS).set(streamingWindowSizeMilliSeconds);
+    dag.setAttribute(DAG.STREAMING_WINDOW_SIZE_MILLIS, streamingWindowSizeMilliSeconds);
 
     InputReceiver randomGen = getRandomInformationTupleGenerator("InputReceiver", dag);
     setDefaultOutputPortQueueCapacity(dag, randomGen.outputInline);
     dag.setAttribute(randomGen, OperatorContext.INITIAL_PARTITION_COUNT, partitions);
-    
+
     DimensionGenerator dimensionGenerator = dag.addOperator("GenerateDimensions", DimensionGenerator.class);
-    dag.getOperatorMeta("GenerateDimensions").getAttributes().attr(Context.OperatorContext.APPLICATION_WINDOW_COUNT).set(appWindowCountMinute);
+    dag.setAttribute(dimensionGenerator, Context.OperatorContext.APPLICATION_WINDOW_COUNT, appWindowCountMinute);    
     setDefaultOutputPortQueueCapacity(dag, dimensionGenerator.outputInline);
     setDefaultOutputPortQueueCapacity(dag, dimensionGenerator.output);
     setDefaultInputPortQueueCapacity(dag, dimensionGenerator.inputPort);
     dag.addStream("generate_dimensions",randomGen.outputInline,dimensionGenerator.inputPort).setLocality(Locality.CONTAINER_LOCAL);
     dag.setInputPortAttribute(dimensionGenerator.inputPort, PortContext.PARTITION_PARALLEL, true);
-    
-    
+
+
     if (conf.getBoolean("machinedata.calculate.average", true)) {
       MachineInfoAveragingPrerequisitesOperator prereqAverageOper = addAverageCalculation(dag, conf);
       dag.addStream("prereq_calculation", dimensionGenerator.outputInline, prereqAverageOper.inputPort).setLocality(Locality.THREAD_LOCAL);
       dag.setOutputPortAttribute(prereqAverageOper.outputPort, PortContext.UNIFIER_LIMIT,unifier_count);
     }
     
+
 
     /*
     CalculatorOperator calculatorOperator = addCalculator(dag, conf);
@@ -292,9 +316,9 @@ public class Application implements StreamingApplication
 
 
     if (conf.getBoolean("machinedata.calculate.max", false)) {
-      calculatorOperator.setComputeMax(true);   
+      calculatorOperator.setComputeMax(true);
     }
     */
-    
+
   }
 }
