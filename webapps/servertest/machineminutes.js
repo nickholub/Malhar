@@ -22,10 +22,10 @@ var machine = require('../routes/machine');
 exports.testExtractMinutesSimple = function (test) {
   test.expect(2);
   var minuteKeys = [
-    { day: '7', key: '1800' }
+    { day: 7, key: '1800' }
   ];
   var replies = [
-    { day: '7'}
+    { day: 7}
   ];
   var response = machine.extractMinutes(minuteKeys, replies);
   test.equal(response.minutes.length, 1);
@@ -36,12 +36,12 @@ exports.testExtractMinutesSimple = function (test) {
 exports.testExtractMinutesNoRecent = function (test) {
   test.expect(2);
   var minuteKeys = [
-    { day: '7', key: '1800'},
-    { day: '7', key: '1759'}
+    { day: 7, key: '1800'},
+    { day: 7, key: '1759'}
   ];
   var replies = [
     null,
-    { day: '7'}
+    { day: 7}
   ];
   var response = machine.extractMinutes(minuteKeys, replies);
   test.equal(response.minutes.length, 1);
@@ -52,12 +52,12 @@ exports.testExtractMinutesNoRecent = function (test) {
 exports.testExtractMinutesRecentFromPrevDay = function (test) {
   test.expect(2);
   var minuteKeys = [
-    { day: '7', key: '1800'},
-    { day: '7', key: '1759'}
+    { day: 7, key: '1800'},
+    { day: 7, key: '1759'}
   ];
   var replies = [
-    { day: '6' },
-    { day: '7' }
+    { day: 6 },
+    { day: 7 }
   ];
   var response = machine.extractMinutes(minuteKeys, replies);
   test.equal(response.minutes.length, 1);
@@ -68,13 +68,13 @@ exports.testExtractMinutesRecentFromPrevDay = function (test) {
 exports.testExtractMinutesNoOld = function (test) {
   test.expect(1);
   var minuteKeys = [
-    { day: '7'},
-    { day: '7'},
-    { day: '7'}
+    { day: 7},
+    { day: 7},
+    { day: 7}
   ];
   var replies = [
-    { day: '7'},
-    { day: '7'},
+    { day: 7},
+    { day: 7},
     null
   ];
   var response = machine.extractMinutes(minuteKeys, replies);
@@ -85,14 +85,14 @@ exports.testExtractMinutesNoOld = function (test) {
 exports.testExtractMinutesDayBoundary = function (test) {
   test.expect(1);
   var minuteKeys = [
-    { day: '7'},
-    { day: '7'},
-    { day: '7'}
+    { day: 7},
+    { day: 7},
+    { day: 7}
   ];
   var replies = [
-    { day: '7'},
-    { day: '7'},
-    { day: '6'}
+    { day: 7},
+    { day: 7},
+    { day: 6}
   ];
   var response = machine.extractMinutes(minuteKeys, replies);
   test.equal(response.minutes.length, 2);
@@ -102,15 +102,15 @@ exports.testExtractMinutesDayBoundary = function (test) {
 exports.testExtractMinutes = function (test) {
   test.expect(2);
   var minuteKeys = [
-    { day: '7', key: '1800' },
-    { day: '7', key: '1759' },
-    { day: '6', key: '1758' },
-    { day: '6', key: '1757'}
+    { day: 7, key: '1800' },
+    { day: 7, key: '1759' },
+    { day: 6, key: '1758' },
+    { day: 6, key: '1757'}
   ];
   var replies = [
     null,
-    { day: '7'},
-    { day: '6'},
+    { day: 7},
+    { day: 6},
     null
   ];
   var response = machine.extractMinutes(minuteKeys, replies);
@@ -122,8 +122,8 @@ exports.testExtractMinutes = function (test) {
 exports.testExtractMinutesNoData = function (test) {
   test.expect(2);
   var minuteKeys = [
-    { day: '7', key: '1800' },
-    { day: '7', key: '1759' }
+    { day: 7, key: '1800' },
+    { day: 7, key: '1759' }
   ];
   var replies = [
     null,

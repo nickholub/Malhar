@@ -59,7 +59,7 @@ function extractMinutes(minuteKeys, replies) {
     var reply = replies[i];
     var minuteKey = minuteKeys[i];
     if (reply) {
-      if (reply.day === minuteKey.day) {
+      if (parseInt(reply.day, 10) === minuteKey.day) {
         var minute = {
           timestamp: minuteKeys[i].timestamp,
           cpu: reply.cpu,
@@ -121,7 +121,7 @@ function getMinutes(query, resCallback) {
   for (var i = 0; i < lookback; i++) {
     var time = endTime - (i * minute);
     var date = dateFormat(time, 'UTC:HHMM');
-    var day = dateFormat(time, 'UTC:d');
+    var day = parseInt(dateFormat(time, 'UTC:d'), 10);
     var key = minuteKeyTemplate.replace('$date', date);
     minuteKeys.push({
       timestamp: time,
