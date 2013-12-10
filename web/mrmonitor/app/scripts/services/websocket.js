@@ -1,7 +1,5 @@
 'use strict';
 
-angular.module('app.service', ['ng']);
-
 angular.module('app.service')
   .provider('webSocket', function () {
 

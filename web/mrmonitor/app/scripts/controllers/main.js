@@ -3,7 +3,7 @@
 angular.module('app.controller', ['ngGrid', 'app.service']);
 
 angular.module('app.controller')
-  .controller('WebSocketController', function ($scope, webSocket) {
+  .controller('WebSocketController', function ($scope, webSocket, rest) {
     $scope.message = 'none';
 
     webSocket.subscribe(settings.topic.reduce, function (data) {
@@ -12,8 +12,12 @@ angular.module('app.controller')
       $scope.$apply();
     });
   })
-  .controller('MainCtrl', function ($scope, webSocket) {
-    $scope.gaugeValue = 0;
+  .controller('MainCtrl', function ($scope, webSocket, rest) {
+    $scope.app = rest.getApp('word count');
+
+    $scope.$watch('app', function (app) {
+      console.log(app);
+    });
 
     var items = [];
 
