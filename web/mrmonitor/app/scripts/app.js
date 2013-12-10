@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('mrmonitorApp', [
-  'ngCookies',
-  'ngResource',
-  'ngSanitize'
-])
-  .config(function ($routeProvider) {
+angular.module('app', ['app.service', 'app.controller']);
+
+angular.module('app')
+  .config(function ($routeProvider, webSocketProvider) {
+    webSocketProvider.setWebSocketURL('ws://' + window.location.host + '/sockjs/websocket');
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
