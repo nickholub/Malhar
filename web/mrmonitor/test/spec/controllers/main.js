@@ -2,8 +2,18 @@
 
 describe('Controller: MainCtrl', function () {
 
+  var mockRestService;
+
   // load the controller's module
-  beforeEach(module('app.controller', function (webSocketProvider) {
+  beforeEach(module('app.controller', function ($provide, webSocketProvider) {
+    mockRestService = {
+      getApp: jasmine.createSpy()
+    };
+
+    $provide.factory('rest', function () {
+      return mockRestService;
+    });
+
     webSocketProvider.setWebSocketObject({});
   }));
 
@@ -20,5 +30,6 @@ describe('Controller: MainCtrl', function () {
 
   it('should attach a list of awesomeThings to the scope', function () {
     expect(MainCtrl).toBeDefined();
+    expect(mockRestService.getApp).toHaveBeenCalled();
   });
 });

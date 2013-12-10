@@ -1,9 +1,17 @@
 var express = require('express');
 var sockjs  = require('sockjs');
 var http = require('http');
+var httpProxy = require('http-proxy');
 var config = require('./config');
 
 var app = express();
+
+var proxy = new httpProxy.HttpProxy({
+  target: {
+    host: config.resourceManager.host,
+    port: config.resourceManager.port
+  }
+});
 
 // all environments
 app.use(express.favicon());
@@ -20,6 +28,10 @@ if ('production' == app.get('env')) {
     app.use(express.static(__dirname + '/app'));
     app.use(express.errorHandler());
 }
+
+app.get('/ws/v1/cluster/apps', function(req, res) {
+  proxy.proxyRequest(req, res);
+});
 
 var items = null;
 
