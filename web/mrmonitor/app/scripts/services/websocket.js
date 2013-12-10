@@ -27,9 +27,7 @@ angular.module('app.service')
         var topicMap = {}; // topic -> [callbacks] mapping
 
         socket.onmessage = function (event) {
-          //console.log(event);
           var message = JSON.parse(event.data);
-          //console.log(message);
 
           var topic = message.topic;
 
