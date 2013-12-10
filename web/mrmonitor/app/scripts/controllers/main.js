@@ -4,7 +4,6 @@ angular.module('app.controller', ['app.service']);
 
 angular.module('app.controller')
   .controller('MainCtrl', function ($scope, webSocket) {
-    console.log(webSocket);
     $scope.gaugeValue = 0;
 
     var items = [];
