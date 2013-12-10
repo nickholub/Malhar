@@ -57,9 +57,15 @@ function broadcast() {
     gaugeValue = gaugeValue < 0 ? 0 : gaugeValue > 100 ? 100 : gaugeValue;
     var time = Date.now();
 
+    var msgObject = { topic: 'topic1', data: {
+      value: Math.floor(gaugeValue), timestamp: time
+    }};
+
+    var msg = JSON.stringify(msgObject);
+
     for (var key in clients) {
         if(clients.hasOwnProperty(key)) {
-            clients[key].write(JSON.stringify({ value: Math.floor(gaugeValue), timestamp: time }));
+            clients[key].write(msg);
         }
     }
 

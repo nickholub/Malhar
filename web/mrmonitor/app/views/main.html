@@ -1,4 +1,5 @@
 <div class="row-fluid">
+    <!--
     <div class="span8">
         <h2>Job Progress Chart</h2>
         <line-chart chart="chart" class="line-chart"></line-chart>
@@ -8,5 +9,11 @@
         <div class="job-progress-grid-content">
             <div ng-grid="gridOptions" class="job-progress-grid"></div>
         </div>
+    </div><!--/span-->
+</div><!--/row-->
+<div class="row-fluid">
+    <div class="span4" ng-controller="WebSocketController">
+        <h2>WebSocket</h2>
+        <div>{{message}}</div>
     </div><!--/span-->
 </div><!--/row-->

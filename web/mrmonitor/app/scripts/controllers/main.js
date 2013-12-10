@@ -3,13 +3,29 @@
 angular.module('app.controller', ['ngGrid', 'app.service']);
 
 angular.module('app.controller')
+  .controller('WebSocketController', function ($scope, webSocket) {
+    $scope.message = 'none';
+
+    webSocket.subscribe(settings.topic.reduce, function (data) {
+      console.log(JSON.parse(data));
+      $scope.message = JSON.stringify(data);
+      $scope.$apply();
+    });
+  })
   .controller('MainCtrl', function ($scope, webSocket) {
     $scope.gaugeValue = 0;
 
     var items = [];
 
-    webSocket.subscribe(function (item) {
-      items.push(item);
+    webSocket.subscribe(settings.topic.job, function (message) {
+      var data = JSON.parse(message);
+      var job = data.job;
+      //items.push(item);
+      items.push({
+        //value: job.mapProgress,
+        value: job.reduceProgress,
+        timestamp: Date.now()
+      });
 
       if (items.length > 40) {
         items.shift();
@@ -20,12 +36,10 @@ angular.module('app.controller')
         max: 30
       };
 
-      $scope.gaugeValue = item.value;
       $scope.$apply();
     });
   })
   .controller('JobGridController', function($scope, $filter, webSocket) {
-    console.log('JobGridController');
     var defaultRow = {
       completed: '-',
       running: '-',
@@ -50,14 +64,10 @@ angular.module('app.controller')
       createRow(jQuery.extend({ name: 'total' }, defaultRow))
     ];
 
-    var topic = "contrib.summit.mrDebugger.jobResult";
-    var msg = JSON.stringify({ "type":"subscribe", "topic": topic});
+    var topic = settings.topic.job;
 
-    //socket.send(msg);
-
-    if (false) //TODO
-    webSocket.on(topic, function(message) {
-      var data = JSON.parse(message.data);
+    webSocket.subscribe(topic, function(message) {
+      var data = JSON.parse(message);
       var job = data.job;
 
       var list = [];
@@ -94,11 +104,11 @@ angular.module('app.controller')
     $scope.gridOptions = {
       data: 'gridData',
       columnDefs: [
-        { field: "name", displayName: 'Task'},
-        { field: "completed", displayName: 'Completed' },
-        { field: "running", displayName: 'Running' },
-        { field: "total", displayName: 'Total' },
-        { field: "progress", displayName: 'Progress', cellFilter1: 'number:2' }
+        { field: 'name', displayName: 'Task'},
+        { field: 'completed', displayName: 'Completed' },
+        { field: 'running', displayName: 'Running' },
+        { field: 'total', displayName: 'Total' },
+        { field: 'progress', displayName: 'Progress', cellFilter1: 'number:2' }
       ]
     };
 
