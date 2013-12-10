@@ -9,7 +9,7 @@ angular.module('app.service')
     var webSocketObject; // for testing only
 
     return {
-      $get: ['$q', function ($q) {
+      $get: function ($q) {
         if (!webSocketURL && !webSocketObject) {
           throw 'WebSocket URL is not defined';
         }
@@ -42,7 +42,7 @@ angular.module('app.service')
             callbacks.add(callback);
           }
         };
-      }],
+      },
 
       setWebSocketURL: function (wsURL) {
         webSocketURL = wsURL;
