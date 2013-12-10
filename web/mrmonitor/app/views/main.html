@@ -1,9 +1,12 @@
 <div class="row-fluid">
     <div class="span8">
-        <h2>Line Chart</h2>
+        <h2>Job Progress Chart</h2>
         <line-chart chart="chart" class="line-chart"></line-chart>
     </div><!--/span-->
-    <div class="span4">
-        <h2>Widget</h2>
+    <div class="span4" ng-controller="JobGridController">
+        <h2>Job Progress</h2>
+        <div class="job-progress-grid-content">
+            <div ng-grid="gridOptions" class="job-progress-grid"></div>
+        </div>
     </div><!--/span-->
 </div><!--/row-->
