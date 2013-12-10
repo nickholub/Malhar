@@ -9,7 +9,7 @@ angular.module('app.service')
     var webSocketObject; // for testing only
 
     return {
-      $get: function ($q) {
+      $get: function ($q,  $rootScope) {
         if (!webSocketURL && !webSocketObject) {
           throw 'WebSocket URL is not defined';
         }
@@ -20,13 +20,22 @@ angular.module('app.service')
 
         socket.onopen = function () {
           deferred.resolve();
+          $rootScope.$apply();
         };
 
         var callbacks = jQuery.Callbacks();
+        var topicMap = {}; // topic -> [callbacks] mapping
 
-        socket.onmessage = function (e) {
-          var data = JSON.parse(e.data);
-          callbacks.fire(data);
+        socket.onmessage = function (event) {
+          //console.log(event);
+          var message = JSON.parse(event.data);
+          //console.log(message);
+
+          var topic = message.topic;
+
+          if (topicMap.hasOwnProperty(topic)) {
+            topicMap[topic].fire(message.data);
+          }
         };
 
         return {
@@ -38,7 +47,17 @@ angular.module('app.service')
             });
           },
 
-          subscribe: function (callback) {
+          subscribe: function (topic, callback) {
+            var callbacks = topicMap[topic];
+
+            if (!callbacks) {
+              var message = { type: "subscribe", topic: topic };
+              this.send(message); // subscribe message
+
+              callbacks = jQuery.Callbacks();
+              topicMap[topic] = callbacks;
+            }
+
             callbacks.add(callback);
           }
         };
