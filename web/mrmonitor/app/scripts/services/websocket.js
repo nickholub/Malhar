@@ -23,7 +23,6 @@ angular.module('app.service')
           $rootScope.$apply();
         };
 
-        var callbacks = jQuery.Callbacks();
         var topicMap = {}; // topic -> [callbacks] mapping
 
         socket.onmessage = function (event) {
@@ -49,8 +48,8 @@ angular.module('app.service')
             var callbacks = topicMap[topic];
 
             if (!callbacks) {
-              var message = { type: "subscribe", topic: topic };
-              this.send(message); // subscribe message
+              var message = { type: 'subscribe', topic: topic }; // subscribe message
+              this.send(message);
 
               callbacks = jQuery.Callbacks();
               topicMap[topic] = callbacks;

@@ -23,18 +23,17 @@ describe('Service: webSocket', function () {
     var listener1 = jasmine.createSpy();
     var listener2 = jasmine.createSpy();
 
-    webSocket.subscribe(listener1);
-    webSocket.subscribe(listener2);
+    webSocket.subscribe('topic1', listener1);
+    webSocket.subscribe('topic2', listener2);
 
-    webSocketObject.onmessage({ data: '{ "value": 100 }' });
+    var msg1 = JSON.stringify({ topic: 'topic1', data: { value: 100 } });
+    var msg2 = JSON.stringify({ topic: 'topic2', data: { value: 50 } });
 
-    expect(listener1).toHaveBeenCalledWith({ value: 100 });
-    expect(listener2).toHaveBeenCalledWith({ value: 100 });
+    webSocketObject.onmessage({ data: msg1 });
+    expect(listener1).toHaveBeenCalled();
 
-    webSocketObject.onmessage({ data: '{ "value": 50 }' });
-
-    expect(listener1).toHaveBeenCalledWith({ value: 50 });
-    expect(listener2).toHaveBeenCalledWith({ value: 50 });
+    webSocketObject.onmessage({ data: msg2 });
+    expect(listener2).toHaveBeenCalled();
   });
 
   it('should send message when WebSocket connection is opened', inject(function ($rootScope) {
@@ -47,7 +46,6 @@ describe('Service: webSocket', function () {
     expect(webSocketObject.send).not.toHaveBeenCalled(); // no connection yet
 
     webSocketObject.onopen();
-    $rootScope.$apply(); // required for AngularJS promise resolution
 
     expect(webSocketObject.send).toHaveBeenCalled();
   }));
