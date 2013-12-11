@@ -244,6 +244,12 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: ['{,*/}*.css', '../bower_components/**/*.css']
+      },
+      settings: {
+        expand: true,
+        cwd: '<%= yeoman.app %>/scripts',
+        dest: '<%= yeoman.dist %>/scripts',
+        src: ['settings.js']
       }
     },
     concurrent: {
@@ -329,7 +335,8 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'rev',
-    'usemin'
+    'usemin',
+    'copy:settings'
   ]);
 
   grunt.registerTask('default', [
