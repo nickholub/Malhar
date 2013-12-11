@@ -6,8 +6,9 @@ angular.module('app.controller')
   .controller('WebSocketController', function ($scope, webSocket, rest) {
     $scope.message = 'none';
 
-    webSocket.subscribe(settings.topic.reduce, function (data) {
+    webSocket.subscribe(settings.topic.map, function (data) {
       console.log(JSON.parse(data));
+
       $scope.message = JSON.stringify(data);
       $scope.$apply();
     });
@@ -17,6 +18,24 @@ angular.module('app.controller')
 
     $scope.$watch('app', function (app) {
       console.log(app);
+      if (app) {
+        var id = app.id.replace('application_', '');
+
+        var jsonData = {
+          command : 'add',
+          hostname: settings.hadoop.host,
+          app_id: id,
+          job_id: id,
+          hadoop_version: settings.hadoop.version,
+          api_version: settings.hadoop.api,
+          rm_port: settings.hadoop.resourceManagerPort,
+          hs_port: settings.hadoop.historyServerPort
+        };
+
+        var topic = 'contrib.summit.mrDebugger.mrDebuggerQuery';
+        var msg = { type: 'publish', topic: topic, data: jsonData };
+        webSocket.send(msg);
+      }
     });
 
     var items = [];

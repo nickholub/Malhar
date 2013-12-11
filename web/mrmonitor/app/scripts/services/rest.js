@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('app.service', ['ng', 'restangular']);
+angular.module('app.service', ['ng', 'restangular', 'ui.notify']);
 
 angular.module('app.service')
-  .factory('rest', ['$q', 'Restangular', function($q, Restangular) {
+  .factory('rest', function($q, Restangular, notificationService) {
     return {
       getApp: function (appName) {
         var deferred = $q.defer();
@@ -12,10 +12,12 @@ angular.module('app.service')
           console.log(response.apps.app);
           var errorMessage = null;
           if (response && response.apps && response.apps.app && response.apps.app.length > 0) {
-            //var apps = _.where(response.apps, { name: appName, state: 'RUNNING' });
-            var apps = _.where(response.apps.app, { name: appName });
+            var apps = _.where(response.apps.app, { name: appName, state: 'RUNNING' });
+
             if (apps.length > 0) {
-              apps = _.sortBy(apps, function (app) { return parseInt(app.elapsedTime, 10); });
+              apps = _.sortBy(apps, function (app) {
+                return parseInt(app.elapsedTime, 10);
+              });
               var app = apps[0];
               deferred.resolve(app);
             } else {
@@ -27,52 +29,21 @@ angular.module('app.service')
 
           if (errorMessage) {
             deferred.reject(errorMessage);
-            jQuery.pnotify({
+            notificationService.notify({
               title: 'Error',
               text: errorMessage,
               type: 'error',
               icon: false,
-              hide: false
+              hide: false,
+              history: false
             });
           }
         });
 
         return deferred.promise;
-      },
-
-      getMachineData: function (query) {
-        var promise = Restangular.one('machine').get(query);
-
-        promise.then(null, function (response) {
-          jQuery.pnotify({
-            title: 'Error',
-            text: 'Error getting data from server. Status Code: ' + response.status,
-            type: 'error',
-            icon: false,
-            hide: false
-          });
-        });
-
-        return promise;
-      },
-
-      getDimensionsData: function (query) {
-        var promise = Restangular.one('dimensions').get(query);
-
-        promise.then(null, function (response) {
-          jQuery.pnotify({
-            title: 'Error',
-            text: 'Error getting data from server. Status Code: ' + response.status,
-            type: 'error',
-            icon: false,
-            hide: false
-          });
-        });
-
-        return promise;
       }
     };
-  }])
+  })
   .run(function(Restangular) {
     //Restangular.setBaseUrl('/ws/v1');
   });

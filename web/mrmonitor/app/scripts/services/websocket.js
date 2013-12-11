@@ -38,6 +38,7 @@ angular.module('app.service')
             var msg = JSON.stringify(message);
 
             deferred.promise.then(function () {
+              console.log('send ' + msg);
               socket.send(msg);
             });
           },

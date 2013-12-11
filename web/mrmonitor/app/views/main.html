@@ -9,10 +9,22 @@
         <h2>Job Progress Chart</h2>
         <line-chart chart="chart" class="line-chart"></line-chart>
     </div><!--/span-->
-    <div class="span4" ng-controller="JobGridController">
+    <div class="span6" ng-controller="JobGridController">
         <h2>Job Progress</h2>
-        <div class="job-progress-grid-content">
+        <div class="job-progress-grid-content1">
             <div ng-grid="gridOptions" class="job-progress-grid"></div>
+        </div>
+    </div><!--/span-->
+    <div class="span6">
+        <h2>&nbsp;</h2>
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 15%;">Map - 15%</div>
+        </div>
+        <div class="progress progress-striped">
+            <div class="bar" style="width: 10%;">Reduce - 10%</div>
+        </div>
+        <div class="progress progress-striped">
+            <div class="bar" style="width: 10%;">Total - 10%</div>
         </div>
     </div><!--/span-->
 </div><!--/row-->
