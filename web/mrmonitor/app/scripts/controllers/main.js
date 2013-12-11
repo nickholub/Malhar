@@ -7,8 +7,6 @@ angular.module('app.controller')
     $scope.message = 'none';
 
     webSocket.subscribe(settings.topic.map, function (data) {
-      console.log(JSON.parse(data));
-
       $scope.message = JSON.stringify(data);
       $scope.$apply();
     });
@@ -17,7 +15,6 @@ angular.module('app.controller')
     $scope.app = rest.getApp('word count');
 
     $scope.$watch('app', function (app) {
-      console.log(app);
       if (app) {
         var id = app.id.replace('application_', '');
 
@@ -37,34 +34,10 @@ angular.module('app.controller')
         webSocket.send(msg);
       }
     });
-
-    var items = [];
-
-    webSocket.subscribe(settings.topic.job, function (message) {
-      var data = JSON.parse(message);
-      var job = data.job;
-      //items.push(item);
-      items.push({
-        //value: job.mapProgress,
-        value: job.reduceProgress,
-        timestamp: Date.now()
-      });
-
-      if (items.length > 40) {
-        items.shift();
-      }
-
-      $scope.chart = {
-        data: items,
-        max: 30
-      };
-
-      $scope.$apply();
-    });
   })
   .controller('JobGridController', function($scope, $filter, webSocket) {
     var defaultRow = {
-      completed: '-',
+      complete: '-',
       running: '-',
       total: '-',
       progress: 0
@@ -96,31 +69,49 @@ angular.module('app.controller')
       var list = [];
       var map = {
         name: 'map',
-        completed: job.mapsCompleted,
+        complete: job.mapsCompleted,
         running: job.mapsRunning,
         total: job.mapsTotal,
         progress: job.mapProgress
       };
       var reduce = {
         name: 'reduce',
-        completed: job.reducesCompleted,
+        complete: job.reducesCompleted,
         running: job.reducesRunning,
         total: job.reducesTotal,
         progress: job.reduceProgress
       };
       var total = {
         name: 'total',
-        completed: job.mapsCompleted + job.reducesCompleted,
+        complete: job.mapsCompleted + job.reducesCompleted,
         running: job.mapsRunning + job.reducesRunning,
         total: job.mapsTotal + job.reducesTotal
       };
-      total.progress = (total.total === 0) ? 0 : (total.completed / total.total * 100);
+      total.progress = (total.total === 0) ? 0 : (total.complete / total.total * 100);
 
       list.push(createRow(map));
       list.push(createRow(reduce));
       list.push(createRow(total));
 
       $scope.gridData = list;
+
+      var progress = {
+        map: {
+          progress: job.mapProgress,
+          running: (job.mapsCompleted !== job.mapsTotal)
+        },
+        reduce: {
+          progress: job.reduceProgress,
+          running: (job.reducesCompleted !== job.reducesTotal)
+        },
+        total: {
+          progress: total.progress,
+          running: (total.complete !== total.total)
+        }
+      };
+
+      $scope.progress = progress;
+
       $scope.$apply();
     });
 
@@ -128,7 +119,7 @@ angular.module('app.controller')
       data: 'gridData',
       columnDefs: [
         { field: 'name', displayName: 'Task'},
-        { field: 'completed', displayName: 'Completed' },
+        { field: 'complete', displayName: 'Complete' },
         { field: 'running', displayName: 'Running' },
         { field: 'total', displayName: 'Total' },
         { field: 'progress', displayName: 'Progress', cellFilter1: 'number:2' }

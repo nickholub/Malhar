@@ -46,9 +46,16 @@ function broadcast() {
     gaugeValue = gaugeValue < 0 ? 0 : gaugeValue > 100 ? 100 : gaugeValue;
     var time = Date.now();
 
-    var msgObject = { topic: 'topic1', data: {
-      value: Math.floor(gaugeValue), timestamp: time
-    }};
+    var job = {
+      mapProgress: gaugeValue,
+      reduceProgress: gaugeValue + 5
+    }
+    var data = JSON.stringify({ job: job });
+
+    //var msgObject = { topic: 'contrib.summit.mrDebugger.jobResult', data: {
+    //  value: Math.floor(gaugeValue), timestamp: time
+    //}};
+    var msgObject = { topic: 'contrib.summit.mrDebugger.jobResult', data: data};
 
     var msg = JSON.stringify(msgObject);
 

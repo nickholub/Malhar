@@ -3,29 +3,28 @@
         Application id: {{app.id}} name: {{app.name}} state: {{app.state}}
     </div><!--/span-->
 </div>
-<div class="row-fluid">
+<div class="row-fluid" ng-controller="JobGridController">
     <!--
     <div class="span8">
         <h2>Job Progress Chart</h2>
         <line-chart chart="chart" class="line-chart"></line-chart>
     </div><!--/span-->
-    <div class="span6" ng-controller="JobGridController">
+    <div class="span4">
         <h2>Job Progress</h2>
         <div class="job-progress-grid-content1">
             <div ng-grid="gridOptions" class="job-progress-grid"></div>
         </div>
     </div><!--/span-->
-    <div class="span6">
+    <div class="span4">
         <h2>&nbsp;</h2>
-        <div class="progress progress-striped active">
-            <div class="bar" style="width: 15%;">Map - 15%</div>
-        </div>
-        <div class="progress progress-striped">
-            <div class="bar" style="width: 10%;">Reduce - 10%</div>
-        </div>
-        <div class="progress progress-striped">
-            <div class="bar" style="width: 10%;">Total - 10%</div>
-        </div>
+        <small><em>Map - {{progress.map.progress | number:2}}%</em></small>
+        <progress percent="progress.map.progress" class="progress-striped" ng-class="{'active': progress.map.running }"></progress>
+
+        <small><em>Reduce - {{progress.reduce.progress | number:2}}%</em></small>
+        <progress percent="progress.reduce.progress" class="progress-striped" ng-class="{'active': !progress.reduce.running }"></progress>
+
+        <small><em>Total - {{progress.total.progress | number:2}}%</em></small>
+        <progress percent="progress.total.progress" class="progress-striped" ng-class="{'active': !progress.total.running }"></progress>
     </div><!--/span-->
 </div><!--/row-->
 <div class="row-fluid">
