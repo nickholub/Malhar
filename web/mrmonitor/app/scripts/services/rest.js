@@ -44,6 +44,6 @@ angular.module('app.service')
       }
     };
   })
-  .run(function(Restangular) {
-    //Restangular.setBaseUrl('/ws/v1');
-  });
+  //.run(function(Restangular) {
+  //  Restangular.setBaseUrl('/ws/v1');
+  //});
