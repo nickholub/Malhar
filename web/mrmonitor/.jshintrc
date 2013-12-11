@@ -20,8 +20,9 @@
   "smarttabs": true,
   "globals": {
     "settings": false,
-    "angular": false,
     "jQuery": false,
+     "_": false,
+    "angular": false,
     "google": false,
     "Gauge": false
   }

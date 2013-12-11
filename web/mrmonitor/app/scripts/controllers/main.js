@@ -3,7 +3,7 @@
 angular.module('app.controller', ['ngGrid', 'app.service']);
 
 angular.module('app.controller')
-  .controller('WebSocketController', function ($scope, webSocket, rest) {
+  .controller('WebSocketController', function ($scope, webSocket) {
     $scope.message = 'none';
 
     webSocket.subscribe(settings.topic.map, function (data) {
@@ -22,14 +22,14 @@ angular.module('app.controller')
         var id = app.id.replace('application_', '');
 
         var jsonData = {
-          command : 'add',
-          hostname: settings.hadoop.host,
-          app_id: id,
-          job_id: id,
-          hadoop_version: settings.hadoop.version,
-          api_version: settings.hadoop.api,
-          rm_port: settings.hadoop.resourceManagerPort,
-          hs_port: settings.hadoop.historyServerPort
+          'command': 'add',
+          'hostname': settings.hadoop.host,
+          'app_id': id,
+          'job_id': id,
+          'hadoop_version': settings.hadoop.version,
+          'api_version': settings.hadoop.api,
+          'rm_port': settings.hadoop.resourceManagerPort,
+          'hs_port': settings.hadoop.historyServerPort
         };
 
         var topic = 'contrib.summit.mrDebugger.mrDebuggerQuery';

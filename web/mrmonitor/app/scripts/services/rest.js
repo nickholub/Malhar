@@ -43,7 +43,4 @@ angular.module('app.service')
         return deferred.promise;
       }
     };
-  })
-  //.run(function(Restangular) {
-  //  Restangular.setBaseUrl('/ws/v1');
-  //});
+  });
