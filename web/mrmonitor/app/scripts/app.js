@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app', ['app.service', 'app.directive', 'app.controller', 'ui.bootstrap']);
+angular.module('app', ['ngRoute', 'app.service', 'app.directive', 'app.controller', 'ui.bootstrap']);
 
 angular.module('app')
   .config(function ($routeProvider, webSocketProvider) {
