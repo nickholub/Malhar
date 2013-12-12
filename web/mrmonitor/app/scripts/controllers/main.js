@@ -3,12 +3,12 @@
 angular.module('app.controller', ['ngGrid', 'app.service']);
 
 angular.module('app.controller')
-  .controller('MainCtrl', function ($scope, webSocket, rest) {
+  .controller('MainCtrl', function ($scope, webSocket, rest, util) {
     rest.getApp('word count').then(function (app) {
       if (app && app.id) {
         $scope.app = app;
 
-        var id = app.id.replace('application_', '');
+        var id = util.extractJobId(app.id);
 
         var jsonData = {
           'command': 'add',
