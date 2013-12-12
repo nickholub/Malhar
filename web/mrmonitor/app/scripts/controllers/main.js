@@ -65,6 +65,7 @@ angular.module('app.controller')
     webSocket.subscribe(topic, function(message) {
       var data = JSON.parse(message);
       var job = data.job;
+      console.log(job);
 
       var list = [];
       var map = {
@@ -72,14 +73,14 @@ angular.module('app.controller')
         complete: job.mapsCompleted,
         running: job.mapsRunning,
         total: job.mapsTotal,
-        progress: job.mapProgress
+        progress: job.hasOwnProperty('mapProgress') ? job.mapProgress : 100
       };
       var reduce = {
         name: 'reduce',
         complete: job.reducesCompleted,
         running: job.reducesRunning,
         total: job.reducesTotal,
-        progress: job.reduceProgress
+        progress: job.hasOwnProperty('reduceProgress') ? job.reduceProgress : 100
       };
       var total = {
         name: 'total',
@@ -97,12 +98,12 @@ angular.module('app.controller')
 
       var progress = {
         map: {
-          progress: job.mapProgress,
-          running: (job.mapsCompleted !== job.mapsTotal)
+          progress: map.progress,
+          running: (map.progress === 100)
         },
         reduce: {
-          progress: job.reduceProgress,
-          running: (job.reducesCompleted !== job.reducesTotal)
+          progress: reduce.progress,
+          running: (reduce.progress === 100)
         },
         total: {
           progress: total.progress,
