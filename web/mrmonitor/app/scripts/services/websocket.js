@@ -7,7 +7,7 @@ angular.module('app.service')
     var webSocketObject; // for testing only
 
     return {
-      $get: function ($q,  $rootScope) {
+      $get: function ($q,  $rootScope, notificationService) {
         if (!webSocketURL && !webSocketObject) {
           throw 'WebSocket URL is not defined';
         }
@@ -19,6 +19,33 @@ angular.module('app.service')
         socket.onopen = function () {
           deferred.resolve();
           $rootScope.$apply();
+        };
+
+        var webSocketError = false;
+
+        socket.onclose = function () {
+          if (!webSocketError) {
+            notificationService.notify({
+              title: 'WebSocket Closed',
+              text: 'WebSocket connection has been closed. Try refreshing the page.',
+              type: 'error',
+              icon: false,
+              hide: false,
+              history: false
+            });
+          }
+        };
+
+        socket.onerror = function () {
+          webSocketError = true;
+          notificationService.notify({
+            title: 'WebSocket Error',
+            text: 'WebSocket error. Try refreshing the page.',
+            type: 'error',
+            icon: false,
+            hide: false,
+            history: false
+          });
         };
 
         var topicMap = {}; // topic -> [callbacks] mapping
