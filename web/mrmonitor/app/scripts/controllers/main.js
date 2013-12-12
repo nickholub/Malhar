@@ -30,32 +30,10 @@ angular.module('app.controller')
 
     webSocket.subscribe(settings.topic.job, function(message) {
       var data = JSON.parse(message);
-      console.log(data);
+      //console.log(data);
       $scope.job = data.job;
       $scope.$apply();
     });
-  })
-  .controller('MapGridController', function ($scope, webSocket) {
-    $scope.message = 'none';
-
-    webSocket.subscribe(settings.topic.map, function (data) {
-      var taskObject = JSON.parse(data);
-      console.log(taskObject);
-      console.log(taskObject.tasks.length);
-      //$scope.message = JSON.stringify(data);
-      $scope.$apply();
-    });
-
-    $scope.gridOptions = {
-      data: 'gridData',
-      columnDefs: [
-        { field: 'name', displayName: 'Task'},
-        { field: 'complete', displayName: 'Complete' },
-        { field: 'running', displayName: 'Running' },
-        { field: 'total', displayName: 'Total' },
-        { field: 'progress', displayName: 'Progress', cellFilter1: 'number:2' }
-      ]
-    };
   })
   .controller('JobGridController', function($scope, $filter, webSocket, util) {
     var defaultRow = {
@@ -82,12 +60,10 @@ angular.module('app.controller')
       createRow(jQuery.extend({ name: 'total' }, defaultRow))
     ];
 
-    var topic = settings.topic.job;
-
-    webSocket.subscribe(topic, function(message) {
-      var data = JSON.parse(message);
-      var job = data.job;
-      console.log(job);
+    $scope.$watch('job', function(job) {
+      if (!job) {
+        return;
+      }
 
       var jobId = util.extractJobId(job.id);
 
@@ -141,8 +117,6 @@ angular.module('app.controller')
       };
 
       $scope.progress = progress;
-
-      $scope.$apply();
     });
 
     var progress = {
@@ -173,11 +147,13 @@ angular.module('app.controller')
     };
 
   })
-  .controller('MonitoredJobGridController', function($scope, $filter, webSocket) {
+  .controller('MonitoredJobGridController', function($scope) {
     var jobs = {};
 
     $scope.$watch('job', function (job) {
-      if (!job) return;
+      if (!job) {
+        return;
+      }
 
       jobs[job.id] = job;
       var list = _.map(_.values(jobs), function (job) {
@@ -203,4 +179,50 @@ angular.module('app.controller')
       ]
     };
 
+  })
+  .controller('MapGridController', function ($scope, webSocket) {
+    $scope.message = 'none';
+
+    webSocket.subscribe(settings.topic.map, function (data) {
+      var taskObject = JSON.parse(data);
+
+      if ($scope.activeJobId !== taskObject.id) {
+        return;
+      }
+
+      $scope.gridData = taskObject.tasks;
+      $scope.$apply();
+    });
+
+    $scope.gridOptions = {
+      data: 'gridData',
+      columnDefs: [
+        { field: 'id', displayName: 'Id', width: 270 },
+        { field: 'state', displayName: 'State' },
+        { field: 'progress', displayName: 'Progress', cellFilter: 'percentage' }
+      ]
+    };
+  })
+  .controller('ReduceGridController', function ($scope, webSocket) {
+    $scope.message = 'none';
+
+    webSocket.subscribe(settings.topic.reduce, function (data) {
+      var taskObject = JSON.parse(data);
+
+      if ($scope.activeJobId !== taskObject.id) {
+        return;
+      }
+
+      $scope.gridData = taskObject.tasks;
+      $scope.$apply();
+    });
+
+    $scope.gridOptions = {
+      data: 'gridData',
+      columnDefs: [
+        { field: 'id', displayName: 'Id', width: 270 },
+        { field: 'state', displayName: 'State' },
+        { field: 'progress', displayName: 'Progress', cellFilter: 'percentage' }
+      ]
+    };
   });
