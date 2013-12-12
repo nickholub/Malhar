@@ -26,15 +26,35 @@ angular.module('app.controller')
         webSocket.send(msg);
       }
     });
+
+    webSocket.subscribe(settings.topic.job, function(message) {
+      var data = JSON.parse(message);
+      console.log(data);
+      $scope.job = data.job;
+      $scope.$apply();
+    });
   })
-  .controller('WebSocketController', function ($scope, webSocket) {
+  .controller('MapGridController', function ($scope, webSocket) {
     $scope.message = 'none';
 
     webSocket.subscribe(settings.topic.map, function (data) {
-      //console.log(JSON.parse(data));
-      $scope.message = JSON.stringify(data);
+      var taskObject = JSON.parse(data);
+      console.log(taskObject);
+      console.log(taskObject.tasks.length);
+      //$scope.message = JSON.stringify(data);
       $scope.$apply();
     });
+
+    $scope.gridOptions = {
+      data: 'gridData',
+      columnDefs: [
+        { field: 'name', displayName: 'Task'},
+        { field: 'complete', displayName: 'Complete' },
+        { field: 'running', displayName: 'Running' },
+        { field: 'total', displayName: 'Total' },
+        { field: 'progress', displayName: 'Progress', cellFilter1: 'number:2' }
+      ]
+    };
   })
   .controller('JobGridController', function($scope, $filter, webSocket) {
     var defaultRow = {
@@ -66,6 +86,7 @@ angular.module('app.controller')
     webSocket.subscribe(topic, function(message) {
       var data = JSON.parse(message);
       var job = data.job;
+      console.log(job);
 
       var list = [];
       var map = {
@@ -141,6 +162,37 @@ angular.module('app.controller')
         { field: 'running', displayName: 'Running' },
         { field: 'total', displayName: 'Total' },
         { field: 'progress', displayName: 'Progress', cellFilter1: 'number:2' }
+      ]
+    };
+
+  })
+  .controller('MonitoredJobGridController', function($scope, $filter, webSocket) {
+    var jobs = {};
+
+    $scope.$watch('job', function (job) {
+      if (!job) return;
+
+      jobs[job.id] = job;
+      var list = _.map(_.values(jobs), function (job) {
+        return {
+          id: job.id,
+          name: job.name,
+          state: job.state,
+          mapProgress: job.mapProgress,
+          reduceProgress: job.reduceProgress
+        };
+      });
+      $scope.gridData = list;
+    });
+
+    $scope.gridOptions = {
+      data: 'gridData',
+      columnDefs: [
+        { field: 'id', displayName: 'Id'},
+        { field: 'name', displayName: 'Name'},
+        { field: 'state', displayName: 'State' },
+        { field: 'mapProgress', displayName: 'Map Progress' },
+        { field: 'reduceProgress', displayName: 'Reduce Progress' }
       ]
     };
 
