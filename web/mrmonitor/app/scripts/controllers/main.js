@@ -4,11 +4,17 @@ angular.module('app.controller', ['ngGrid', 'app.service']);
 
 angular.module('app.controller')
   .controller('MainCtrl', function ($scope, webSocket, rest) {
-    $scope.app = rest.getApp('word count');
+    //$scope.app = rest.getApp('word count');
 
-    $scope.$watch('app', function (app) {
+    rest.getApp('word count').then(function (app) {
+      console.log('watched ' + app);
+      console.log(app);
       if (app && app.id) {
+        $scope.app = app;
+
+        console.log(app.id);
         var id = app.id.replace('application_', '');
+
 
         var jsonData = {
           'command': 'add',
@@ -32,8 +38,8 @@ angular.module('app.controller')
 
     webSocket.subscribe(settings.topic.map, function (data) {
       //console.log(JSON.parse(data));
-      //$scope.message = JSON.stringify(data);
-      //$scope.$apply();
+      $scope.message = JSON.stringify(data);
+      $scope.$apply();
     });
   })
   .controller('JobGridController', function($scope, $filter, webSocket) {
@@ -65,6 +71,7 @@ angular.module('app.controller')
 
     webSocket.subscribe(topic, function(message) {
       var data = JSON.parse(message);
+      console.log(data);
       var job = data.job;
       console.log(job);
 

@@ -7,7 +7,7 @@ describe('Controller: MainCtrl', function () {
   // load the controller's module
   beforeEach(module('app.controller', function ($provide, webSocketProvider) {
     mockRestService = {
-      getApp: jasmine.createSpy()
+      getApp: function () {}
     };
 
     $provide.factory('rest', function () {
@@ -21,8 +21,14 @@ describe('Controller: MainCtrl', function () {
     scope;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $q, $rootScope) {
     scope = $rootScope.$new();
+
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+
+    spyOn(mockRestService, 'getApp').andReturn(promise);
+
     MainCtrl = $controller('MainCtrl', {
       $scope: scope
     });
