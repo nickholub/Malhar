@@ -9,6 +9,7 @@ angular.module('app.controller')
         $scope.app = app;
 
         var id = util.extractJobId(app.id);
+        $scope.activeJobId = id;
 
         var jsonData = {
           'command': 'add',
@@ -56,7 +57,7 @@ angular.module('app.controller')
       ]
     };
   })
-  .controller('JobGridController', function($scope, $filter, webSocket) {
+  .controller('JobGridController', function($scope, $filter, webSocket, util) {
     var defaultRow = {
       complete: '-',
       running: '-',
@@ -87,6 +88,12 @@ angular.module('app.controller')
       var data = JSON.parse(message);
       var job = data.job;
       console.log(job);
+
+      var jobId = util.extractJobId(job.id);
+
+      if ($scope.activeJobId !== jobId) {
+        return;
+      }
 
       var list = [];
       var map = {
@@ -188,7 +195,7 @@ angular.module('app.controller')
     $scope.gridOptions = {
       data: 'gridData',
       columnDefs: [
-        { field: 'id', displayName: 'Id'},
+        { field: 'id', displayName: 'Id', width: 200 },
         { field: 'name', displayName: 'Name'},
         { field: 'state', displayName: 'State' },
         { field: 'mapProgress', displayName: 'Map Progress', cellFilter: 'percentage' },
