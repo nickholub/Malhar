@@ -191,8 +191,8 @@ angular.module('app.controller')
         { field: 'id', displayName: 'Id'},
         { field: 'name', displayName: 'Name'},
         { field: 'state', displayName: 'State' },
-        { field: 'mapProgress', displayName: 'Map Progress' },
-        { field: 'reduceProgress', displayName: 'Reduce Progress' }
+        { field: 'mapProgress', displayName: 'Map Progress', cellFilter: 'percentage' },
+        { field: 'reduceProgress', displayName: 'Reduce Progress', cellFilter: 'percentage' }
       ]
     };
 
