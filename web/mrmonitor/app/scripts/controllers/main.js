@@ -4,17 +4,11 @@ angular.module('app.controller', ['ngGrid', 'app.service']);
 
 angular.module('app.controller')
   .controller('MainCtrl', function ($scope, webSocket, rest) {
-    //$scope.app = rest.getApp('word count');
-
     rest.getApp('word count').then(function (app) {
-      console.log('watched ' + app);
-      console.log(app);
       if (app && app.id) {
         $scope.app = app;
 
-        console.log(app.id);
         var id = app.id.replace('application_', '');
-
 
         var jsonData = {
           'command': 'add',
@@ -71,9 +65,7 @@ angular.module('app.controller')
 
     webSocket.subscribe(topic, function(message) {
       var data = JSON.parse(message);
-      console.log(data);
       var job = data.job;
-      console.log(job);
 
       var list = [];
       var map = {
@@ -108,15 +100,15 @@ angular.module('app.controller')
       var progress = {
         map: {
           progress: map.progress,
-          finished: (map.progress === 100)
+          active: (map.progress < 100)
         },
         reduce: {
           progress: reduce.progress,
-          finished: (reduce.progress === 100)
+          active: (reduce.progress < 100)
         },
         total: {
           progress: total.progress,
-          finished: (total.complete === total.total)
+          active: (total.complete < total.total)
         }
       };
 

@@ -9,7 +9,6 @@ angular.module('app.service')
         var deferred = $q.defer();
 
         Restangular.oneUrl('apps', 'ws/v1/cluster/apps').get().then(function (response) {
-          console.log(response);
           var errorMessage = null;
           if (response && response.apps && response.apps.app && response.apps.app.length > 0) {
             //var apps = response.apps.app;
@@ -21,9 +20,6 @@ angular.module('app.service')
                 return parseInt(app.elapsedTime, 10);
               });
               var app = apps[0];
-              console.log(app);
-              console.log('resolve');
-
               deferred.resolve(app);
             } else {
               errorMessage = appName + ' is not found. Please make sure application is running.'; //TODO
