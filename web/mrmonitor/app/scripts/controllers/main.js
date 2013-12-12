@@ -96,18 +96,19 @@ angular.module('app.controller')
 
       $scope.gridData = list;
 
+      //TODO remove active class from progress bar when progress is 100%
       var progress = {
         map: {
           progress: map.progress,
-          running: (map.progress === 100)
+          finished: (map.progress === 100)
         },
         reduce: {
           progress: reduce.progress,
-          running: (reduce.progress === 100)
+          finished: (reduce.progress === 100)
         },
         total: {
           progress: total.progress,
-          running: (total.complete !== total.total)
+          finished: (total.complete === total.total)
         }
       };
 

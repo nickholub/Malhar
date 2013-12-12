@@ -21,14 +21,25 @@
     </div><!--/span-->
     <div class="span4">
         <h2>&nbsp;</h2>
+
+        <!--
+        <ul class="nav nav-tabs">
+            <li ng-class="{'active': testValue}">
+                <a href="#">Home</a>
+            </li>
+            <li><a href="#">Second</a></li>
+            <li><a href="#">Third</a></li>
+        </ul>
+        -->
+
         <small><em>Map - {{progress.map.progress | number:2}}%</em></small>
-        <progress percent="progress.map.progress" class="progress-striped" ng-class="{'active': progress.map.running }"></progress>
+        <progress percent="progress.map.progress" class="progress-striped active"></progress>
 
         <small><em>Reduce - {{progress.reduce.progress | number:2}}%</em></small>
-        <progress percent="progress.reduce.progress" class="progress-striped" ng-class="{'active': !progress.reduce.running }"></progress>
+        <progress percent="progress.reduce.progress" class="progress-striped active"></progress>
 
         <small><em>Total - {{progress.total.progress | number:2}}%</em></small>
-        <progress percent="progress.total.progress" class="progress-striped" ng-class="{'active': !progress.total.running }"></progress>
+        <progress percent="progress.total.progress" class="progress-striped active"></progress>
     </div><!--/span-->
 </div><!--/row-->
 <!--
