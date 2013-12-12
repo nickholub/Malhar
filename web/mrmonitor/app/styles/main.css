@@ -67,3 +67,7 @@ body {
     white-space: nowrap;
     text-align: left;
 }
+
+.job-label {
+    font-weight: bold;
+}
