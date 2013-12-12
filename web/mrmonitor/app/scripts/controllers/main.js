@@ -3,19 +3,11 @@
 angular.module('app.controller', ['ngGrid', 'app.service']);
 
 angular.module('app.controller')
-  .controller('WebSocketController', function ($scope, webSocket) {
-    $scope.message = 'none';
-
-    webSocket.subscribe(settings.topic.map, function (data) {
-      $scope.message = JSON.stringify(data);
-      $scope.$apply();
-    });
-  })
   .controller('MainCtrl', function ($scope, webSocket, rest) {
     $scope.app = rest.getApp('word count');
 
     $scope.$watch('app', function (app) {
-      if (app) {
+      if (app && app.id) {
         var id = app.id.replace('application_', '');
 
         var jsonData = {
@@ -33,6 +25,15 @@ angular.module('app.controller')
         var msg = { type: 'publish', topic: topic, data: jsonData };
         webSocket.send(msg);
       }
+    });
+  })
+  .controller('WebSocketController', function ($scope, webSocket) {
+    $scope.message = 'none';
+
+    webSocket.subscribe(settings.topic.map, function (data) {
+      //console.log(JSON.parse(data));
+      //$scope.message = JSON.stringify(data);
+      //$scope.$apply();
     });
   })
   .controller('JobGridController', function($scope, $filter, webSocket) {
@@ -116,6 +117,22 @@ angular.module('app.controller')
 
       $scope.$apply();
     });
+
+    var progress = {
+      map: {
+        progress: 0,
+        active: false
+      },
+      reduce: {
+        progress: 0,
+        active: false
+      },
+      total: {
+        progress: 0,
+        active: false
+      }
+    };
+    $scope.progress = progress;
 
     $scope.gridOptions = {
       data: 'gridData',
