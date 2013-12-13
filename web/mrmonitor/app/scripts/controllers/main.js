@@ -34,7 +34,6 @@ angular.module('app.controller')
 
     webSocket.subscribe(settings.topic.job, function(message) {
       var data = JSON.parse(message);
-      //console.log(data);
       $scope.job = data.job;
       $scope.$apply();
     });
@@ -182,6 +181,8 @@ angular.module('app.controller')
 
     $scope.gridOptions = {
       data: 'gridData',
+      //showSelectionCheckbox: true,
+      enableRowSelection: false,
       columnDefs: [
         { field: 'id', displayName: 'Id', width: 200, cellTemplate: linkTemplate },
         { field: 'name', displayName: 'Name'},

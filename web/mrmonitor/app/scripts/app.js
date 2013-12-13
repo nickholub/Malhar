@@ -8,7 +8,7 @@ angular.module('app')
     //webSocketProvider.setWebSocketURL('ws://' + window.location.host + '/sockjs/websocket');
     webSocketProvider.setWebSocketURL(settings.webSocketURL);
 
-    $urlRouterProvider.otherwise('/jobs');
+    $urlRouterProvider.otherwise('/jobs/');
 
     $stateProvider
       .state('jobs', {
