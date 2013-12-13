@@ -198,7 +198,7 @@ angular.module('app.controller')
       data: 'gridData',
       columnDefs: [
         { field: 'id', displayName: 'Id', width: 270 },
-        { field: 'state', displayName: 'State', width: 100 },
+        { field: 'state', displayName: 'State' },
         { field: 'progress', displayName: 'Progress', cellFilter: 'percentage' }
       ]
     };
@@ -221,7 +221,7 @@ angular.module('app.controller')
       data: 'gridData',
       columnDefs: [
         { field: 'id', displayName: 'Id', width: 270 },
-        { field: 'state', displayName: 'State', width: 100 },
+        { field: 'state', displayName: 'State' },
         { field: 'progress', displayName: 'Progress', cellFilter: 'percentage' }
       ]
     };

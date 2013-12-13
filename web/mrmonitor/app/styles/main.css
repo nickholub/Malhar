@@ -57,7 +57,13 @@ body {
 
 .job-progress-grid {
     border: 1px solid rgb(212,212,212);
-    width: 450px;
+    width: 500px;
+    height: 200px;
+}
+
+.task-progress-grid {
+    border: 1px solid rgb(212,212,212);
+    width: 500px;
     height: 200px;
 }
 
