@@ -3,30 +3,34 @@
 angular.module('app.controller', ['ngGrid', 'app.service']);
 
 angular.module('app.controller')
-  .controller('MainCtrl', function ($scope, webSocket, rest, util) {
-    rest.getApp('word count').then(function (app) {
-      if (app && app.id) {
-        $scope.app = app;
+  .controller('MainCtrl', function ($scope, $stateParams, webSocket, rest, util) {
+    if ($stateParams.jobId) {
+      $scope.activeJobId = util.extractJobId($stateParams.jobId);
+    } else {
+      rest.getApp('word count').then(function (app) {
+        if (app && app.id) {
+          $scope.app = app;
 
-        var id = util.extractJobId(app.id);
-        $scope.activeJobId = id;
+          var id = util.extractJobId(app.id);
+          $scope.activeJobId = id;
 
-        var jsonData = {
-          'command': 'add',
-          'hostname': settings.hadoop.host,
-          'app_id': id,
-          'job_id': id,
-          'hadoop_version': settings.hadoop.version,
-          'api_version': settings.hadoop.api,
-          'rm_port': settings.hadoop.resourceManagerPort,
-          'hs_port': settings.hadoop.historyServerPort
-        };
+          var jsonData = {
+            'command': 'add',
+            'hostname': settings.hadoop.host,
+            'app_id': id,
+            'job_id': id,
+            'hadoop_version': settings.hadoop.version,
+            'api_version': settings.hadoop.api,
+            'rm_port': settings.hadoop.resourceManagerPort,
+            'hs_port': settings.hadoop.historyServerPort
+          };
 
-        var topic = 'contrib.summit.mrDebugger.mrDebuggerQuery';
-        var msg = { type: 'publish', topic: topic, data: jsonData };
-        webSocket.send(msg);
-      }
-    });
+          var topic = 'contrib.summit.mrDebugger.mrDebuggerQuery';
+          var msg = { type: 'publish', topic: topic, data: jsonData };
+          webSocket.send(msg);
+        }
+      });
+    }
 
     webSocket.subscribe(settings.topic.job, function(message) {
       var data = JSON.parse(message);
@@ -34,6 +38,11 @@ angular.module('app.controller')
       $scope.job = data.job;
       $scope.$apply();
     });
+  })
+  .controller('JobController', function ($scope, $stateParams, util) {
+    if ($stateParams.jobId) {
+      $scope.activeJobId = util.extractJobId($stateParams.jobId);
+    }
   })
   .controller('JobGridController', function($scope, $filter, webSocket, util) {
     var defaultRow = {
@@ -137,6 +146,7 @@ angular.module('app.controller')
 
     $scope.gridOptions = {
       data: 'gridData',
+      enableRowSelection: false,
       columnDefs: [
         { field: 'name', displayName: 'Task'},
         { field: 'complete', displayName: 'Complete' },
@@ -168,10 +178,12 @@ angular.module('app.controller')
       $scope.gridData = list;
     });
 
+    var linkTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="#/jobs/{{COL_FIELD}}">{{COL_FIELD}}</a></span></div>';
+
     $scope.gridOptions = {
       data: 'gridData',
       columnDefs: [
-        { field: 'id', displayName: 'Id', width: 200 },
+        { field: 'id', displayName: 'Id', width: 200, cellTemplate: linkTemplate },
         { field: 'name', displayName: 'Name'},
         { field: 'state', displayName: 'State' },
         { field: 'mapProgress', displayName: 'Map Progress', cellFilter: 'percentage' },
@@ -196,6 +208,8 @@ angular.module('app.controller')
 
     $scope.gridOptions = {
       data: 'gridData',
+      enableRowSelection: false,
+      multiSelect: false,
       columnDefs: [
         { field: 'id', displayName: 'Id', width: 270 },
         { field: 'state', displayName: 'State' },

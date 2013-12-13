@@ -14,6 +14,10 @@ describe('Controller: MainCtrl', function () {
       return mockRestService;
     });
 
+    $provide.factory('$stateParams', function () {
+      return {};
+    });
+
     webSocketProvider.setWebSocketObject({});
   }));
 

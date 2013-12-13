@@ -48,7 +48,7 @@ body {
 .monitored-jobs-grid {
     border: 1px solid rgb(212,212,212);
     width: 800px;
-    height: 200px;
+    height: 100px;
 }
 
 .job-progress-grid-content {
@@ -59,6 +59,17 @@ body {
     border: 1px solid rgb(212,212,212);
     width: 500px;
     height: 200px;
+}
+
+.job-progress-header h2 {
+    display: inline-block;
+}
+.job-progress-header .job-label {
+    padding-left: 20px;
+}
+
+.grid-container {
+    min-width: 500px;
 }
 
 .task-progress-grid {

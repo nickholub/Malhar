@@ -8,12 +8,24 @@ angular.module('app')
     //webSocketProvider.setWebSocketURL('ws://' + window.location.host + '/sockjs/websocket');
     webSocketProvider.setWebSocketURL(settings.webSocketURL);
 
-    $urlRouterProvider.otherwise('/main');
+    $urlRouterProvider.otherwise('/jobs');
 
     $stateProvider
-      .state('main', {
-        url: '/',
+      .state('jobs', {
+        url: '/jobs',
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
+      })
+      .state('jobs.job', {
+        url: '/:jobId',
+        templateUrl: 'views/job.html',
+        controller: 'JobController'
+        /*
+        controller: function ($scope, $stateParams) {
+          console.log('nested view');
+          console.log($stateParams);
+          $scope.things = [$stateParams.jobId, "Set", "Of", "Things"];
+        }
+        */
       });
   });
