@@ -4,11 +4,9 @@ angular.module('app', ['ui.router', 'app.service', 'app.directive', 'app.control
 
 angular.module('app')
   .config(function ($stateProvider, $urlRouterProvider, webSocketProvider) {
-    //TODO
-    //webSocketProvider.setWebSocketURL('ws://' + window.location.host + '/sockjs/websocket');
     webSocketProvider.setWebSocketURL(settings.webSocketURL);
 
-    $urlRouterProvider.otherwise('/jobs');
+    $urlRouterProvider.otherwise('/jobs/');
 
     $stateProvider
       .state('jobs', {
@@ -20,12 +18,5 @@ angular.module('app')
         url: '/:jobId',
         templateUrl: 'views/job.html',
         controller: 'JobCtrl'
-        /*
-        controller: function ($scope, $stateParams) {
-          console.log('nested view');
-          console.log($stateParams);
-          $scope.things = [$stateParams.jobId, "Set", "Of", "Things"];
-        }
-        */
       });
   });
