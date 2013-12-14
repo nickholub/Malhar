@@ -70,7 +70,7 @@ angular.module('app.service')
             });
           },
 
-          subscribe: function (topic, callback) {
+          subscribe: function (topic, callback, $scope) {
             var callbacks = topicMap[topic];
 
             if (!callbacks) {
@@ -82,6 +82,19 @@ angular.module('app.service')
             }
 
             callbacks.add(callback);
+
+            if ($scope) {
+              $scope.$on('$destroy', function () {
+                this.unsubscribe(topic, callback);
+              }.bind(this));
+            }
+          },
+
+          unsubscribe: function (topic, callback) {
+            if (topicMap.hasOwnProperty(topic)) {
+              var callbacks = topicMap[topic];
+              callbacks.remove(callback);
+            }
           }
         };
       },

@@ -135,7 +135,7 @@ angular.module('app.controller')
 
       $scope.gridData = taskObject.tasks;
       $scope.$apply();
-    });
+    }, $scope);
 
     $scope.gridOptions = {
       data: 'gridData',
@@ -154,13 +154,15 @@ angular.module('app.controller')
     webSocket.subscribe(settings.topic.reduce, function (data) {
       var taskObject = JSON.parse(data);
 
+      //console.log(taskObject.id + ' ' + ($scope.activeJobId === taskObject.id));
+
       if ($scope.activeJobId !== taskObject.id) {
         return;
       }
 
       $scope.gridData = taskObject.tasks;
       $scope.$apply();
-    });
+    }, $scope);
 
     $scope.gridOptions = {
       data: 'gridData',

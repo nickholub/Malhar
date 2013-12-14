@@ -34,7 +34,7 @@ angular.module('app.controller')
       var data = JSON.parse(message);
       $scope.job = data.job;
       $scope.$apply();
-    });
+    }, $scope);
   })
   .controller('MonitoredJobGridController', function ($scope) {
     var jobs = {};
