@@ -39,38 +39,49 @@ var clients = {};
 var clientCount = 0;
 var interval;
 
-var mapValue = 0;
-var reduceValue = 0;
+function createBroadcast(jobId) {
+  var mapValue = 0;
+  var reduceValue = 0;
 
-function nextValue (value) {
-  value += Math.random() * 5;
-  value = value < 0 ? 0 : value > 100 ? 0 : value;
-  return value;
+  function nextValue (value) {
+    value += Math.random() * 5;
+    value = value < 0 ? 0 : value > 100 ? 0 : value;
+    return value;
+  }
+
+  function broadcast() {
+      mapValue = nextValue(mapValue);
+      reduceValue = (mapValue > 5) ? nextValue(reduceValue) : 0;
+
+      var job = {
+        id: 'job_' + jobId,
+        name: 'test job ' + jobId,
+        state: 'RUNNING',
+        mapProgress: mapValue,
+        reduceProgress: reduceValue
+      };
+      var data = JSON.stringify({ job: job });
+
+      var msgObject = { topic: 'contrib.summit.mrDebugger.jobResult', data: data};
+
+      var msg = JSON.stringify(msgObject);
+
+      for (var key in clients) {
+          if(clients.hasOwnProperty(key)) {
+              clients[key].write(msg);
+          }
+      }
+  }
+
+  return broadcast;
 }
 
+var broadcast1 = createBroadcast('111111');
+var broadcast2 = createBroadcast('222222');
 
 function broadcast() {
-    mapValue = nextValue(mapValue);
-    reduceValue = nextValue(reduceValue);
-
-    var job = {
-      id: 'job_1',
-      name: 'test job 1',
-      state: 'RUNNING',
-      mapProgress: mapValue,
-      reduceProgress: reduceValue
-    };
-    var data = JSON.stringify({ job: job });
-
-    var msgObject = { topic: 'contrib.summit.mrDebugger.jobResult', data: data};
-
-    var msg = JSON.stringify(msgObject);
-
-    for (var key in clients) {
-        if(clients.hasOwnProperty(key)) {
-            clients[key].write(msg);
-        }
-    }
+  broadcast1();
+  broadcast2();
 }
 
 function startBroadcast () {
