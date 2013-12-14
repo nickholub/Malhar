@@ -52,6 +52,7 @@ function createBroadcast(jobId) {
   function broadcast() {
       mapValue = nextValue(mapValue);
       reduceValue = (mapValue > 5) ? nextValue(reduceValue) : 0;
+      reduceValue = (reduceValue > mapValue) ? mapValue : reduceValue;
 
       var job = {
         id: 'job_' + jobId,
