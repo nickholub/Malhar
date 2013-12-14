@@ -95,6 +95,10 @@ body {
     font-weight: bold;
 }
 
+.row-active {
+    background-color: orange;
+}
+
 /* TODO */
 
 /*

@@ -6,12 +6,13 @@ angular.module('app.controller')
   .controller('JobCtrl', function ($scope, $stateParams, util) {
     if ($stateParams.jobId) {
       $scope.activeJobId = util.extractJobId($stateParams.jobId);
+      $scope.$emit('activeJobId', $scope.activeJobId);
     }
   })
   .controller('MapLineChartController', function ($scope) {
     var items = [];
 
-    $scope.$watch('job', function (job) {
+    $scope.$watch('activeJob', function (job) {
       if (!job) {
         return;
       }
@@ -36,7 +37,7 @@ angular.module('app.controller')
   .controller('ReduceLineChartController', function ($scope) {
     var items = [];
 
-    $scope.$watch('job', function (job) {
+    $scope.$watch('activeJob', function (job) {
       if (!job) {
         return;
       }
