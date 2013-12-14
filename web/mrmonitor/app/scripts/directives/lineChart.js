@@ -55,7 +55,7 @@ angular.module('app.directive')
             legend: 'none',
             vAxis: { minValue: 0, maxValue: 100 },
             hAxis: { viewWindow: { min: min, max: max }},
-            chartArea: { top: 20, height: 240 }
+            chartArea: { top: 20, left: 30, height: 240 }
           };
 
           lineChart.draw(view, chartOptions);

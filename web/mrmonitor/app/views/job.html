@@ -2,6 +2,7 @@
     <h2>Job Progress</h2>
     <span class="job-label">Job Id:</span> {{activeJobId}}
 </div>
+
 <div class="row-fluid" ng-controller="JobGridController">
     <!--
     <div class="span8">
@@ -30,12 +31,23 @@
 </div><!--/row-->
 
 <div class="row-fluid">
-    <div class="span6 grid-container" ng-controller="MapGridController">
+    <div class="span6" ng-controller="MapLineChartController">
         <h2>Map Progress</h2>
+        <line-chart chart="chart" class="line-chart"></line-chart>
+    </div><!--/span-->
+    <div class="span6" ng-controller="ReduceLineChartController">
+        <h2>Reduce Progress</h2>
+        <line-chart chart="chart" class="line-chart"></line-chart>
+    </div><!--/span-->
+</div><!--/row-->
+
+<div class="row-fluid">
+    <div class="span6 grid-container" ng-controller="MapGridController">
+        <h2>Map Tasks</h2>
         <div ng-grid="gridOptions" class="task-progress-grid"></div>
     </div>
     <div class="span6 grid-container" ng-controller="ReduceGridController">
-        <h2>Reduce Progress</h2>
+        <h2>Reduce Tasks</h2>
         <div ng-grid="gridOptions" class="task-progress-grid"></div>
     </div>
 </div>

@@ -44,7 +44,6 @@ body {
     height: 400px;
 }
 
-
 .monitored-jobs-grid {
     border: 1px solid rgb(212,212,212);
     width: 800px;
@@ -95,3 +94,15 @@ body {
 .job-label {
     font-weight: bold;
 }
+
+/* TODO */
+
+/*
+.ngRow.selected {
+    background-color: orange;
+}
+
+.ngCell {
+    background-color: red;
+}
+*/

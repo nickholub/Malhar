@@ -8,6 +8,56 @@ angular.module('app.controller')
       $scope.activeJobId = util.extractJobId($stateParams.jobId);
     }
   })
+  .controller('MapLineChartController', function ($scope) {
+    var items = [];
+
+    $scope.$watch('job', function (job) {
+      if (!job) {
+        return;
+      }
+
+      var item = {
+        value: job.mapProgress,
+        timestamp: Date.now()
+      };
+
+      items.push(item);
+
+      if (items.length > 40) {
+        items.shift();
+      }
+
+      $scope.chart = {
+        data: items,
+        max: 30
+      };
+    });
+  })
+  .controller('ReduceLineChartController', function ($scope) {
+    var items = [];
+
+    $scope.$watch('job', function (job) {
+      if (!job) {
+        return;
+      }
+
+      var item = {
+        value: job.reduceProgress,
+        timestamp: Date.now()
+      };
+
+      items.push(item);
+
+      if (items.length > 40) {
+        items.shift();
+      }
+
+      $scope.chart = {
+        data: items,
+        max: 30
+      };
+    });
+  })
   .controller('JobGridController', function ($scope, $filter, webSocket, util) {
     var defaultRow = {
       complete: '-',
