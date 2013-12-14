@@ -39,22 +39,29 @@ var clients = {};
 var clientCount = 0;
 var interval;
 
-var gaugeValue = 50;
+var mapValue = 0;
+var reduceValue = 0;
+
+function nextValue (value) {
+  value += Math.random() * 5;
+  value = value < 0 ? 0 : value > 100 ? 0 : value;
+  return value;
+}
+
 
 function broadcast() {
-    gaugeValue += Math.random() * 40 - 20;
-    gaugeValue = gaugeValue < 0 ? 0 : gaugeValue > 100 ? 100 : gaugeValue;
-    var time = Date.now();
+    mapValue = nextValue(mapValue);
+    reduceValue = nextValue(reduceValue);
 
     var job = {
-      mapProgress: gaugeValue,
-      reduceProgress: gaugeValue + 5
-    }
+      id: 'job_1',
+      name: 'test job 1',
+      state: 'RUNNING',
+      mapProgress: mapValue,
+      reduceProgress: reduceValue
+    };
     var data = JSON.stringify({ job: job });
 
-    //var msgObject = { topic: 'contrib.summit.mrDebugger.jobResult', data: {
-    //  value: Math.floor(gaugeValue), timestamp: time
-    //}};
     var msgObject = { topic: 'contrib.summit.mrDebugger.jobResult', data: data};
 
     var msg = JSON.stringify(msgObject);
