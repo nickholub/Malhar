@@ -39,7 +39,7 @@ app.get('/settings.js', function(req, res) {
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', 0);
 
-  res.send('window.settings = ' + JSON.stringify(config.settings, null, ' ') + ';');
+  res.send('window.settings = ' + JSON.stringify(config.settings) + ';');
 });
 
 var items = null;
