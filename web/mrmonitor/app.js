@@ -33,6 +33,15 @@ app.get('/ws/v1/cluster/apps', function(req, res) {
   proxy.proxyRequest(req, res);
 });
 
+app.get('/settings.js', function(req, res) {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', 0);
+
+  res.send('window.settings = ' + JSON.stringify(config.settings, null, ' ') + ';');
+});
+
 var items = null;
 
 var clients = {};
