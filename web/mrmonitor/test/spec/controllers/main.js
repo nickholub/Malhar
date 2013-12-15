@@ -10,6 +10,8 @@ describe('Controller: MainCtrl', function () {
       getApp: function () {}
     };
 
+    $provide.constant('settings', { topic: {} });
+
     $provide.factory('rest', function () {
       return mockRestService;
     });

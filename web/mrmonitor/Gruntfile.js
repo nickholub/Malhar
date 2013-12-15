@@ -245,12 +245,12 @@ module.exports = function (grunt) {
         dest: '.tmp/styles/',
         src: ['{,*/}*.css', '../bower_components/**/*.css']
       },
-      settings: {
-        expand: true,
-        cwd: '<%= yeoman.app %>/scripts',
-        dest: '<%= yeoman.dist %>/scripts',
-        src: ['settings.js']
-      }
+      //settings: {
+      //  expand: true,
+      //  cwd: '<%= yeoman.app %>/scripts',
+      //  dest: '<%= yeoman.dist %>/scripts',
+      //  src: ['settings.js']
+      //}
     },
     concurrent: {
       server: [
@@ -335,8 +335,8 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'rev',
-    'usemin',
-    'copy:settings'
+    'usemin'
+    //'copy:settings'
   ]);
 
   grunt.registerTask('default', [

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('app.controller')
-  .controller('MainCtrl', function ($scope, $stateParams, webSocket, rest, util) {
+  .controller('MainCtrl', function ($scope, $stateParams, webSocket, rest, util, settings) {
     rest.getApp('word count').then(function (app) {
       if (app && app.id) {
         $scope.app = app;

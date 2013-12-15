@@ -174,7 +174,7 @@ angular.module('app.controller')
       ]
     };
   })
-  .controller('MapGridController', function ($scope, webSocket) {
+  .controller('MapGridController', function ($scope, webSocket, settings) {
     $scope.message = 'none';
 
     webSocket.subscribe(settings.topic.map, function (data) {
@@ -199,7 +199,7 @@ angular.module('app.controller')
       ]
     };
   })
-  .controller('ReduceGridController', function ($scope, webSocket) {
+  .controller('ReduceGridController', function ($scope, webSocket, settings) {
     $scope.message = 'none';
 
     webSocket.subscribe(settings.topic.reduce, function (data) {
