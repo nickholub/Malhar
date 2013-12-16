@@ -21,6 +21,8 @@ angular.module('app.controller')
     if ($stateParams.jobId) {
       $scope.activeJobId = util.extractJobId($stateParams.jobId);
       $scope.$emit('activeJobId', $scope.activeJobId);
+    } else {
+      $scope.$emit('activeJobId', null);
     }
   })
   .controller('MapLineChartController', function ($scope) {

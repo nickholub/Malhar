@@ -36,23 +36,20 @@ angular.module('app.controller')
       webSocket.send(msg);
     }
 
-    //TODO
-    /*
-    rest.getApp().then(function (app) {
-      if (app && app.id) {
-        $scope.app = app;
-
-        var id = util.extractJobId(app.id);
-        $scope.activeJobId = id;
-        //queryApp(id);
-      }
-    });
-    */
-
     $scope.$on('activeJobId', function (event, activeJobId) {
       if (activeJobId) {
         $scope.activeJobId = activeJobId;
         queryApp(activeJobId);
+      } else {
+        rest.getApp().then(function (app) {
+          if (app && app.id) {
+            $scope.app = app;
+
+            var id = util.extractJobId(app.id);
+            $scope.activeJobId = id;
+            queryApp(id);
+          }
+        });
       }
     });
 
