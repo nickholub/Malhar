@@ -10,14 +10,12 @@ angular.module('app.service')
           var errorMessage = null;
 
           if (response && response.apps && response.apps.app && response.apps.app.length > 0) {
-            //var apps = response.apps.app;
-            //var apps = _.where(response.apps.app, { name: appName, state: 'RUNNING' });
             var apps = _.where(response.apps.app, { applicationType: 'MAPREDUCE' });
 
             if (apps.length > 0) {
               deferred.resolve(apps);
             } else {
-              errorMessage = appName + ' is not found. Please make sure application is running.'; //TODO
+              errorMessage = 'No MAPREDUCE applications found.';
             }
           } else {
             errorMessage = 'No applications available.';
@@ -39,7 +37,7 @@ angular.module('app.service')
         return deferred.promise;
       },
 
-      getApp: function (appName) {
+      getApp: function () {
         var deferred = $q.defer();
 
         Restangular.oneUrl('apps', 'ws/v1/cluster/apps').get().then(function (response) {
@@ -56,7 +54,7 @@ angular.module('app.service')
               var app = apps[0];
               deferred.resolve(app);
             } else {
-              errorMessage = appName + ' is not found. Please make sure application is running.'; //TODO
+              errorMessage = 'No MAPREDUCE applications found. Please make sure application is running.'; //TODO
             }
           } else {
             errorMessage = 'No applications available.';

@@ -20,8 +20,9 @@ angular.module('app.controller')
       webSocket.send(msg);
     }
 
-    if (false)
-    rest.getApp('word count').then(function (app) {
+    //TODO
+    /*
+    rest.getApp().then(function (app) {
       if (app && app.id) {
         $scope.app = app;
 
@@ -30,6 +31,7 @@ angular.module('app.controller')
         //queryApp(id);
       }
     });
+    */
 
     $scope.$on('activeJobId', function (event, activeJobId) {
       if (activeJobId) {
