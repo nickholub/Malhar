@@ -113,9 +113,11 @@ angular.module('app.controller')
       var total = {
         name: 'total',
         complete: job.mapsCompleted + job.reducesCompleted,
-        running: job.mapsRunning + job.reducesRunning,
         total: job.mapsTotal + job.reducesTotal
       };
+
+      total.running = (job.mapsRunning ? job.mapsRunning : 0) + (job.reducesRunning ? job.reducesRunning : 0);
+      total.running = (total.running > 0) ? total.running : null;
       total.progress = (total.total === 0) ? 0 : (total.complete / total.total * 100);
 
       list.push(createRow(map));

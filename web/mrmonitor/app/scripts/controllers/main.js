@@ -40,12 +40,6 @@ angular.module('app.controller')
       }
     });
 
-    webSocket.subscribe(settings.topic.stats, function (message) {
-      var data = JSON.parse(message);
-      window.a = data;
-      console.log(data);
-    });
-
     webSocket.subscribe(settings.topic.job, function (message) {
       var data = JSON.parse(message);
       $scope.job = data.job;
