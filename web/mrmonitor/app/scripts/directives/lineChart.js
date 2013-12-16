@@ -16,8 +16,6 @@
 
 'use strict';
 
-angular.module('app.directive', []);
-
 angular.module('app.directive')
   .directive('lineChart', function () {
     return {

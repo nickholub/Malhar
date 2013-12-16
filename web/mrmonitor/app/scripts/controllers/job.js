@@ -1,7 +1,5 @@
 'use strict';
 
-angular.module('app.controller', ['ngGrid', 'app.service']);
-
 angular.module('app.controller')
   .controller('JobCtrl', function ($scope, $stateParams, util) {
     if ($stateParams.jobId) {

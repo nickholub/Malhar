@@ -46,8 +46,13 @@ body {
 
 .monitored-jobs-grid {
     border: 1px solid rgb(212,212,212);
-    width: 800px;
-    height: 100px;
+    width: 900px;
+    height: 150px;
+}
+
+.monitored-jobs-grid .remove {
+    text-align: center;
+    cursor: pointer;
 }
 
 .job-progress-grid-content {

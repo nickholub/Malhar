@@ -5,8 +5,8 @@ angular.module('app', ['ui.router', 'app.service', 'app.directive', 'app.control
 angular.module('app')
   .constant('settings', window.settings)
   .config(function ($stateProvider, $urlRouterProvider, webSocketProvider) {
-    //webSocketProvider.setWebSocketURL(settings.webSocketURL);
-    webSocketProvider.setWebSocketURL('ws://' + window.location.host + '/sockjs/websocket');
+    webSocketProvider.setWebSocketURL(settings.webSocketURL);
+    //webSocketProvider.setWebSocketURL('ws://' + window.location.host + '/sockjs/websocket');
 
     $urlRouterProvider.otherwise('/jobs/');
 
@@ -20,5 +20,10 @@ angular.module('app')
         url: '/:jobId',
         templateUrl: 'views/job.html',
         controller: 'JobCtrl'
+      })
+      .state('appList', {
+        url: '/apps',
+        templateUrl: 'views/apps.html',
+        controller: 'AppListCtrl'
       });
   });
