@@ -82,14 +82,14 @@ body {
     height: 200px;
 }
 
-.progress {
+.job-progress .progress {
     width: 300px;
     height: 30px;
     line-height: 30px;
     vertical-align: middle;
 }
 
-.progress .bar {
+.job-progress .progress .bar {
     padding-left: 20px;
     color: black;
     white-space: nowrap;
@@ -120,6 +120,12 @@ body {
 
 .applist .table {
     width: auto;
+}
+
+.applist .progress {
+    display: inline-block;
+    margin-bottom: 0;
+    width: 70px;
 }
 
 /* TODO */
