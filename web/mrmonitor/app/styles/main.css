@@ -118,6 +118,10 @@ body {
     width: 70px;
 }
 
+.applist .table {
+    width: auto;
+}
+
 /* TODO */
 
 /*
