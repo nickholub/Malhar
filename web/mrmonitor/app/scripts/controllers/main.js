@@ -18,10 +18,12 @@
 
 angular.module('app.controller')
   .controller('MainCtrl', function ($scope, $stateParams, webSocket, rest, util, notificationService, settings) {
+    console.log('_MainCtrl');
+    var jobFound = false;
 
-    function queryApp(id) {
+    function jobRequest(id, command) {
       var jsonData = {
-        'command': 'add',
+        'command': command,
         'hostname': settings.hadoop.host,
         'app_id': id,
         'job_id': id,
@@ -36,11 +38,20 @@ angular.module('app.controller')
       webSocket.send(msg);
     }
 
+    function queryApp (id) {
+      jobRequest(id, 'add');
+    }
+
+    $scope.removeApp = function (id) {
+      jobRequest(id, 'delete');
+    };
+
     $scope.$on('activeJobId', function (event, activeJobId) {
       if (activeJobId) {
+        jobFound = true;
         $scope.activeJobId = activeJobId;
         queryApp(activeJobId);
-      } else {
+      } else if (!jobFound) {
         rest.getApp().then(function (app) {
           if (app && app.id) {
             //$state.go('jobs.job', { jobId: app.id });
@@ -78,15 +89,10 @@ angular.module('app.controller')
       $scope.$apply();
     }, $scope);
   })
-  .controller('MonitoredJobGridController', function ($scope, util, $templateCache) {
+  .controller('MonitoredJobGridController', function ($scope, util, $templateCache, $state, notificationService) {
     var jobs = {};
 
-    $scope.$watch('job', function (job) {
-      if (!job) {
-        return;
-      }
-
-      jobs[job.id] = job;
+    function updateGrid () {
       var list = _.map(_.values(jobs), function (job) {
         var jobId = util.extractJobId(job.id);
 
@@ -99,7 +105,17 @@ angular.module('app.controller')
           reduceProgress: job.reduceProgress
         };
       });
+
       $scope.gridData = list;
+    }
+
+    $scope.$watch('job', function (job) {
+      if (!job) {
+        return;
+      }
+
+      jobs[job.id] = job;
+      updateGrid();
     });
 
     var linkTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="#/jobs/{{COL_FIELD}}">{{COL_FIELD}}</a></span></div>';
@@ -108,14 +124,30 @@ angular.module('app.controller')
     rowTemplate = rowTemplate.replace('ngCell', 'ngCell {{row.entity.cellRowClass}}'); // custom row class
 
     //TODO
-    $scope.jobUnsubscribe = function (id) {
-      alert('Unsubscribe ' + id);
+    $scope.removeJob = function (id) {
+      var jobId = util.extractJobId(id);
+
+      notificationService.notify({
+        title: 'Remove Job',
+        text: 'Request to remove job ' + jobId + ' from monitoring has been sent.',
+        type: 'info',
+        //icon: false,
+        history: false
+      });
+
+      console.log('_removeJob');
+
+      delete jobs[id];
+      $scope.removeApp(jobId);
+      updateGrid();
+
+      $state.go('jobs.job', { jobId: '' });
     };
 
     //TODO
     //var actionCellTemplate = $templateCache.get('cellTemplate.html');
     //actionCellTemplate = actionCellTemplate.replace('{{COL_FIELD CUSTOM_FILTERS}}', '<i class="icon-trash"></i>');
-    var actionCellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" ng-click="jobUnsubscribe(row.entity.id);"><i class="icon-trash"></i></div>';
+    var actionCellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" ng-click="removeJob(row.entity.id);"><i class="icon-trash"></i></div>';
 
     $scope.gridOptions = {
       data: 'gridData',

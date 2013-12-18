@@ -18,6 +18,7 @@
 
 angular.module('app.controller')
   .controller('JobCtrl', function ($scope, $stateParams, util) {
+    console.log('__JobCtrl');
     if ($stateParams.jobId) {
       $scope.activeJobId = util.extractJobId($stateParams.jobId);
       $scope.$emit('activeJobId', $scope.activeJobId);
