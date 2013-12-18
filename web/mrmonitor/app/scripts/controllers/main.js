@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('app.controller')
-  .controller('MainCtrl', function ($scope, $stateParams, webSocket, rest, util, settings) {
+  .controller('MainCtrl', function ($scope, $stateParams, webSocket, rest, util, notificationService, settings) {
 
     function queryApp(id) {
       var jsonData = {
@@ -43,11 +43,20 @@ angular.module('app.controller')
       } else {
         rest.getApp().then(function (app) {
           if (app && app.id) {
+            //$state.go('jobs.job', { jobId: app.id });
             $scope.app = app;
 
             var id = util.extractJobId(app.id);
             $scope.activeJobId = id;
             queryApp(id);
+
+            notificationService.notify({
+              title: 'Map Reduce Job Found',
+              text: 'Monitoring the most recent job ' + id + '. State ' + app.state,
+              type: 'success',
+              icon: false,
+              history: false
+            });
           }
         });
       }
@@ -99,9 +108,14 @@ angular.module('app.controller')
     rowTemplate = rowTemplate.replace('ngCell', 'ngCell {{row.entity.cellRowClass}}'); // custom row class
 
     //TODO
+    $scope.jobUnsubscribe = function (id) {
+      alert('Unsubscribe ' + id);
+    };
+
+    //TODO
     //var actionCellTemplate = $templateCache.get('cellTemplate.html');
     //actionCellTemplate = actionCellTemplate.replace('{{COL_FIELD CUSTOM_FILTERS}}', '<i class="icon-trash"></i>');
-    var actionCellTemplate = '<div class=\"ngCellText\" ng-class=\"col.colIndex()\"><i class="icon-trash"></i></div>';
+    var actionCellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" ng-click="jobUnsubscribe(row.entity.id);"><i class="icon-trash"></i></div>';
 
     $scope.gridOptions = {
       data: 'gridData',
