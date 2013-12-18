@@ -38,11 +38,11 @@ angular.module('app.controller')
       webSocket.send(msg);
     }
 
-    function queryApp (id) {
+    function jobQueryRequest (id) {
       jobRequest(id, 'add');
     }
 
-    $scope.removeApp = function (id) {
+    $scope.jobRemoveRequest = function (id) {
       jobRequest(id, 'delete');
     };
 
@@ -50,7 +50,7 @@ angular.module('app.controller')
       if (activeJobId) {
         jobFound = true;
         $scope.activeJobId = activeJobId;
-        queryApp(activeJobId);
+        jobQueryRequest(activeJobId);
       } else if (!jobFound) {
         rest.getApp().then(function (app) {
           if (app && app.id) {
@@ -59,7 +59,7 @@ angular.module('app.controller')
 
             var id = util.extractJobId(app.id);
             $scope.activeJobId = id;
-            queryApp(id);
+            jobQueryRequest(id);
 
             notificationService.notify({
               title: 'Map Reduce Job Found',
@@ -138,7 +138,7 @@ angular.module('app.controller')
       console.log('_removeJob');
 
       delete jobs[id];
-      $scope.removeApp(jobId);
+      $scope.jobRemoveRequest(jobId);
       updateGrid();
 
       $state.go('jobs.job', { jobId: '' });
