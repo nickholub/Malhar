@@ -83,10 +83,8 @@ body {
 }
 
 .job-progress .progress {
-    width: 300px;
-    height: 30px;
-    line-height: 30px;
-    vertical-align: middle;
+    width: 200px;
+    margin-bottom: 0;
 }
 
 .job-progress .progress .bar {
@@ -94,6 +92,10 @@ body {
     color: black;
     white-space: nowrap;
     text-align: left;
+}
+
+.job-progress .table tr {
+    height: 30px;
 }
 
 .job-label {

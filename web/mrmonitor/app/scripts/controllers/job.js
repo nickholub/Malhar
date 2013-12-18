@@ -117,32 +117,6 @@ angular.module('app.controller')
     });
   })
   .controller('JobGridController', function ($scope, $filter, webSocket, util) {
-    var defaultRow = {
-      complete: '-',
-      running: '-',
-      total: '-',
-      progress: 0
-    };
-
-    function createRow(data) {
-      var row = jQuery.extend({}, data);
-      if (typeof data.progress !== 'undefined') {
-        row.progress = $filter('number')(data.progress, 2) + '%'; //TODO create custom filter
-      } else {
-        row.progress = '100.00%';
-      }
-
-      row.selected = true;
-
-      return row;
-    }
-
-    $scope.gridData = [
-      createRow(jQuery.extend({ name: 'map' }, defaultRow)),
-      createRow(jQuery.extend({ name: 'reduce' }, defaultRow)),
-      createRow(jQuery.extend({ name: 'total' }, defaultRow))
-    ];
-
     $scope.$watch('job', function (job) {
       if (!job) {
         return;
@@ -154,71 +128,32 @@ angular.module('app.controller')
         return;
       }
 
-      var list = [];
-      var map = {
-        name: 'map',
-        complete: job.mapsCompleted,
-        running: job.mapsRunning,
-        total: job.mapsTotal,
-        progress: job.hasOwnProperty('mapProgress') ? job.mapProgress : 100
-      };
-      var reduce = {
-        name: 'reduce',
-        complete: job.reducesCompleted,
-        running: job.reducesRunning,
-        total: job.reducesTotal,
-        progress: job.hasOwnProperty('reduceProgress') ? job.reduceProgress : 100
-      };
-      var total = {
-        name: 'total',
-        complete: job.mapsCompleted + job.reducesCompleted,
-        total: job.mapsTotal + job.reducesTotal
-      };
-
-      total.running = (job.mapsRunning ? job.mapsRunning : 0) + (job.reducesRunning ? job.reducesRunning : 0);
-      total.running = (total.running > 0) ? total.running : null;
-      total.progress = (total.total === 0) ? 0 : (total.complete / total.total * 100);
-
-      list.push(createRow(map));
-      list.push(createRow(reduce));
-      list.push(createRow(total));
-
-      $scope.gridData = list;
-
-      //TODO remove active class from progress bar when progress is 100%
-      var progress = {
+      var jobProgress = {
         map: {
-          progress: map.progress,
-          active: (map.progress < 100)
+          complete: job.mapsCompleted,
+          running: job.mapsRunning,
+          total: job.mapsTotal,
+          progress: job.hasOwnProperty('mapProgress') ? job.mapProgress : 100
         },
         reduce: {
-          progress: reduce.progress,
-          active: (reduce.progress < 100)
-        },
-        total: {
-          progress: total.progress,
-          active: (total.complete < total.total)
+          complete: job.reducesCompleted,
+          running: job.reducesRunning,
+          total: job.reducesTotal,
+          progress: job.hasOwnProperty('reduceProgress') ? job.reduceProgress : 100
         }
       };
+      jobProgress.map.active = (jobProgress.map.progress < 100);
+      jobProgress.reduce.active = (jobProgress.reduce.progress < 100);
 
-      $scope.progress = progress;
+      $scope.jobProgress = jobProgress;
     });
 
-    var progress = {
+    $scope.jobProgress = {
       map: {
-        progress: 0,
-        active: false
       },
       reduce: {
-        progress: 0,
-        active: false
-      },
-      total: {
-        progress: 0,
-        active: false
       }
     };
-    $scope.progress = progress;
 
     $scope.gridOptions = {
       data: 'gridData',
