@@ -19,8 +19,8 @@
 angular.module('app.controller')
   .controller('JobCtrl', function ($scope, $stateParams, util) {
     if ($stateParams.jobId) {
-      $scope.activeJobId = util.extractJobId($stateParams.jobId);
-      $scope.$emit('activeJobId', $scope.activeJobId);
+      $scope.jobId = util.extractJobId($stateParams.jobId);
+      $scope.$emit('activeJobId', $scope.jobId);
     } else {
       $scope.$emit('activeJobId', null);
     }
@@ -57,7 +57,7 @@ angular.module('app.controller')
 
       var jobId = util.extractJobId(counterObject.jobCounters.id);
 
-      if ($scope.activeJobId !== jobId) {
+      if ($scope.jobId !== jobId) {
         return;
       }
 
@@ -124,7 +124,7 @@ angular.module('app.controller')
 
       var jobId = util.extractJobId(job.id);
 
-      if ($scope.activeJobId !== jobId) {
+      if ($scope.jobId !== jobId) {
         return;
       }
 
@@ -174,7 +174,7 @@ angular.module('app.controller')
     webSocket.subscribe(settings.topic.map, function (data) {
       var taskObject = JSON.parse(data);
 
-      if ($scope.activeJobId !== taskObject.id) {
+      if ($scope.jobId !== taskObject.id) {
         return;
       }
 
@@ -200,7 +200,7 @@ angular.module('app.controller')
     webSocket.subscribe(settings.topic.reduce, function (data) {
       var taskObject = JSON.parse(data);
 
-      if ($scope.activeJobId !== taskObject.id) {
+      if ($scope.jobId !== taskObject.id) {
         return;
       }
 

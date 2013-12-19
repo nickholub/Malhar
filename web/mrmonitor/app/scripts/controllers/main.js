@@ -18,6 +18,8 @@
 
 angular.module('app.controller')
   .controller('MainCtrl', function ($scope, $state, $stateParams, webSocket, rest, util, notificationService, settings) {
+    $scope.jobs = {};
+
     function jobRequest(id, command) {
       var jsonData = {
         'command': command,
@@ -47,7 +49,7 @@ angular.module('app.controller')
       $scope.activeJobId = activeJobId;
 
       if (activeJobId) {
-        jobQueryRequest(activeJobId);
+        jobQueryRequest(activeJobId); // resend request since finished jobs receive only 1 update
       } else  {
         if (true) {
           return;
@@ -97,6 +99,16 @@ angular.module('app.controller')
       $scope.$apply();
     }
 
+    //TODO
+    function cloneJob(job, r) {
+      return;
+      var copy = angular.extend({}, job);
+      copy.id = copy.id.replace(/3/, '2') + r;
+      copy.startTime = copy.startTime + 1;
+
+      $scope.jobs[copy.id] = copy;
+    }
+
     webSocket.subscribe(settings.topic.job, function (message) {
       var data = JSON.parse(message);
 
@@ -105,13 +117,24 @@ angular.module('app.controller')
         return;
       }
 
-      if (!data.job) {
+      var job = data.job;
+
+      if (!job) {
         return;
       }
 
-      $scope.job = data.job;
+      $scope.jobs[job.id] = job;
 
-      var jobId = util.extractJobId($scope.job.id);
+      cloneJob(job, 'a');
+      cloneJob(job, 'b');
+      cloneJob(job, 'c');
+      cloneJob(job, 'd');
+      cloneJob(job, 'e');
+      cloneJob(job, 'f');
+
+      $scope.job = job;
+
+      var jobId = util.extractJobId(job.id);
 
       if ($scope.activeJobId === jobId) {
         $scope.activeJob = $scope.job;
@@ -121,10 +144,8 @@ angular.module('app.controller')
     }, $scope);
   })
   .controller('MonitoredJobGridController', function ($scope, util, $templateCache, $state, notificationService) {
-    var jobs = {};
-
     function updateGrid () {
-      var list = _.map(_.values(jobs), function (job) {
+      var list = _.map(_.values($scope.jobs), function (job) {
         var jobId = util.extractJobId(job.id);
 
         return {
@@ -145,33 +166,16 @@ angular.module('app.controller')
       $scope.gridData = list;
     }
 
-    function cloneJob(job, r) {
-      var copy = angular.extend({}, job);
-      copy.id = copy.id.replace(/3/, '2') + r;
-      copy.startTime = copy.startTime + 1;
-
-      jobs[copy.id] = copy;
-    }
-
     $scope.$watch('job', function (job) {
       if (!job) {
         return;
       }
 
-      jobs[job.id] = job;
-
-      cloneJob(job, 'a');
-      cloneJob(job, 'b');
-      cloneJob(job, 'c');
-      cloneJob(job, 'd');
-      cloneJob(job, 'e');
-      cloneJob(job, 'f');
-
       updateGrid();
     });
 
     $scope.$on('jobRemoved', function (event, id) {
-      delete jobs['job_' + id]; //TODO
+      delete $scope.jobs['job_' + id]; //TODO
       updateGrid();
     });
 
