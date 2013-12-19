@@ -49,7 +49,9 @@ angular.module('app.controller')
       if (activeJobId) {
         jobQueryRequest(activeJobId);
       } else  {
-        if (true) return;
+        if (true) {
+          return;
+        }
         //dev only
         // will be invoked on URL #/jobs/
         rest.getApp().then(function (app) {
@@ -75,18 +77,31 @@ angular.module('app.controller')
       }
     });
 
+    function jobRemoved (jobId) {
+      $scope.$broadcast('jobRemoved', jobId);
+
+      if ($scope.activeJobId && ($scope.activeJobId === jobId)) {
+        $scope.activeJobId = null;
+        $state.go('jobs.job', { jobId: null });
+      }
+
+      notificationService.notify({
+        title: 'Job Removed',
+        text: 'Job ' + jobId + ' has been removed from monitoring',
+        type: 'success',
+        delay: 3000,
+        icon: false,
+        history: false
+      });
+
+      $scope.$apply();
+    }
+
     webSocket.subscribe(settings.topic.job, function (message) {
       var data = JSON.parse(message);
 
       if (data.removed) {
-        notificationService.notify({
-          title: 'Job Removed',
-          text: 'Job ' + data.id + ' has been removed from monitoring',
-          type: 'success',
-          icon: false,
-          history: false
-        });
-        $scope.job = null;
+        jobRemoved(data.id);
         return;
       }
 
@@ -155,7 +170,12 @@ angular.module('app.controller')
       updateGrid();
     });
 
-    $scope.$watch('activeJobId', function (activeJobId) {
+    $scope.$on('jobRemoved', function (event, id) {
+      delete jobs['job_' + id]; //TODO
+      updateGrid();
+    });
+
+    $scope.$watch('activeJobId', function () {
       updateGrid();
     });
 
@@ -168,21 +188,16 @@ angular.module('app.controller')
     $scope.removeJob = function (id) {
       var jobId = util.extractJobId(id);
 
+      $scope.jobRemoveRequest(jobId);
+
       notificationService.notify({
         title: 'Remove Job',
         text: 'Request to remove job ' + jobId + ' from monitoring has been sent.',
         type: 'info',
+        delay: 3000,
         icon: false,
         history: false
       });
-
-      delete jobs[id];
-      $scope.jobRemoveRequest(jobId);
-      updateGrid();
-
-      //TODO only if selected removed
-      $scope.activeJobId = null;
-      $state.go('jobs.job', { jobId: null });
     };
 
     //TODO
