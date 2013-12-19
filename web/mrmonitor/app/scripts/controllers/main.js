@@ -51,11 +51,13 @@ angular.module('app.controller')
       if (activeJobId) {
         jobQueryRequest(activeJobId); // resend request since finished jobs receive only 1 update
       } else  {
+        //TODO
+        //dev only
+        // will be invoked on URL #/jobs/
+
         if (true) {
           return;
         }
-        //dev only
-        // will be invoked on URL #/jobs/
         rest.getApp().then(function (app) {
           if (app && app.id) {
             //$state.go('jobs.job', { jobId: app.id });
@@ -99,16 +101,6 @@ angular.module('app.controller')
       $scope.$apply();
     }
 
-    //TODO
-    function cloneJob(job, r) {
-      return;
-      var copy = angular.extend({}, job);
-      copy.id = copy.id.replace(/3/, '2') + r;
-      copy.startTime = copy.startTime + 1;
-
-      $scope.jobs[copy.id] = copy;
-    }
-
     webSocket.subscribe(settings.topic.job, function (message) {
       var data = JSON.parse(message);
 
@@ -124,14 +116,6 @@ angular.module('app.controller')
       }
 
       $scope.jobs[job.id] = job;
-
-      cloneJob(job, 'a');
-      cloneJob(job, 'b');
-      cloneJob(job, 'c');
-      cloneJob(job, 'd');
-      cloneJob(job, 'e');
-      cloneJob(job, 'f');
-
       $scope.job = job;
 
       var jobId = util.extractJobId(job.id);
