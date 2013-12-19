@@ -17,10 +17,7 @@
 'use strict';
 
 angular.module('app.controller')
-  .controller('MainCtrl', function ($scope, $stateParams, webSocket, rest, util, notificationService, settings) {
-    console.log('_MainCtrl');
-    var jobFound = false;
-
+  .controller('MainCtrl', function ($scope, $state, $stateParams, webSocket, rest, util, notificationService, settings) {
     function jobRequest(id, command) {
       var jsonData = {
         'command': command,
@@ -47,11 +44,13 @@ angular.module('app.controller')
     };
 
     $scope.$on('activeJobId', function (event, activeJobId) {
+      $scope.activeJobId = activeJobId;
+
       if (activeJobId) {
-        jobFound = true;
-        $scope.activeJobId = activeJobId;
         jobQueryRequest(activeJobId);
-      } else if (!jobFound) {
+      } else  {
+        //dev only
+        // will be invoked on URL #/jobs/
         rest.getApp().then(function (app) {
           if (app && app.id) {
             //$state.go('jobs.job', { jobId: app.id });
@@ -68,6 +67,8 @@ angular.module('app.controller')
               icon: false,
               history: false
             });
+
+            $state.go('jobs.job', { jobId: app.id });
           }
         });
       }
@@ -75,15 +76,29 @@ angular.module('app.controller')
 
     webSocket.subscribe(settings.topic.job, function (message) {
       var data = JSON.parse(message);
+
+      if (data.removed) {
+        notificationService.notify({
+          title: 'Map Reduce Job Removed',
+          text: 'Job ' + data.id + ' has been removed from monitoring',
+          type: 'success',
+          icon: false,
+          history: false
+        });
+        $scope.job = null;
+        return;
+      }
+
+      if (!data.job) {
+        return;
+      }
+
       $scope.job = data.job;
-      //console.log(data.job);
 
       var jobId = util.extractJobId($scope.job.id);
-      //console.log(jobId + ' ' + $scope.activeJobId);
 
       if ($scope.activeJobId === jobId) {
         $scope.activeJob = $scope.job;
-        //console.log('assigned');
       }
 
       $scope.$apply();
@@ -99,7 +114,7 @@ angular.module('app.controller')
         return {
           id: job.id,
           name: job.name,
-          cellRowClass: ($scope.activeJobId === jobId) ? 'row-active': '',
+          cellRowClass: ($scope.activeJobId && ($scope.activeJobId === jobId)) ? 'row-active': '',
           state: job.state,
           mapProgress: job.mapProgress,
           reduceProgress: job.reduceProgress
@@ -131,17 +146,15 @@ angular.module('app.controller')
         title: 'Remove Job',
         text: 'Request to remove job ' + jobId + ' from monitoring has been sent.',
         type: 'info',
-        //icon: false,
+        icon: false,
         history: false
       });
-
-      console.log('_removeJob');
 
       delete jobs[id];
       $scope.jobRemoveRequest(jobId);
       updateGrid();
 
-      $state.go('jobs.job', { jobId: '' });
+      $state.go('jobs');
     };
 
     //TODO
@@ -153,6 +166,7 @@ angular.module('app.controller')
       data: 'gridData',
       rowTemplate: rowTemplate,
       enableRowSelection: false,
+      showFilter: true,
       columnDefs: [
         { field: 'id', displayName: 'Id', width: 200, cellTemplate: linkTemplate },
         { field: 'name', displayName: 'Name'},

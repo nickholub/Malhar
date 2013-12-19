@@ -18,7 +18,6 @@
 
 angular.module('app.controller')
   .controller('JobCtrl', function ($scope, $stateParams, util) {
-    console.log('__JobCtrl');
     if ($stateParams.jobId) {
       $scope.activeJobId = util.extractJobId($stateParams.jobId);
       $scope.$emit('activeJobId', $scope.activeJobId);
@@ -187,6 +186,7 @@ angular.module('app.controller')
       data: 'gridData',
       enableRowSelection: false,
       multiSelect: false,
+      showFilter: true,
       columnDefs: [
         { field: 'id', displayName: 'Id', width: 270 },
         { field: 'state', displayName: 'State' },
