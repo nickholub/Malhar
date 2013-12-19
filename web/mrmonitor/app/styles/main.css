@@ -44,14 +44,16 @@ body {
     height: 400px;
 }
 
-.app-list-grid {
+.ngGrid {
     border: 1px solid rgb(212,212,212);
+}
+
+.app-list-grid {
     width: 900px;
     height: 500px;
 }
 
 .monitored-jobs-grid {
-    border: 1px solid rgb(212,212,212);
     width: 900px;
     height: 150px;
 }
@@ -66,7 +68,6 @@ body {
 }
 
 .job-progress-grid {
-    border: 1px solid rgb(212,212,212);
     width: 500px;
     height: 200px;
 }
@@ -83,7 +84,6 @@ body {
 }
 
 .task-progress-grid {
-    border: 1px solid rgb(212,212,212);
     width: 500px;
     height: 200px;
 }

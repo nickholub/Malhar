@@ -1,6 +1,7 @@
 <div class="row-fluid job-progress-header">
     <h2>Job Progress</h2>
-    <span class="job-label">Job Id:</span> {{activeJobId}}
+    <span ng-show="activeJobId"><span class="job-label">Job Id:</span> {{activeJobId}}</span>
+    <span class="alert" ng-hide="activeJobId">Please select a job to monitor</span>
 </div>
 
 <div class="row-fluid job-progress" ng-controller="JobGridController">
