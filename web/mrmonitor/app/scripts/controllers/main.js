@@ -45,10 +45,23 @@ angular.module('app.controller')
       jobRequest(id, 'delete');
     };
 
+    $scope.showLoading = false;
+
     $scope.$on('activeJobId', function (event, activeJobId) {
       $scope.activeJobId = activeJobId;
 
       if (activeJobId) {
+        if (!$scope.jobs.hasOwnProperty('job_' + activeJobId)) { //TODO
+          $scope.showLoading = true;
+        }
+      } else {
+        $scope.showLoading = false;
+      }
+
+      if (activeJobId) {
+        if ($scope.jobs.hasOwnProperty('job_' + activeJobId)) { //TODO
+          $scope.job = $scope.jobs['job_' + activeJobId];
+        }
         jobQueryRequest(activeJobId); // resend request since finished jobs receive only 1 update
       } else  {
         //TODO
@@ -104,6 +117,11 @@ angular.module('app.controller')
     webSocket.subscribe(settings.topic.job, function (message) {
       var data = JSON.parse(message);
 
+      console.log(data.id);
+      if (data.id) {
+        console.log(data);
+      }
+
       if (data.removed) {
         jobRemoved(data.id);
         return;
@@ -121,7 +139,8 @@ angular.module('app.controller')
       var jobId = util.extractJobId(job.id);
 
       if ($scope.activeJobId === jobId) {
-        $scope.activeJob = $scope.job;
+        $scope.activeJob = $scope.job; //TODO
+        $scope.showLoading = false; //TODO rename activeJobLoaded
       }
 
       $scope.$apply();

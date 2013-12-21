@@ -136,6 +136,14 @@ body {
     width: 70px;
 }
 
+.monitored-jobs h2, .applist h2 {
+    display: inline-block;
+}
+
+.loading {
+    margin-left: 20px;
+}
+
 /* TODO */
 
 /*

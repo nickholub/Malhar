@@ -17,9 +17,15 @@
 'use strict';
 
 angular.module('app.controller')
-  .controller('AppListCtrl', function ($scope, rest) {
-    rest.getApps().then(function (apps) {
+  .controller('AppListCtrl', function ($scope, rest, util) {
+    $scope.showLoading = true;
+
+    var apps = rest.getApps();
+
+    util.delay(apps).then(function (apps) {
+    //apps.then(function (apps) {
       $scope.apps = apps;
+      $scope.showLoading = false;
     });
 
     var linkTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="#/jobs/{{COL_FIELD}}">{{COL_FIELD}}</a></span></div>';
