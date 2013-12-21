@@ -19,6 +19,7 @@
 angular.module('app.controller')
   .controller('MainCtrl', function ($scope, $state, $stateParams, webSocket, rest, util, notificationService, settings) {
     $scope.jobs = {};
+    $scope.showLoading = false;
 
     function jobRequest(id, command) {
       var jsonData = {
@@ -45,25 +46,20 @@ angular.module('app.controller')
       jobRequest(id, 'delete');
     };
 
-    $scope.showLoading = false;
-
     $scope.$on('activeJobId', function (event, activeJobId) {
       $scope.activeJobId = activeJobId;
 
       if (activeJobId) {
-        if (!$scope.jobs.hasOwnProperty('job_' + activeJobId)) { //TODO
-          $scope.showLoading = true;
-        }
-      } else {
-        $scope.showLoading = false;
-      }
-
-      if (activeJobId) {
         if ($scope.jobs.hasOwnProperty('job_' + activeJobId)) { //TODO
           $scope.job = $scope.jobs['job_' + activeJobId];
+          $scope.showLoading = false;
+        } else {
+          $scope.showLoading = true;
         }
         jobQueryRequest(activeJobId); // resend request since finished jobs receive only 1 update
       } else  {
+        $scope.showLoading = false;
+
         //TODO
         //dev only
         // will be invoked on URL #/jobs/

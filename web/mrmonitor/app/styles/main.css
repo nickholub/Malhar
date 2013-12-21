@@ -155,3 +155,22 @@ body {
     background-color: red;
 }
 */
+
+.loading {
+    -webkit-transition: all linear 2s;
+    transition: all linear 2s;
+    opacity: 1;
+}
+
+.loading.ng-hide-add,
+.animate-hide.ng-hide-remove {
+    display: inline !important;
+}
+
+.loading.ng-hide {
+    opacity: 0;
+}
+
+.check-element {
+    padding:10px;
+}

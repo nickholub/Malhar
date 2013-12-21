@@ -12,7 +12,9 @@
 <div class="row-fluid monitored-jobs">
     <div class="span12" ng-controller="MonitoredJobGridController">
         <h2>Monitored Jobs</h2>
-        <span class="alert loading" ng-show="showLoading">Loading job {{activeJobId}}...</span>
+        <span ng-if="activeJobId">
+            <span class="alert loading" ng-show="showLoading">Loading job {{activeJobId}}...</span>
+        </span>
 
         <p>
             <a href="#/apps" class="btn btn-primary">Add Job</a>

@@ -33,7 +33,7 @@ angular.module('app.service')
         promise.then(function (value) {
           $timeout(function () {
             deferred.resolve(value);
-          }, 5000);
+          }, 2000);
         });
 
         return deferred.promise;
