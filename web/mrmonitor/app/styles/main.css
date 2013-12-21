@@ -156,14 +156,15 @@ body {
 }
 */
 
+
+/* animations */
 .loading {
     -webkit-transition: all linear 2s;
     transition: all linear 2s;
     opacity: 1;
 }
 
-.loading.ng-hide-add,
-.animate-hide.ng-hide-remove {
+.loading.ng-hide-add, .animate-hide.ng-hide-remove {
     display: inline !important;
 }
 

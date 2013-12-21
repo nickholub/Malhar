@@ -113,11 +113,6 @@ angular.module('app.controller')
     webSocket.subscribe(settings.topic.job, function (message) {
       var data = JSON.parse(message);
 
-      console.log(data.id);
-      if (data.id) {
-        console.log(data);
-      }
-
       if (data.removed) {
         jobRemoved(data.id);
         return;
