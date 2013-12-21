@@ -17,13 +17,13 @@
 'use strict';
 
 angular.module('app.controller')
-  .controller('AppListCtrl', function ($scope, rest, util) {
+  .controller('AppListCtrl', function ($scope, rest) {
     $scope.showLoading = true;
 
     var apps = rest.getApps();
 
-    util.delay(apps).then(function (apps) {
-    //apps.then(function (apps) {
+    //util.delay(apps).then(function (apps) { //TODO dev only
+    apps.then(function (apps) {
       $scope.apps = apps;
       $scope.showLoading = false;
     });
