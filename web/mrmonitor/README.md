@@ -35,24 +35,34 @@ Map Reduce Monitor Web Application. Implemented with [Node.js](http://nodejs.org
 
  3. Install forever tool
 
+ ``` bash
     $ npm install -g forever
+ ```
 
  4. Start Node.js Server (see prod.sh)
 
+ ``` bash
     $ NODE_ENV=production PORT=3000 forever start app.js
+ ```
 
 ## Running Application in Development Mode
  Install dependencies:
 
+ ``` bash
     $ npm install
+ ```
 
  Install Bower dependencies:
 
+ ``` bash
     $ bower install
+ ```
 
  Start Node.js server:
 
+ ``` bash
     $ node app
+ ```
 
  Application will be available at http://localhost:3000
 
@@ -60,22 +70,26 @@ Map Reduce Monitor Web Application. Implemented with [Node.js](http://nodejs.org
 
  Application is built with Grunt (it creates dist folder used in production mode).
 
+ ``` bash
     $ npm install -g grunt-cli
-
     $ grunt
-
+ ```
 ## Tips
 
  Running Node.js as a daemon with [forever](https://github.com/nodejitsu/forever)
 
+ ``` bash
     $ npm install forever -g
     $ forever start app.js
     $ forever list
     $ forever stop <uid>
+ ```
 
  Running Node.js on different port
 
+ ``` bash
     $ PORT=3001 node app
+ ```
 
 ## Links
 
