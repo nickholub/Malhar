@@ -3,7 +3,7 @@ Map Reduce Monitor
 
 Map Reduce Monitor Web Application. Implemented with [Node.js](http://nodejs.org/) and [AngularJS](http://angularjs.org/).
 
-![Map Reduce Monitor Web Application Screenshot](docs/MapReduceMonitor.png "Map Reduce Monitor Web Application Screenshot")
+![Map Reduce Monitor Web Application](docs/MapReduceMonitor.png "Map Reduce Monitor Web Application")
 
 ## Configuration
  config.js has application configuration.
@@ -111,6 +111,8 @@ and then publishes it through DataTorrent Gateway WebSocket).
 [Bower](http://bower.io/) Package manager for the web
 
 [Grunt](http://gruntjs.com/) JavaScript Task Runner
+
+[Yeoman](http://yeoman.io/) Webapp generator
 
 [Google Charts](https://developers.google.com/chart/) Charts by Google
 
