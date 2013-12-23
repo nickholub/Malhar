@@ -4,7 +4,8 @@ Map Reduce Monitor
 Map Reduce Monitor Web Application. Implemented with [Node.js](http://nodejs.org/) and [AngularJS](http://angularjs.org/).
 
 ## Configuration
- config.js has application configuration. WebSocket URL is ws://gateway_hostname:gateway_port/pubsub
+ config.js has application configuration.
+
  Minimum required configuration:
 
  - Hadoop ResourceManager
@@ -28,7 +29,9 @@ Map Reduce Monitor Web Application. Implemented with [Node.js](http://nodejs.org
 
  2. Install npm dependencies
 
+ ``` bash
     $ npm install
+ ```
 
  3. Install forever tool
 
@@ -87,3 +90,5 @@ Map Reduce Monitor Web Application. Implemented with [Node.js](http://nodejs.org
 [Bower](http://bower.io/) Package manager for the web
 
 [Grunt](http://gruntjs.com/) JavaScript Task Runner
+
+[Google Charts](https://developers.google.com/chart/) Charts by Google
