@@ -153,9 +153,17 @@ angular.module('app.controller')
         };
       });
 
-      list = _.sortBy(list, function (job) {
-        return (- job.startTime);
-      });
+      if ($scope.activeJobId) { // make active job first
+        var activeJobId = 'job_' + $scope.activeJobId; //TODO
+        list = _.sortBy(list, function (job) {
+          var active = (job.id === activeJobId);
+          return active ? Number.NEGATIVE_INFINITY : (- job.startTime);
+        });
+      } else {
+        list = _.sortBy(list, function (job) {
+          return (- job.startTime);
+        });
+      }
 
       $scope.gridData = list;
     }
