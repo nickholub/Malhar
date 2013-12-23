@@ -3,7 +3,7 @@ Map Reduce Monitor
 
 Map Reduce Monitor Web Application. Implemented with [Node.js](http://nodejs.org/) and [AngularJS](http://angularjs.org/).
 
-![Map Reduce Monitor Web Application Screenshot](doc/MapReduceMonitorScreenshot.png "Map Reduce Monitor Web Application Screenshot")
+![Map Reduce Monitor Web Application Screenshot](doc/MapReduceMonitor.png "Map Reduce Monitor Web Application Screenshot")
 
 ## Configuration
  config.js has application configuration.
