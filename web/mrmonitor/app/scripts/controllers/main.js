@@ -195,7 +195,7 @@ angular.module('app.controller')
       updateGrid();
     });
 
-    $scope.$watch('activeJobId', function (oldValue, newValue) {
+    $scope.$watch('activeJobId', function () {
       updateGrid();
     });
 
