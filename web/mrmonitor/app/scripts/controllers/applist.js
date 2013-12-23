@@ -28,7 +28,7 @@ angular.module('app.controller')
       $scope.showLoading = false;
     });
 
-    var linkTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="#/jobs/{{COL_FIELD}}">{{COL_FIELD}}</a></span></div>';
+    var linkTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="#/jobs/{{COL_FIELD | appId}}">{{COL_FIELD}}</a></span></div>';
 
     $scope.gridOptions = {
       data: 'apps',

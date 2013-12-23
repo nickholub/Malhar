@@ -17,15 +17,15 @@
 'use strict';
 
 angular.module('app.controller')
-  .controller('JobCtrl', function ($scope, $stateParams, util) {
+  .controller('JobCtrl', function ($scope, $stateParams) {
     if ($stateParams.jobId) {
-      $scope.jobId = util.extractJobId($stateParams.jobId);
+      $scope.jobId = $stateParams.jobId;
       $scope.$emit('activeJobId', $scope.jobId);
     } else {
       $scope.$emit('activeJobId', null);
     }
   })
-  .controller('CounterController', function ($scope, webSocket, util) {
+  .controller('CounterController', function ($scope, webSocket) {
     var counterGroups = null;
     var counterGroupNames = null;
 
@@ -55,9 +55,7 @@ angular.module('app.controller')
     webSocket.subscribe(settings.topic.stats, function (data) {
       var counterObject = JSON.parse(data);
 
-      var jobId = util.extractJobId(counterObject.jobCounters.id);
-
-      if ($scope.jobId !== jobId) {
+      if ($scope.jobId !== counterObject.jobCounters.id) {
         return;
       }
 
@@ -116,15 +114,13 @@ angular.module('app.controller')
       };
     });
   })
-  .controller('JobGridController', function ($scope, $filter, webSocket, util) {
+  .controller('JobGridController', function ($scope) {
     $scope.$watch('job', function (job) {
       if (!job) {
         return;
       }
 
-      var jobId = util.extractJobId(job.id);
-
-      if ($scope.jobId !== jobId) {
+      if ($scope.jobId !== job.id) {
         return;
       }
 

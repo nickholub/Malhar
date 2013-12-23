@@ -21,7 +21,9 @@ angular.module('app.controller')
     $scope.jobs = {};
     $scope.showLoading = false;
 
-    function jobRequest(id, command) {
+    function jobRequest(jobId, command) {
+      var id = util.extractJobId(jobId);
+
       var jsonData = {
         'command': command,
         'hostname': settings.hadoop.host,
@@ -50,8 +52,8 @@ angular.module('app.controller')
       $scope.activeJobId = activeJobId;
 
       if (activeJobId) {
-        if ($scope.jobs.hasOwnProperty('job_' + activeJobId)) { //TODO
-          $scope.job = $scope.jobs['job_' + activeJobId];
+        if ($scope.jobs.hasOwnProperty(activeJobId)) {
+          $scope.job = $scope.jobs[activeJobId];
           $scope.showLoading = false;
         } else {
           $scope.showLoading = true;
@@ -90,7 +92,9 @@ angular.module('app.controller')
       }
     });
 
-    function jobRemoved (jobId) {
+    function jobRemoved (id) {
+      var jobId = (id.indexOf('job_') < 0) ? 'job_' + id : id;
+
       $scope.$broadcast('jobRemoved', jobId);
 
       if ($scope.activeJobId && ($scope.activeJobId === jobId)) {
@@ -127,11 +131,8 @@ angular.module('app.controller')
       $scope.jobs[job.id] = job;
       $scope.job = job;
 
-      var jobId = util.extractJobId(job.id);
-
-      if ($scope.activeJobId === jobId) {
-        $scope.activeJob = $scope.job; //TODO
-        $scope.showLoading = false; //TODO rename activeJobLoaded
+      if ($scope.activeJobId === job.id) {
+        $scope.showLoading = false;
       }
 
       $scope.$apply();
@@ -140,12 +141,10 @@ angular.module('app.controller')
   .controller('MonitoredJobGridController', function ($scope, util, $templateCache, $state, notificationService) {
     function updateGrid () {
       var list = _.map(_.values($scope.jobs), function (job) {
-        var jobId = util.extractJobId(job.id);
-
         return {
           id: job.id,
           name: job.name,
-          cellRowClass: ($scope.activeJobId && ($scope.activeJobId === jobId)) ? 'row-active': '',
+          cellRowClass: ($scope.activeJobId && ($scope.activeJobId === job.id)) ? 'row-active': '',
           state: job.state,
           mapProgress: job.mapProgress,
           reduceProgress: job.reduceProgress,
@@ -161,7 +160,7 @@ angular.module('app.controller')
        var makeActiveFirst = true;
 
        if (makeActiveFirst && $scope.activeJobId) {
-        var activeJobId = 'job_' + $scope.activeJobId; //TODO
+        var activeJobId = $scope.activeJobId;
         console.log('activeJobId ' + activeJobId);
         console.log(list);
         var activeJob = _.find(list, function (job) {
@@ -191,7 +190,7 @@ angular.module('app.controller')
     });
 
     $scope.$on('jobRemoved', function (event, id) {
-      delete $scope.jobs['job_' + id]; //TODO
+      delete $scope.jobs[id]; //TODO
       updateGrid();
     });
 
@@ -204,15 +203,12 @@ angular.module('app.controller')
     var rowTemplate = $templateCache.get('rowTemplate.html');
     rowTemplate = rowTemplate.replace('ngCell', 'ngCell {{row.entity.cellRowClass}}'); // custom row class
 
-    //TODO
     $scope.removeJob = function (id) {
-      var jobId = util.extractJobId(id);
-
-      $scope.jobRemoveRequest(jobId);
+      $scope.jobRemoveRequest(id);
 
       notificationService.notify({
         title: 'Remove Job',
-        text: 'Request to remove job ' + jobId + ' from monitoring has been sent.',
+        text: 'Request to remove job ' + id + ' from monitoring has been sent.',
         type: 'info',
         delay: 3000,
         icon: false,
