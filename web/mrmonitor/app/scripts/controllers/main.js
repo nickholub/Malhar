@@ -153,17 +153,31 @@ angular.module('app.controller')
         };
       });
 
-      if ($scope.activeJobId) { // make active job first
+      list = _.sortBy(list, function (job) {
+        return (- job.startTime);
+      });
+
+      /*
+       var makeActiveFirst = true;
+
+       if (makeActiveFirst && $scope.activeJobId) {
         var activeJobId = 'job_' + $scope.activeJobId; //TODO
-        list = _.sortBy(list, function (job) {
-          var active = (job.id === activeJobId);
-          return active ? Number.NEGATIVE_INFINITY : (- job.startTime);
+        console.log('activeJobId ' + activeJobId);
+        console.log(list);
+        var activeJob = _.find(list, function (job) {
+          console.log(job);
+          return job.id === activeJobId;
         });
-      } else {
-        list = _.sortBy(list, function (job) {
-          return (- job.startTime);
-        });
+        console.log('activeJob ' + activeJob);
+        console.log(list);
+        if (activeJob) {
+          list = _.without(list, activeJob);
+
+          list.splice(0, 0, activeJob);
+          //makeActiveFirst = false;
+        }
       }
+      */
 
       $scope.gridData = list;
     }
@@ -181,7 +195,7 @@ angular.module('app.controller')
       updateGrid();
     });
 
-    $scope.$watch('activeJobId', function () {
+    $scope.$watch('activeJobId', function (oldValue, newValue) {
       updateGrid();
     });
 
