@@ -22,6 +22,10 @@ Map Reduce Monitor Web Application. Implemented with [Node.js](http://nodejs.org
 
   - DataTorrent Gateway
 
+## Notes
+
+  It may take 10+ seconds to see data on the first load (Map Reduce Java application starts polling Hadoop REST API
+and then publishes it through DataTorrent Gateway WebSocket).
 
 ## Running Application in Production Mode
 
@@ -74,6 +78,7 @@ Map Reduce Monitor Web Application. Implemented with [Node.js](http://nodejs.org
     $ npm install -g grunt-cli
     $ grunt
  ```
+
 ## Tips
 
  Running Node.js as a daemon with [forever](https://github.com/nodejitsu/forever)
