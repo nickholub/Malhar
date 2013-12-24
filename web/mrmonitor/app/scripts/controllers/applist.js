@@ -37,6 +37,8 @@ angular.module('app.controller')
       columnDefs: [
         { field: 'id', displayName: 'Task', cellTemplate: linkTemplate, width: 250 },
         { field: 'name', displayName: 'Name' },
+        { field: 'user', displayName: 'User' },
+        { field: 'queue', displayName: 'Queue' },
         { field: 'startedTime', displayName: 'Start Time', cellFilter: 'date:\'yyyy-MM-dd HH:mm:ss\'', width: 150 },
         { field: 'state', displayName: 'State' },
         { field: 'finalStatus', displayName: 'Final Status' },
