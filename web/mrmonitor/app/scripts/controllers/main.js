@@ -62,16 +62,12 @@ angular.module('app.controller')
       } else  {
         $scope.showLoading = false;
 
-        //TODO
-        //dev only
+        /*
+        // dev only, automatic map reduce job discovery
         // will be invoked on URL #/jobs/
 
-        if (true) {
-          return;
-        }
         rest.getApp().then(function (app) {
           if (app && app.id) {
-            //$state.go('jobs.job', { jobId: app.id });
             $scope.app = app;
 
             var id = util.extractJobId(app.id);
@@ -89,6 +85,7 @@ angular.module('app.controller')
             $state.go('jobs.job', { jobId: app.id });
           }
         });
+        */
       }
     });
 
@@ -120,6 +117,12 @@ angular.module('app.controller')
       if (data.removed) {
         jobRemoved(data.id);
         return;
+      }
+
+      if (data.mapHistory || data.reduceHistory) {
+        if ($scope.activeJobId && (data.id === $scope.activeJobId)) {
+          $scope.broadcast('history', data);
+        }
       }
 
       var job = data.job;
@@ -190,7 +193,7 @@ angular.module('app.controller')
     });
 
     $scope.$on('jobRemoved', function (event, id) {
-      delete $scope.jobs[id]; //TODO
+      delete $scope.jobs[id];
       updateGrid();
     });
 
@@ -216,9 +219,6 @@ angular.module('app.controller')
       });
     };
 
-    //TODO
-    //var actionCellTemplate = $templateCache.get('cellTemplate.html');
-    //actionCellTemplate = actionCellTemplate.replace('{{COL_FIELD CUSTOM_FILTERS}}', '<i class="icon-trash"></i>');
     var actionCellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" ng-click="removeJob(row.entity.id);"><i class="icon-trash"></i></div>';
 
     $scope.gridOptions = {

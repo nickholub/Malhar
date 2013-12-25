@@ -64,54 +64,34 @@ angular.module('app.controller')
       $scope.$apply();
     }, $scope);
   })
-  .controller('MapLineChartController', function ($scope) {
-    var items = [];
+  .controller('MapLineChartController', function ($scope, util) {
+    $scope.chart = {
+      data: [],
+      max: 30
+    };
 
-    $scope.$watch('activeJob', function (job) {
-      if (!job) {
-        return;
+    $scope.$on('history', function (event, job) {
+      if (job && job.mapHistory) {
+        $scope.chart = {
+          data: util.minuteSeries(job.mapHistory),
+          max: 30
+        };
       }
-
-      var item = {
-        value: job.mapProgress,
-        timestamp: Date.now()
-      };
-
-      items.push(item);
-
-      if (items.length > 40) {
-        items.shift();
-      }
-
-      $scope.chart = {
-        data: items,
-        max: 30
-      };
     });
   })
-  .controller('ReduceLineChartController', function ($scope) {
-    var items = [];
+  .controller('ReduceLineChartController', function ($scope, util) {
+    $scope.chart = {
+      data: [],
+      max: 30
+    };
 
-    $scope.$watch('activeJob', function (job) {
-      if (!job) {
-        return;
+    $scope.$on('history', function (event, job) {
+      if (job && job.reduceHistory) {
+        $scope.chart = {
+          data: util.minuteSeries(job.reduceHistory),
+          max: 30
+        };
       }
-
-      var item = {
-        value: job.reduceProgress,
-        timestamp: Date.now()
-      };
-
-      items.push(item);
-
-      if (items.length > 40) {
-        items.shift();
-      }
-
-      $scope.chart = {
-        data: items,
-        max: 30
-      };
     });
   })
   .controller('JobGridController', function ($scope) {

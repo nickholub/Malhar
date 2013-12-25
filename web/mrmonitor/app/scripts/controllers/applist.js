@@ -22,7 +22,6 @@ angular.module('app.controller')
 
     var apps = rest.getApps();
 
-    //util.delay(apps).then(function (apps) { //TODO dev only
     apps.then(function (apps) {
       $scope.apps = apps;
       $scope.showLoading = false;
