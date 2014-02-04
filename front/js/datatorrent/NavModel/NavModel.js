@@ -13,6 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+var _ = require('underscore');
 var Backbone = require('backbone');
 var util = require('./util');
 var Nav = Backbone.Model.extend({
@@ -49,10 +50,18 @@ var Nav = Backbone.Model.extend({
     },
     
     serializeModes: function() {
-        return [
-            { name: "Operations" , href: "#ops", "class": "ops" + (this.get('mode') === "ops" ? " active" : "") },
-            { name: "Development", href: "#dev", "class": "dev" + (this.get('mode') === "dev" ? " active" : "") }
+        var mode = this.get('mode');
+        var modes = [
+            { name: "Configure",   href: "#config", "class": "config" }
+            { name: "Operations" , href: "#ops", "class": "ops" },
+            { name: "Development", href: "#dev", "class": "dev" }
         ]
+        _.each(modes, function(modeObj) {
+            if (modeObj['class'] === mode) {
+                modeObj['class'] += ' active';
+            }
+        });
+        return modes;
     },
     
     go: function(route, options){
