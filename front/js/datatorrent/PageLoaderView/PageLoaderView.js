@@ -122,7 +122,9 @@ var PageLoaderView = BaseView.extend({
             return dash.get('selected');
         });
         
-        loadedDash.triggerResize();
+        if (loadedDash) {
+            loadedDash.triggerResize();
+        }
         
     }, 300 ),
     
