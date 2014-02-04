@@ -28,7 +28,7 @@
     "graceful-fs": "~2.0.1"
   },
   "dependencies": {
-    "browserify": "~2.36.1",
+    "browserify": "~3.24.11",
     "ktbr": "~0.1.0",
     "uglify-js": "2.2.5",
     "less": "1.3.3",
