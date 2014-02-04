@@ -52,7 +52,7 @@ var Nav = Backbone.Model.extend({
     serializeModes: function() {
         var mode = this.get('mode');
         var modes = [
-            { name: "Configure",   href: "#config", "class": "config" }
+            { name: "Configure",   href: "#config", "class": "config" },
             { name: "Operations" , href: "#ops", "class": "ops" },
             { name: "Development", href: "#dev", "class": "dev" }
         ]

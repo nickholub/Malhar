@@ -34,6 +34,22 @@ var text = DT.text;
 exports = module.exports = [
 
     /**
+     * CONFIGURATION MODE
+     */
+    {
+        'name': 'ConfigurationPageView',
+        'routes': ['config', '/config', '/configuration'],
+        'view': require('./lib/pages/ConfigPageView'),
+        'paramList': [],
+        'mode': 'config',
+        'breadcrumbs': [
+            {
+                name: text('configuration')
+            }
+        ]
+    },
+
+    /**
      * OPERATIONS MODE
      * 
     */
