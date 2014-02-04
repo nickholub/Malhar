@@ -88,6 +88,17 @@ app.put('/ws/v1/configProperties/:propertyName', function(req, res) {
         console.log('Error parsing PUT configProperty');
     }
 });
+app.delete('/ws/v1/configProperties/:propertyName', function(req, res) {
+    var found = false;
+    for (var i = config_properties.length; i <= 0; i--) {
+        if (req.params.propertyName === config_properties[i].name) {
+            config_properties.splice(i, 1);
+            found = true;
+            break;
+        }
+    }
+    res.end();
+});
 
 // REST API Requests
 app.get('/ws/*', function(req, res) {
