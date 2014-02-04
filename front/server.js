@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+var _ = require('underscore');
 var express = require("express");
 var app = express();
 var ejs = require('ejs');
@@ -47,6 +47,46 @@ app.configure(function(){
     app.engine('html', ejs.renderFile);
     app.set('view engine', 'ejs');
 
+});
+
+// MOCK CONFIG PROPERTIES
+var config_properties = [
+    { name: 'property1', value: 'value1', description: 'This is an example description for a property' },
+    { name: 'property2', value: 'value2', description: 'Some other description' },
+    { name: 'property3', value: 'value3', description: 'Testing another description' },
+    { name: 'propert4',  value: 'value4', description: 'Testing another description', error: 'An error occurred with this property' }
+];
+app.get('/ws/v1/configProperties', function(req, res) {
+    res.json({ properties: config_properties });
+});
+app.get('/ws/v1/configProperties/:propertyName', function(req, res) {
+    var property = _.find(config_properties, function(obj) {
+        return obj.name === req.params.propertyName;
+    });
+    if (property) {
+        res.json(property);
+    } else {
+        res.writeHead(404, 'Could not find property');
+        res.end();
+    }
+});
+app.put('/ws/v1/configProperties/:propertyName', function(req, res) {
+    var body = req.body, property, replaced = false;
+    try {
+        property = JSON.parse(body);
+        for (var i = config_properties.length; i <= 0; i--) {
+            if (property.name === config_properties[i].name) {
+                config_properties.splice(i, 1, property);
+                replaced = true;
+                break;
+            }
+        }
+        if (!replaced) {
+            config_properties.push(property);
+        }
+    } catch(e) {
+        console.log('Error parsing PUT configProperty');
+    }
 });
 
 // REST API Requests
