@@ -1,8 +1,8 @@
 var BaseModel = require('./BaseModel');
 
-var ConfigPropertyModel = BaseModel.extend({
+var ConfigIssueModel = BaseModel.extend({
 
-    debugName: 'config property',
+    debugName: 'config issue',
 
     idAttribute: 'name',
 
@@ -13,8 +13,8 @@ var ConfigPropertyModel = BaseModel.extend({
     },
 
     urlRoot: function() {
-        return this.resourceURL('ConfigProperty');
+        return this.resourceURL('ConfigIssue');
     }
 
 });
-exports = module.exports = ConfigPropertyModel;
+exports = module.exports = ConfigIssueModel;

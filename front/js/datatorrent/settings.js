@@ -24,7 +24,8 @@ exports = module.exports = {
         
         Application              :'/ws/:v/applications',
         ClusterMetrics           :'/ws/:v/cluster/metrics',
-        ConfigProperty           :'/ws/:v/configProperties',
+        ConfigProperty           :'/ws/:v/config/properties',
+        ConfigIssue              :'/ws/:v/config/issues',
         LogicalPlan              :'/ws/:v/applications/:appId/logicalPlan',
         PhysicalPlan             :'/ws/:v/applications/:appId/physicalPlan',
         Operator                 :'/ws/:v/applications/:appId/physicalPlan/operators',

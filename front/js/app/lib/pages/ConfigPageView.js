@@ -16,18 +16,50 @@
 var _ = require('underscore');
 var kt = require('knights-templar');
 var BasePageView = DT.lib.BasePageView;
+var ConfigPropertyCollection = DT.lib.ConfigPropertyCollection;
+var ConfigIssueCollection = DT.lib.ConfigIssueCollection;
+
+// widgets
+var ConfigTableWidget = require('../widgets/ConfigTableWidget');
+
 var ConfigPageView = BasePageView.extend({
 
     pageName: 'ConfigPageView',
 
-    render: function() {
-        var json = {};
-        var html = this.template(json);
-        this.$el.html(html);
-        return this;
-    },
+    defaultDashes: [
+        {
+            dash_id: 'default',
+            widgets: [
+                { widget: 'ConfigTable', id: 'Properties' }
+            ]
+        }
+    ],
 
-    template: kt.make(__dirname+'/ConfigPageView.html','_')
+    useDashMgr: false,
+
+    initialize: function(options) {
+        BasePageView.prototype.initialize.call(this,options);
+        
+        this.properties = new ConfigPropertyCollection([]);
+        this.properties.fetch();
+
+        this.issues = new ConfigIssueCollection([]);
+        this.issues.fetch();
+
+        this.defineWidgets([
+            {
+                name: 'ConfigTable',
+                defaultId: 'Config Properties',
+                view: ConfigTableWidget,
+                limit: 1,
+                inject: {
+                    collection: this.properties,
+                    issues: this.issues
+                }
+            }
+        ]);
+        this.loadDashboards('default');
+    }
 
 });
 

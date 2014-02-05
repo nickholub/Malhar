@@ -54,12 +54,13 @@ var config_properties = [
     { name: 'property1', value: 'value1', description: 'This is an example description for a property' },
     { name: 'property2', value: 'value2', description: 'Some other description' },
     { name: 'property3', value: 'value3', description: 'Testing another description' },
-    { name: 'propert4',  value: 'value4', description: 'Testing another description', error: 'An error occurred with this property' }
+    { name: 'propert4',  value: 'value4', description: 'Testing another description' }
 ];
-app.get('/ws/v1/configProperties', function(req, res) {
+var config_issues = [];
+app.get('/ws/v1/config/properties', function(req, res) {
     res.json({ properties: config_properties });
 });
-app.get('/ws/v1/configProperties/:propertyName', function(req, res) {
+app.get('/ws/v1/config/properties/:propertyName', function(req, res) {
     var property = _.find(config_properties, function(obj) {
         return obj.name === req.params.propertyName;
     });
@@ -70,7 +71,7 @@ app.get('/ws/v1/configProperties/:propertyName', function(req, res) {
         res.end();
     }
 });
-app.put('/ws/v1/configProperties/:propertyName', function(req, res) {
+app.put('/ws/v1/config/properties/:propertyName', function(req, res) {
     var body = req.body, property, replaced = false;
     try {
         property = JSON.parse(body);
@@ -85,10 +86,10 @@ app.put('/ws/v1/configProperties/:propertyName', function(req, res) {
             config_properties.push(property);
         }
     } catch(e) {
-        console.log('Error parsing PUT configProperty');
+        console.log('Error parsing PUT config/property');
     }
 });
-app.delete('/ws/v1/configProperties/:propertyName', function(req, res) {
+app.delete('/ws/v1/config/properties/:propertyName', function(req, res) {
     var found = false;
     for (var i = config_properties.length; i <= 0; i--) {
         if (req.params.propertyName === config_properties[i].name) {
@@ -98,6 +99,9 @@ app.delete('/ws/v1/configProperties/:propertyName', function(req, res) {
         }
     }
     res.end();
+});
+app.get('/ws/v1/config/issues', function(req, res) {
+    res.json({issues: config_issues});
 });
 
 // REST API Requests

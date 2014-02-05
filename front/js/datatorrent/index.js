@@ -39,6 +39,8 @@ var datatorrent = {
         ClusterMetricsModel          : require('./ClusterMetricsModel'),
         ConfigPropertyModel          : require('./ConfigPropertyModel'),
         ConfigPropertyCollection     : require('./ConfigPropertyCollection'),
+        ConfigIssueModel             : require('./ConfigIssueModel'),
+        ConfigIssueCollection        : require('./ConfigIssueCollection'),
         DagOperatorView              : require('./DagOperatorView'),
         DagView                      : require('./DagView'),
         DashCollection               : require('./DashCollection'),
