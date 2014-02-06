@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var BaseCollection = require('./BaseCollection');
 var ConfigPropertyModel = require('./ConfigPropertyModel');
 
@@ -11,7 +12,14 @@ var ConfigPropertyCollection = BaseCollection.extend({
         return this.resourceURL('ConfigProperty');
     },
 
-    responseTransform: 'properties',
+    responseTransform: function(response) {
+        var result = [];
+        _.each(response, function(obj, name) {
+            obj.name = name;
+            result.push(obj);
+        });
+        return result;
+    },
 
     setIssues: function(issues) {
         if (this.issues) {
@@ -42,11 +50,6 @@ var ConfigPropertyCollection = BaseCollection.extend({
                 }
             }, this);
         }
-    },
-
-    toJSON: function() {
-
-        var arr = BaseCollection.prototype.toJSON.call(this);
     }
 
 });

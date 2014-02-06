@@ -20,8 +20,6 @@ var BaseView = DT.lib.WidgetView;
 
 /**
  * ConfigTableWidget
- * 
- * Description of widget.
  *
 */
 var ConfigTableWidget = BaseView.extend({
@@ -34,20 +32,77 @@ var ConfigTableWidget = BaseView.extend({
 
         this.listenTo(this.collection, 'sync', this.render);
         this.listenTo(this.issues, 'sync', this.render);
-        
-    },
-    
-    render: function() {
-
-        var json = {
-            properties: this.collection.toJSON()
+        this.filters = {
+            name: '',
+            value: '',
+            property: ''
         };
-        var html = this.template(json);
-        this.$el.html(html);
-        return this;
     },
     
-    template: kt.make(__dirname+'/ConfigTableWidget.html','_')
+    html: function() {
+        var filters = this.filters;
+        var collection = this.collection.filter(function(prop) {
+            var passed = true;
+            _.each(filters, function(val, key) {
+                if (val && prop.get(key).toString().indexOf(val) === -1) {
+                    passed = false;
+                }
+            });
+            return passed;
+        });
+        collection = _.map(collection, function(prop) { return prop.toJSON(); });
+        var json = {
+            properties: collection,
+            filters: filters
+        };
+        return this.template(json);
+    },
+    
+    events: {
+        'dblclick .property-value': 'startPropertyEdit',
+        'click .update-property': 'updateProperty',
+        'change .config-properties-filter': 'updateFilters',
+        'keyup .config-properties-filter': 'updateFilters'
+    },
+
+    startPropertyEdit: function(e) {
+        var $span = $(e.target);
+        var text = $.trim($span.text());
+        var name = $span.data('property-name');
+        var $textarea = $('<textarea>' + text + '</textarea>');
+        $span.replaceWith($textarea);
+        _.defer(function() {
+            $textarea.focus();
+        });
+        var $btn = $('<br><button role="button" class="btn update-property" data-property-name="' + name + '">update</button>');
+        $btn.insertAfter($textarea);
+    },
+
+    updateProperty: function(e) {
+        var $btn = $(e.target);
+        var propName = $btn.data('property-name');
+        var $td = $btn.parent('td');
+        var newVal = $td.find('textarea').val();
+        var property = this.collection.get(propName);
+        if (property) {
+            property.set('value', newVal);
+            property.save();
+        }
+        $td.html('<span class="property-value" data-property-name="' + propName + '">' + newVal + '</span>');
+    },
+
+    updateFilters: _.debounce(function() {
+        var filters = this.filters;
+        $('.config-properties-filter').each(function(i,el){
+            var $e = $(el);
+            filters[$e.data('field')] = $e.val();
+        });
+        this.renderContent();
+    }, 300),
+
+    template: kt.make(__dirname+'/ConfigTableWidget.html','_'),
+
+    results_template: kt.make(__dirname+'/ConfigTableResults.html')
     
 });
 

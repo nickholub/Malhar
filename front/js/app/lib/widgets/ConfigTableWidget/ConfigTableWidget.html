@@ -1,21 +1,14 @@
-<div class="container" style="margin-top:20px">
-    <div class="hero-unit">
-        <h1>Welcome to DataTorrent!</h1>
-        <p>
-            If you are seeing this screen, you have successfully launched the DataTorrent Gateway.<br>You may need to change a few configuration items below to complete your DataTorrent setup.
-        </p>
-    </div>
-</div>
-
 <style>
     
     #config-properties-table {
         width: 100%;
         text-align: left;
+        table-layout: fixed;
     }
 
     #config-properties-table td, #config-properties-table th {
         padding: 10px;
+        word-wrap: break-word;
     }
 
     #config-properties-table thead {
@@ -24,7 +17,7 @@
     }
 
     #config-properties-table tr:nth-child(even) {
-        background-color: #FFF;
+        background-color: #DADADA;
     }
 
     #config-properties-table input[type="search"] {
@@ -32,7 +25,7 @@
     }
 
 </style>
-<!-- <div class="container">
+<div class="container">
     <h4>Here is a list of configurable properties. </h4>
 <p>Double click a property value to update.</p>
     <table id="config-properties-table">
@@ -42,26 +35,20 @@
             <th scope="col">value</th>
             <th scope="col">description</th>
         </tr>
+        <tr>
+            <td>
+                <input type="search" class="config-properties-filter" placeholder="filter" data-field="name" value="<%= filters.name %>">
+            </td>
+            <td>
+                <input type="search" class="config-properties-filter" placeholder="filter" data-field="value" value="<%= filters.value %>">
+            </td>
+            <td>
+                <input type="search" class="config-properties-filter" placeholder="filter" data-field="property" value="<%= filters.property %>">
+            </td>
+        </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>
-                <input type="search" class="config-properties-filter" placeholder="filter" data-field="name">
-            </td>
-            <td>
-                <input type="search" class="config-properties-filter" placeholder="filter" data-field="value">
-            </td>
-            <td>
-                <input type="search" class="config-properties-filter" placeholder="filter" data-field="property">
-            </td>
-        </tr>
-        <% _.each( properties, function(prop) { %>
-        <tr>
-            <td><%= prop.name %></td>
-            <td><%= prop.value %></td>
-            <td><%= prop.description %></td>
-        </tr>
-        <% }) %>
+        
     </tbody>
 </ul>   
-</div> -->
+</div>

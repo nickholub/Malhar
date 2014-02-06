@@ -20,6 +20,7 @@ var ConfigPropertyCollection = DT.lib.ConfigPropertyCollection;
 var ConfigIssueCollection = DT.lib.ConfigIssueCollection;
 
 // widgets
+var ConfigWelcomeWidget = require('../widgets/ConfigWelcomeWidget');
 var ConfigTableWidget = require('../widgets/ConfigTableWidget');
 
 var ConfigPageView = BasePageView.extend({
@@ -28,14 +29,15 @@ var ConfigPageView = BasePageView.extend({
 
     defaultDashes: [
         {
-            dash_id: 'default',
+            dash_id: 'Welcome!',
             widgets: [
+                { widget: 'ConfigWelcome', id: 'Welcome!' },
                 { widget: 'ConfigTable', id: 'Properties' }
             ]
         }
     ],
 
-    useDashMgr: false,
+    useDashMgr: true,
 
     initialize: function(options) {
         BasePageView.prototype.initialize.call(this,options);
@@ -44,9 +46,19 @@ var ConfigPageView = BasePageView.extend({
         this.properties.fetch();
 
         this.issues = new ConfigIssueCollection([]);
-        this.issues.fetch();
+        // this.issues.fetch();
 
         this.defineWidgets([
+            {
+                name: 'ConfigWelcome',
+                defaultId: 'Welcome!',
+                view: ConfigWelcomeWidget,
+                limit: 1,
+                inject: {
+                    collection: this.properties,
+                    issues: this.issues
+                }
+            },
             {
                 name: 'ConfigTable',
                 defaultId: 'Config Properties',
@@ -58,7 +70,7 @@ var ConfigPageView = BasePageView.extend({
                 }
             }
         ]);
-        this.loadDashboards('default');
+        this.loadDashboards('Welcome!');
     }
 
 });
