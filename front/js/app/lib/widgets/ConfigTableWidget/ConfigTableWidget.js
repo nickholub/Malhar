@@ -41,21 +41,32 @@ var ConfigTableWidget = BaseView.extend({
     
     html: function() {
         var filters = this.filters;
+        var json = {
+            filters: filters
+        };
+        return this.template(json);
+    },
+
+    render: function() {
+        BaseView.prototype.render.call(this);
+        this.updateResults();
+        return this;
+    },
+
+    updateResults: function() {
+        var filters = this.filters;
         var collection = this.collection.filter(function(prop) {
             var passed = true;
             _.each(filters, function(val, key) {
-                if (val && prop.get(key).toString().indexOf(val) === -1) {
+                if (val && prop.get(key).toString().toLowerCase().indexOf(val.toLowerCase()) === -1) {
                     passed = false;
                 }
             });
             return passed;
         });
         collection = _.map(collection, function(prop) { return prop.toJSON(); });
-        var json = {
-            properties: collection,
-            filters: filters
-        };
-        return this.template(json);
+        var html = this.results_template({ properties: collection });
+        this.$('tbody').html(html);
     },
     
     events: {
@@ -97,7 +108,7 @@ var ConfigTableWidget = BaseView.extend({
             var $e = $(el);
             filters[$e.data('field')] = $e.val();
         });
-        this.renderContent();
+        this.updateResults();
     }, 300),
 
     template: kt.make(__dirname+'/ConfigTableWidget.html','_'),
