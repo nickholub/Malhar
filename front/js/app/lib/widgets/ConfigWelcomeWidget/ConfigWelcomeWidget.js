@@ -27,18 +27,46 @@ var BaseView = DT.lib.WidgetView;
 var ConfigWelcomeWidget = BaseView.extend({
     
     initialize: function(options) {
-        
         BaseView.prototype.initialize.call(this, options);
-        
+        this.issues = options.issues;
     },
     
     render: function() {
         var html = this.template();
         this.$el.html(html);
+        this.goToStep('welcome');
         return this;
     },
+
+    events: {
+        'click .install-step-link': 'onStepLinkClick'
+    },
+
+    onStepLinkClick: function(e) {
+        e.preventDefault();
+        var $target = $(e.target);
+        var step = $target.data('action');
+        if (step) this.goToStep(step);
+    },
+
+    goToStep: function(step) {
+        this.$('.install-steps-nav .install-step-link').removeClass('active');
+        this.$('.install-steps-nav .install-step-link[data-action="' + step + '"]').addClass('active');
+        this.$('.install-steps-pane .inner').html(this.steps[step]({
+            issues: this.issues.toJSON(),
+            properties: this.collection.toJSON()
+        }));
+    },
     
-    template: kt.make(__dirname+'/ConfigWelcomeWidget.html','_')
+    template: kt.make(__dirname+'/ConfigWelcomeWidget.html','_'),
+
+    steps: {
+        welcome: kt.make(__dirname+'/step_welcome.html'),
+        system: kt.make(__dirname+'/step_system.html'),
+        performance: kt.make(__dirname+'/step_performance.html'),
+        applications: kt.make(__dirname+'/step_applications.html'),
+        summary: kt.make(__dirname+'/step_summary.html')
+    }
     
 });
 
