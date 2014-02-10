@@ -37,7 +37,7 @@ var ConfigPageView = BasePageView.extend({
         }
     ],
 
-    useDashMgr: true,
+    useDashMgr: false,
 
     initialize: function(options) {
         BasePageView.prototype.initialize.call(this,options);

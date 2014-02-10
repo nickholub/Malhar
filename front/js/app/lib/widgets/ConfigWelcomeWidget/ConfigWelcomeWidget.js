@@ -29,12 +29,13 @@ var ConfigWelcomeWidget = BaseView.extend({
     initialize: function(options) {
         BaseView.prototype.initialize.call(this, options);
         this.issues = options.issues;
+        this.current_step = 'welcome';
     },
     
     render: function() {
         var html = this.template();
         this.$el.html(html);
-        this.goToStep('welcome');
+        this.goToStep(this.current_step);
         return this;
     },
 
@@ -56,6 +57,7 @@ var ConfigWelcomeWidget = BaseView.extend({
             issues: this.issues.toJSON(),
             properties: this.collection.toJSON()
         }));
+        this.current_step = step;
     },
     
     template: kt.make(__dirname+'/ConfigWelcomeWidget.html','_'),
