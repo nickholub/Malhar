@@ -31,8 +31,8 @@ var ConfigPageView = BasePageView.extend({
         {
             dash_id: 'Welcome!',
             widgets: [
-                { widget: 'ConfigWelcome', id: 'Welcome!' },
-                { widget: 'ConfigTable', id: 'Properties' }
+                { widget: 'ConfigWelcome', id: 'Welcome!' }
+                // { widget: 'ConfigTable', id: 'Properties' }
             ]
         }
     ],
