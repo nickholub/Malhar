@@ -44,9 +44,9 @@ var ConfigPageView = BasePageView.extend({
         
         this.properties = new ConfigPropertyCollection([]);
         this.properties.fetch();
-
+        window.props = this.properties;
         this.issues = new ConfigIssueCollection([]);
-        // this.issues.fetch();
+        this.issues.fetch();
 
         this.defineWidgets([
             {
