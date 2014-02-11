@@ -47,9 +47,19 @@
         }
 
         table {
-            width:auto;
+            width:100%;
             border: 1px solid #CCC;
             margin-bottom:15px;
+            thead {
+                tr {
+                    background-color: #474747 !important;
+                    color: white;
+                    th {
+                        text-align: left;
+                        padding: 10px 5px;
+                    }
+                }
+            }
             tr {
                 &:nth-child(odd) {
                     background-color: #DEDEDE;
@@ -57,6 +67,10 @@
 
                 td {
                     padding: 10px;
+                }
+
+                input, select {
+                    margin-bottom: 0;
                 }
             }
         }
