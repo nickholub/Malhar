@@ -16,58 +16,50 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var util = require('./util');
+var Modes = require('../ModeCollection');
 var Nav = Backbone.Model.extend({
-    
+
     defaults: {
         current_page: "",
         url_args: [],
         mode: ""
     },
-    
+
     initialize: function(attributes, options) {
         // Create a router
         this.router = new Backbone.Router({
             routes: util.extractRoutesFrom(options.pages)
         });
 
+        this.modes = new Modes(options.modes);
+
         // Listen for routes
         this.listenTo(this.router, "route", this.onRouteChange);
     },
-    
+
     onRouteChange: function(route, params) {
         var args = params.slice();
 
         // If the page is changing, dont trigger the url change
         var silence_args = (route != this.get('current_page'));
-        
+
         // Make changes
-        this.set({'url_args':args}, { silent: silence_args });
+        this.set({
+            'url_args': args
+        }, {
+            silent: silence_args
+        });
         this.set('current_page', route);
     },
-    
+
     start: function() {
         Backbone.history.start();
     },
-    
-    serializeModes: function() {
-        var mode = this.get('mode');
-        var modes = [
-            { name: "Configure",   href: "#config", "class": "config" },
-            { name: "Operations" , href: "#ops", "class": "ops" },
-            { name: "Development", href: "#dev", "class": "dev" }
-        ]
-        _.each(modes, function(modeObj) {
-            if (modeObj['class'] === mode) {
-                modeObj['class'] += ' active';
-            }
-        });
-        return modes;
-    },
-    
-    go: function(route, options){
+
+    go: function(route, options) {
         this.router.navigate(route, options);
     }
-    
+
 });
 
 exports = module.exports = Nav
