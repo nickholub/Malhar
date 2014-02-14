@@ -20,17 +20,17 @@ var ConfigPropertyCollection = DT.lib.ConfigPropertyCollection;
 var ConfigIssueCollection = DT.lib.ConfigIssueCollection;
 
 // widgets
-var ConfigTableWidget = require('../widgets/ConfigTableWidget');
+var ConfigWelcomeWidget = require('../widgets/ConfigWelcomeWidget');
 
-var ConfigPageView = BasePageView.extend({
+var WelcomePageView = BasePageView.extend({
 
-    pageName: 'ConfigPageView',
+    pageName: 'WelcomePageView',
 
     defaultDashes: [
         {
-            dash_id: 'default',
+            dash_id: 'Welcome!',
             widgets: [
-                { widget: 'ConfigTable', id: 'Properties' }
+                { widget: 'ConfigWelcome', id: 'Welcome!' }
             ]
         }
     ],
@@ -48,9 +48,9 @@ var ConfigPageView = BasePageView.extend({
 
         this.defineWidgets([
             {
-                name: 'ConfigTable',
-                defaultId: 'Config Properties',
-                view: ConfigTableWidget,
+                name: 'ConfigWelcome',
+                defaultId: 'Welcome!',
+                view: ConfigWelcomeWidget,
                 limit: 1,
                 inject: {
                     collection: this.properties,
@@ -58,9 +58,9 @@ var ConfigPageView = BasePageView.extend({
                 }
             }
         ]);
-        this.loadDashboards('default');
+        this.loadDashboards('Welcome!');
     }
 
 });
 
-exports = module.exports = ConfigPageView;
+exports = module.exports = WelcomePageView;
