@@ -46,6 +46,12 @@ var ConfigWelcomeWidget = BaseView.extend({
     onStepLinkClick: function(e) {
         e.preventDefault();
         var $target = $(e.target);
+
+        if (!$target.hasClass('install-step-link')) {
+            // look for parent
+            $target = $target.parents('.install-step-link');
+        }
+
         var step = $target.data('action');
         if (step) this.goToStep(step);
     },
