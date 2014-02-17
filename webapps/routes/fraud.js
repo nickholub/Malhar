@@ -12,7 +12,7 @@ var demoEnabled = (config.fraud.mongo.host && config.fraud.mongo.port);
 
 if (demoEnabled) {
     // Connect to the mongo database
-    var db = new Db('frauddetect', new Server(config.fraud.mongo.host, config.fraud.mongo.port));
+    var db = new Db(config.fraud.mongo.dbName, new Server(config.fraud.mongo.host, config.fraud.mongo.port));
     db.open(function(err, mongoclient){
         console.log('Mongo Database connection opened');
         mongoCxn.resolve();

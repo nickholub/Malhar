@@ -18,5 +18,6 @@ config.adsdimensions.redis.host = null;
 config.adsdimensions.redis.port = 6379;
 config.fraud.mongo.host = null;
 config.fraud.mongo.port = 27017;
+config.fraud.mongo.dbName = 'frauddetect';
 
 module.exports = config
