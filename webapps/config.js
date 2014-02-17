@@ -11,13 +11,13 @@ config.adsdimensions.redis = {};
 config.web.port = process.env.PORT || 3003;
 config.gateway.host = process.env.GATEWAY_HOST || 'localhost';
 config.gateway.port = process.env.GATEWAY_PORT || 9090;
-config.machine.redis.host = null;
-config.machine.redis.port = 6379;
+config.machine.redis.host = process.env.MACHINE_REDIS_HOST || null;
+config.machine.redis.port = process.env.MACHINE_REDIS_PORT || 6379;
 config.machine.redis.dbIndex = 2;
-config.adsdimensions.redis.host = null;
-config.adsdimensions.redis.port = 6379;
-config.fraud.mongo.host = null;
-config.fraud.mongo.port = 27017;
+config.adsdimensions.redis.host = process.env.ADS_REDIS_HOST || null;
+config.adsdimensions.redis.port = process.env.ADS_REDIS_PORT || 6379;
+config.fraud.mongo.host = process.env.MONGODB_HOST || null;
+config.fraud.mongo.port = process.env.MONGODB_PORT || 27017;
 config.fraud.mongo.dbName = 'frauddetect';
 
 // client settings (passed to the browser)
