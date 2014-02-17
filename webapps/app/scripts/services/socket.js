@@ -124,8 +124,6 @@
             if (timeoutPromise) {
               $timeout.cancel(timeoutPromise);
             }
-
-            console.log('visible');
           });
 
           return {
