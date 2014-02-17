@@ -9,8 +9,8 @@ config.adsdimensions = {};
 config.adsdimensions.redis = {};
 
 config.web.port = process.env.PORT || 3003;
-config.gateway.host = 'localhost';
-config.gateway.port = 9090;
+config.gateway.host = process.env.GATEWAY_HOST || 'localhost';
+config.gateway.port = process.env.GATEWAY_PORT || 9090;
 config.machine.redis.host = null;
 config.machine.redis.port = 6379;
 config.machine.redis.dbIndex = 2;
