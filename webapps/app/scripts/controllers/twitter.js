@@ -49,7 +49,7 @@ angular.module('twitter')
         };
     }])
     .controller('TwitterBarChartController', ['$scope', 'socket', function($scope, socket) {
-        socket.on(settings.twitter.topic, function(data) {
+        socket.subscribe(settings.twitter.topic, function(data) {
             var list = [];
             jQuery.each(data.data, function(key, value) {
                 list.push( { name: key, value: parseInt(value, 10) } );

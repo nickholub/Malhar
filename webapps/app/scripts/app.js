@@ -24,12 +24,16 @@ angular.module('twitter', ['rest', 'socket', 'widgets', 'ngGrid']);
 angular.module('mobile', ['rest', 'widgets', 'ngGrid', 'google-maps']);
 angular.module('machine', ['ng', 'rest', 'widgets']);
 angular.module('dimensions', ['ng', 'rest', 'widgets']);
-angular.module('fraud', ['rest', 'widgets', 'socket']);
+angular.module('fraud', ['rest', 'widgets']);
 
-angular.module('app', ['twitter', 'mobile', 'machine', 'dimensions', 'fraud']);
+angular.module('app', ['socket', 'twitter', 'mobile', 'machine', 'dimensions', 'fraud']);
 
 angular.module('app')
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, socketProvider) {
+    if (window.settings) {
+      socketProvider.setWebSocketURL(settings.webSocketURL);
+    }
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/welcome.html'
