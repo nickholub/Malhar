@@ -249,7 +249,8 @@ module.exports = function (grunt) {
             '.htaccess',
             'bower_components/**/*',
             'images/{,*/}*.{png,gif,webp}',
-            'styles/fonts/*'
+            'styles/fonts/*',
+            'scripts/vendor/markerwithlabel.js'
           ]
         }, {
           expand: true,
