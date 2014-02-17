@@ -39,7 +39,7 @@ angular.module('twitter')
             });
             $scope.myData = list;
             $scope.$apply();
-        });
+        }, $scope);
 
         $scope.gridOptions = {
             data: 'myData',
@@ -66,7 +66,7 @@ angular.module('twitter')
 
             $scope.twitterBarChartData = list;
             $scope.$apply();
-        });
+        }, $scope);
         $scope.twitterBarChartData = [];
     }]);
 
