@@ -22,13 +22,8 @@
     <!-- endbuild -->
 </head>
 <body ng-app="app">
-<!--[if lt IE 7]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-<![endif]-->
-
 <!--[if lt IE 9]>
-<script src="bower_components/es5-shim/es5-shim.js"></script>
-<script src="bower_components/json3/lib/json3.min.js"></script>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
 
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -76,7 +71,7 @@
 <script src="bower_components/bootstrap-sass/js/bootstrap-tab.js"></script>
 <!-- endbuild -->
 
-<!-- build:js scripts/tmodules.js -->
+<!-- build:js scripts/modules.js -->
 <script src="bower_components/underscore/underscore.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -92,7 +87,7 @@
 <script src="scripts/vendor/angular-google-maps.js"></script>
 <!-- endbuild -->
 
-<!-- build:js({.tmp,app}) scripts/tscripts.js -->
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
 <script src="scripts/services/rest.js"></script>
 <script src="scripts/services/socket.js"></script>
