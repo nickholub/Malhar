@@ -17,30 +17,71 @@
 var _ = require('underscore');
 var kt = require('knights-templar');
 var BaseView = DT.lib.WidgetView;
+var StepCollection = require('./StepCollection');
+var steps = require('./steps');
+var StepListView = require('./StepListView');
 
 /**
  * ConfigWelcomeWidget
  * 
- * Welcomes the user to the datadorrent console
- *
+ * Welcomes the user to the datadorrent console.
+ * Takes the form of a "install wizard" with 
+ * sequential steps that show potential issues and
+ * offer ways of fixing those issues.
 */
 var ConfigWelcomeWidget = BaseView.extend({
     
     initialize: function(options) {
+
         BaseView.prototype.initialize.call(this, options);
+
+        // installation issues, instantiated 
+        // and fetched on WelcomePageView
         this.issues = options.issues;
-        this.current_step = 'welcome';
+
+        // models for each step in this welcome
+        // process.
+        this.steps = new StepCollection(steps);
+        this.steps.setActive('welcome');
+
+        // this view contains the list of steps on the left
+        // side of the wizard. 
+        this.subview('step_list', new StepListView({
+            collection: this.steps
+        }));
+
+        // when active step changes, update the main 
+        // pane with the appropriate step template.
+        this.listenTo(this.steps, 'change:active', function(model, active) {
+            // this catches change events when steps
+            // get deactivated; we are only interested
+            // in steps becoming active
+            if (!active) {
+                return;
+            }
+            this.goToStep(model);
+        });
     },
     
     render: function() {
-        var html = this.template();
+        // Sets up the base markup for the wizard
+        var html = this.template({});
         this.$el.html(html);
-        this.goToStep(this.current_step);
+
+        // Assigns the step_list to the <ol>
+        this.assign({
+            'ol.step-list': 'step_list'
+        });
+
+        // Goes to active step.
+        this.goToStep(this.steps.getActive());
+
+        // Allow chaining
         return this;
     },
 
     events: {
-        'click .install-step-link': 'onStepLinkClick'
+        'click .install-step-link[data-action]': 'onStepLinkClick'
     },
 
     onStepLinkClick: function(e) {
@@ -53,23 +94,35 @@ var ConfigWelcomeWidget = BaseView.extend({
         }
 
         var step = $target.data('action');
-        if (step) this.goToStep(step);
+        if (step) {
+            this.steps.setActive(step);
+        }
     },
 
     goToStep: function(step) {
-        this.$('.install-steps-nav .install-step-link').removeClass('active');
-        this.$('.install-steps-nav .install-step-link[data-action="' + step + '"]').addClass('active');
-        this.$('.install-steps-pane .inner').html(this.steps[step]({
+        // Retrieves template for the step
+        var template = this.stepTemplates[step.get('id')];
+        if (!template) {
+            throw new Error('No step template found for ' + step.get('id') + ' step!');
+        }
+
+        // Injects the issues, properties, and step model
+        // into the template.
+        var html = template({
             issues: this.issues.toJSON(),
-            properties: this.collection.toJSON()
-        }));
-        this.current_step = step;
+            properties: this.collection.toJSON(),
+            model: step.toJSON()
+        });
+        this.$('.install-steps-pane .inner').html(html);
     },
     
+    // base markup for the wizard
     template: kt.make(__dirname+'/ConfigWelcomeWidget.html','_'),
 
-    steps: {
+    // markup for each step
+    stepTemplates: {
         welcome: kt.make(__dirname+'/step_welcome.html'),
+        license: kt.make(__dirname+'/step_license.html'),
         system: kt.make(__dirname+'/step_system.html'),
         performance: kt.make(__dirname+'/step_performance.html'),
         applications: kt.make(__dirname+'/step_applications.html'),
