@@ -23,7 +23,8 @@ Backbone.$ = $;
 // Set up the options for the dashboard
 var appOptions = {
     host: window.location.host,
-    pages: require('./app/pages')
+    pages: require('./app/pages'),
+    modes: require('./app/modes')
 };
 
 // Start the app in the #wrapper element on load
