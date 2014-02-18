@@ -21,15 +21,21 @@ Demos run on [Node.js](http://nodejs.org/).
 ## Running Demos
  Install dependencies:
 
+ ``` bash
     $ npm install
+ ```
 
  Install Bower dependencies:
 
+ ``` bash
     $ bower install
+ ```
 
  Start Node.js server:
 
+ ``` bash
     $ node app
+ ```
 
  Application will be available at http://localhost:3003
 
