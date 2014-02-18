@@ -1,2 +1,11 @@
 #!/bin/sh
-PORT=3003 GATEWAY_HOST=localhost GATEWAY_PORT=9090 MACHINE_REDIS_HOST=localhost MACHINE_REDIS_PORT=8379 ADS_REDIS_HOST=localhost ADS_REDIS_PORT=4379 MONGODB_HOST=localhost node app.js
+export PORT=3003
+export GATEWAY_HOST=localhost
+export GATEWAY_PORT=9090
+export MACHINE_REDIS_HOST=localhost
+export MACHINE_REDIS_PORT=8379
+export ADS_REDIS_HOST=localhost
+export ADS_REDIS_PORT=4379
+export MONGODB_HOST=localhost
+
+node app.js
