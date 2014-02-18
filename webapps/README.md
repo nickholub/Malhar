@@ -14,7 +14,7 @@ Web Applications for DataTorrent Demos:
 
 ## Demos configuration
  Please use config.js or environment variables for configuration (DT Gateway, Redis, MongoDB, etc.).
- See prod_start.sh and dev_start.sh.
+ See ```prod_start.sh``` and ```dev_start.sh```.
 
 ## Running Demos
  Demos run on [Node.js](http://nodejs.org/).
@@ -61,7 +61,7 @@ Web Applications for DataTorrent Demos:
  Running Node.js on different port
 
  ``` bash
-    $ PORT=3001 node app
+    $ PORT=3001 node app.js
  ```
 
 ## Links
