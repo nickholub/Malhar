@@ -13,7 +13,7 @@ Web Applications for DataTorrent Demos:
 ![Demos Architecture](docs/demos_architecture.png "Demos Architecture")
 
 ## Demos configuration
- Please use config.js or environment variables for configuration (DT Gateway, Redis, MongoDB, etc.).
+ Please use ```config.js``` or environment variables for configuration (DT Gateway, Redis, MongoDB, etc.).
  See ```prod_start.sh``` and ```dev_start.sh```.
 
 ## Running Demos
