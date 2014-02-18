@@ -18,7 +18,7 @@ Web Applications for DataTorrent Demos:
 
 ## Running Demos
  Demos run on [Node.js](http://nodejs.org/).
- To run demo application with prebuilt dependencies:
+ To run demo web application with prebuilt dependencies:
 
  ``` bash
     $ NODE_ENV=production node app.js
