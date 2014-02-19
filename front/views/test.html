@@ -1,0 +1,16 @@
+<div class="container row" style="margin-top:20px">
+    <div class="span2 install-steps-nav">
+        <ol class="step-list">
+            <li ng-repeat="step in steps">
+                <a href="#" class="install-step-link" ng-class="{active: step === selStep}" ng-click="select($event, step);">
+                    {{ step.label }}
+                </a>
+            </li>
+        </ol>
+    </div>
+    <div class="span10 install-steps-pane">
+        <div class="inner">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>

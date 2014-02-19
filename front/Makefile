@@ -27,6 +27,8 @@ build:
 	./node_modules/.bin/browserify -t ./node_modules/ktbr js/start.js > dist_tmp/js/bundle.js
 	./node_modules/.bin/uglifyjs \
 		js/vendor/jquery/dist/jquery.js \
+		js/vendor/angular.min.js \
+		js/vendor/angular-ui-router.js \
 		dist_tmp/js/bundle.js \
 		-o dist_tmp/js/bundle.js
 	cp img/* dist_tmp/img/
