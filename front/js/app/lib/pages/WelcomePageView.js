@@ -26,26 +26,26 @@ angular.module('app', ['ui.router'])
   .config(function ($stateProvider) {
     $stateProvider
       .state('main', {
-        templateUrl: 'views/test.html',
+        templateUrl: 'template/test.html',
         controller: 'MainCtrl'
       })
       .state('main.welcome', {
-        templateUrl: 'views/step_welcome.html'
+        templateUrl: 'template/step_welcome.html'
       })
       .state('main.license', {
-        templateUrl: 'views/step_license.html'
+        templateUrl: 'template/step_license.html'
       })
       .state('main.system', {
-        templateUrl: 'views/step_system.html'
+        templateUrl: 'template/step_system.html'
       })
       .state('main.performance', {
-        templateUrl: 'views/step_performance.html'
+        templateUrl: 'template/step_performance.html'
       })
       .state('main.applications', {
-        templateUrl: 'views/step_applications.html'
+        templateUrl: 'template/step_applications.html'
       })
       .state('main.summary', {
-        templateUrl: 'views/step_summary.html'
+        templateUrl: 'template/step_summary.html'
       });
   })
   .run(function ($state) {
