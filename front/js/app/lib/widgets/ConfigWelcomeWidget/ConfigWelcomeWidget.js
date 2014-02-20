@@ -45,7 +45,8 @@ var ConfigWelcomeWidget = BaseView.extend({
         // models for each step in this welcome
         // process.
         this.steps = new StepCollection(steps);
-        this.steps.setActive('welcome');
+        //this.steps.setActive('welcome');
+        this.steps.setActive('license');
 
         // this view contains the list of steps on the left
         // side of the wizard. 
