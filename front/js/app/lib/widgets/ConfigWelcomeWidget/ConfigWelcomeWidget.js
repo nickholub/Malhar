@@ -20,6 +20,9 @@ var BaseView = DT.lib.WidgetView;
 var StepCollection = require('./StepCollection');
 var steps = require('./steps');
 var StepListView = require('./StepListView');
+var StepView = require('./StepView');
+var LicenseStepView = require('./LicenseStepView');
+
 
 /**
  * ConfigWelcomeWidget
@@ -101,19 +104,32 @@ var ConfigWelcomeWidget = BaseView.extend({
 
     goToStep: function(step) {
         // Retrieves template for the step
-        var template = this.stepTemplates[step.get('id')];
+        var stepId = step.get('id');
+        var StepView = this.stepViews[stepId];
+        var template = this.stepTemplates[stepId];
+            
+        if (!StepView) {
+            throw new Error('No view found for "' + step.get('id') + '" step!');
+        }
+
         if (!template) {
-            throw new Error('No step template found for ' + step.get('id') + ' step!');
+            throw new Error('No template found for "' + step.get('id') + '" step!');
+        }
+
+        // Remove old current view if present
+        if (this._currentView) {
+            this._currentView.remove();
         }
 
         // Injects the issues, properties, and step model
-        // into the template.
-        var html = template({
-            issues: this.issues.toJSON(),
-            properties: this.collection.toJSON(),
-            model: step.toJSON()
+        // into the new view.
+        this._currentView = new StepView({
+            issues: this.issues,
+            properties: this.collection,
+            model: step,
+            template: template
         });
-        this.$('.install-steps-pane .inner').html(html);
+        this.$('.install-steps-pane .inner').html(this._currentView.render().el);
     },
     
     // base markup for the wizard
@@ -127,6 +143,23 @@ var ConfigWelcomeWidget = BaseView.extend({
         performance: kt.make(__dirname+'/step_performance.html'),
         applications: kt.make(__dirname+'/step_applications.html'),
         summary: kt.make(__dirname+'/step_summary.html')
+    },
+
+    // Views for each step
+    stepViews: {
+        welcome: StepView,
+        license: LicenseStepView,
+        system: StepView,
+        performance: StepView,
+        applications: StepView,
+        summary: StepView
+    },
+
+    remove: function() {
+        BaseView.prototype.remove.apply(this, arguments);
+        if (this._currentView) {
+            this._currentView.remove();
+        }
     }
     
 });
