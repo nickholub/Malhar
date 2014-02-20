@@ -107,8 +107,13 @@ var ConfigWelcomeWidget = BaseView.extend({
         var stepId = step.get('id');
         var StepView = this.stepViews[stepId];
         var template = this.stepTemplates[stepId];
+            
+        if (!StepView) {
+            throw new Error('No view found for "' + step.get('id') + '" step!');
+        }
+
         if (!template) {
-            throw new Error('No step view found for ' + step.get('id') + ' step!');
+            throw new Error('No template found for "' + step.get('id') + '" step!');
         }
 
         // Remove old current view if present
@@ -122,9 +127,9 @@ var ConfigWelcomeWidget = BaseView.extend({
             issues: this.issues,
             properties: this.collection,
             model: step,
-            template: 
+            template: template
         });
-        this.$('.install-steps-pane .inner').html(view.render().el);
+        this.$('.install-steps-pane .inner').html(this._currentView.render().el);
     },
     
     // base markup for the wizard
