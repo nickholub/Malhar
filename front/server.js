@@ -127,6 +127,13 @@ app.get('/', function(req, res) {
     });
 });
 
+app.get('/dist/', function (req, res) {
+  res.render('dev', {
+    config: config,
+    pkg: pkg
+  });
+});
+
 // Browserify bundle
 var b = browserify();
 b.add('./js/start.dev.js');
