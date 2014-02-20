@@ -11,6 +11,7 @@ exports = module.exports = [
         id: 'system',
         label: 'System'
     },
+    /*
     {
         id: 'performance',
         label: 'Performance'
@@ -19,6 +20,7 @@ exports = module.exports = [
         id: 'applications',
         label: 'Applications'
     },
+    */
     {
         id: 'summary',
         label: 'Summary'
