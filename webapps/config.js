@@ -13,9 +13,10 @@ config.gateway.host = process.env.GATEWAY_HOST || 'localhost';
 config.gateway.port = process.env.GATEWAY_PORT || 9090;
 config.machine.redis.host = process.env.MACHINE_REDIS_HOST || null;
 config.machine.redis.port = process.env.MACHINE_REDIS_PORT || 6379;
-config.machine.redis.dbIndex = 2;
+config.machine.redis.dbIndex = process.env.MACHINE_REDIS_DB_INDEX || 2;
 config.adsdimensions.redis.host = process.env.ADS_REDIS_HOST || null;
 config.adsdimensions.redis.port = process.env.ADS_REDIS_PORT || 6379;
+config.adsdimensions.redis.dbIndex = process.env.ADS_REDIS_DB_INDEX || 0;
 config.fraud.mongo.host = process.env.MONGODB_HOST || null;
 config.fraud.mongo.port = process.env.MONGODB_PORT || 27017;
 config.fraud.mongo.dbName = 'frauddetect';
@@ -33,7 +34,7 @@ settings.dimensions = {};
 settings.dimensions.range = {};
 settings.fraud = {};
 
-settings.webSocketUrl = 'ws://' + config.gateway.host + ':' + config.gateway.port + '/pubsub';
+settings.webSocketURL = 'ws://' + config.gateway.host + ':' + config.gateway.port + '/pubsub';
 settings.appsURL = 'http://' + config.gateway.host + ':' + config.gateway.port + '/static/#ops/apps/';
 
 settings.twitter.appName = 'TwitterCustomerApplication';

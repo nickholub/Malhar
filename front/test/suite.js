@@ -32,6 +32,7 @@ require('../js/datatorrent/WidgetDefModel.spec');
 require('../js/datatorrent/WidgetView.spec');
 require('../js/datatorrent/WindowId.spec');
 require('../js/datatorrent/ModeCollection.spec');
+require('../js/datatorrent/formatters.spec');
 
 // Page Tests
 require('../js/datatorrent/PageLoaderView/PageLoaderView.spec');
