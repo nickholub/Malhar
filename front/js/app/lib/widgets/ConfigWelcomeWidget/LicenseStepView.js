@@ -22,16 +22,6 @@ var LicenseStepView = BaseView.extend({
 
         var that = this; //TODO make subview
 
-        //var dLicenseText = $.Deferred();
-        var dLicenseText = $.ajax({
-            url : "license.txt",
-            dataType: "text"
-        });
-
-        dLicenseText.done(function (data) {
-            that.licenseText = data;
-        });
-
         var dLicense = $.Deferred();
         this.license = new LicenseModel({});
         this.license.fetch({
@@ -43,7 +33,7 @@ var LicenseStepView = BaseView.extend({
             dLicense.resolveWith(this.license);
         });
 
-        $.when(dLicenseText, dLicense)
+        $.when(dLicense)
             .done(function () {
                 that.render();
             })
