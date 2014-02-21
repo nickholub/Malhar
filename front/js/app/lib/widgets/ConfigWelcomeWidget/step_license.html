@@ -1,7 +1,21 @@
 <h1>License</h1>
 
+<% if (error) {  %>
+
+<p>
+    Error Loading License Information
+</p>
+
+<% } else if (licenseText && license) {  %>
+<div>
+    <h3>Terms of Service</h3>
+    <textarea readonly class="license-text" style="width: 100%; height: 150px;">
+        <%= licenseText %>
+    </textarea>
+</div>
 <div>
     <h3>Current License</h3>
+    <p><strong>license ID:</strong> <%= license.get('id') %> <a href="#" class="displayLicenseInfo">More Info</a></p>
 </div>
 
 <div class="form-horizontal">
@@ -35,6 +49,14 @@
 <h3>Upload License Files</h3>
 <div class="file-upload-target"></div>
 
+<% } else { %>
+
+<p>
+<%= DT.text('Loading license information...') %>
+</p>
+
+<% } %>
+
 <a href="#" class="install-step-link btn pull-left btn-large" data-action="welcome">
     <i class="icon-circle-arrow-left"></i> back
 </a>
@@ -42,3 +64,4 @@
 <a href="#" class="install-step-link btn btn-success pull-right btn-large" data-action="system">
     continue <i class="icon-circle-arrow-right icon-white"></i>
 </a>
+

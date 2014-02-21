@@ -56,6 +56,8 @@ var datatorrent = {
         JarAppModel                  : require('./JarAppModel'),
         ListPalette                  : require('./widgets/ListWidget/ListPalette'),
         LiveChart                    : require('./livechart/LiveChart'),
+        LicenseModal                 : require('./LicenseModalView'),
+        LicenseModel                 : require('./LicenseModel'),
         LogicalOperatorModel         : require('./LogicalOperatorModel'),
         LogicalOperatorCollection    : require('./LogicalOperatorCollection'),
         NavModel                     : require('./NavModel'),

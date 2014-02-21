@@ -23,7 +23,6 @@ var StepListView = require('./StepListView');
 var StepView = require('./StepView');
 var LicenseStepView = require('./LicenseStepView');
 
-
 /**
  * ConfigWelcomeWidget
  * 
@@ -33,7 +32,11 @@ var LicenseStepView = require('./LicenseStepView');
  * offer ways of fixing those issues.
 */
 var ConfigWelcomeWidget = BaseView.extend({
-    
+
+    events: {
+        'click .install-step-link[data-action]': 'onStepLinkClick'
+    },
+
     initialize: function(options) {
 
         BaseView.prototype.initialize.call(this, options);
@@ -66,7 +69,7 @@ var ConfigWelcomeWidget = BaseView.extend({
             this.goToStep(model);
         });
     },
-    
+
     render: function() {
         // Sets up the base markup for the wizard
         var html = this.template({});
@@ -82,10 +85,6 @@ var ConfigWelcomeWidget = BaseView.extend({
 
         // Allow chaining
         return this;
-    },
-
-    events: {
-        'click .install-step-link[data-action]': 'onStepLinkClick'
     },
 
     onStepLinkClick: function(e) {

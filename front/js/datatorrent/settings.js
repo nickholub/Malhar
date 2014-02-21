@@ -41,7 +41,7 @@ exports = module.exports = {
         JarApps                  :'/ws/:v/jars/:fileName/applications',
         JarDependencies          :'/ws/:v/jars/:fileName/dependencyJars',
         DependencyJar            :'/ws/:v/dependencyJars',
-        License                  :'/ws/:v/licenses/files/default',
+        License                  :'/ws/:v/licenses/files/current',
         LicenseAgent             :'/ws/:v/licenses/agents',
         GatewayInfo              :'/ws/:v/about'
         
