@@ -60,6 +60,7 @@ var datatorrent = {
         LicenseModel                 : require('./LicenseModel'),
         LogicalOperatorModel         : require('./LogicalOperatorModel'),
         LogicalOperatorCollection    : require('./LogicalOperatorCollection'),
+        ModalView                    : require('./ModalView'),
         NavModel                     : require('./NavModel'),
         Notifier                     : require('./Notifier'),
         OpPropertiesModel            : require('./OpPropertiesModel'),

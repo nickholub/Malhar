@@ -3,11 +3,13 @@ var LicenseModal = DT.lib.LicenseModal;
 var LicenseModel = DT.lib.LicenseModel;
 var UploadFilesView = DT.lib.UploadFilesView;
 var UploadFiles = DT.lib.UploadFileCollection;
+var LicenseTextModal = require('./LicenseTextModalView');
 
 var LicenseStepView = BaseView.extend({
 
     events: {
-        'click .displayLicenseInfo': 'displayLicenseInfo'
+        'click .displayLicenseInfo': 'displayLicenseInfo',
+        'click .show-license-text': 'showLicenseText'
     },
 
     initialize: function() {
@@ -32,7 +34,11 @@ var LicenseStepView = BaseView.extend({
 
         var dLicense = $.Deferred();
         this.license = new LicenseModel({});
-        this.license.fetch();
+        this.license.fetch({
+            error: function () {
+                dLicense.reject();
+            }
+        });
         this.listenTo(this.license, 'sync', function () {
             dLicense.resolveWith(this.license);
         });
@@ -45,6 +51,16 @@ var LicenseStepView = BaseView.extend({
                 that.error = true;
                 that.render();
             });
+    },
+
+    showLicenseText: function (e) {
+        e.preventDefault();
+
+        if (!this.licenseTextModal) {
+            this.licenseTextModal = new LicenseTextModal({ model: this.license });
+            this.licenseTextModal.addToDOM();
+        }
+        this.licenseTextModal.launch();
     },
 
     displayLicenseInfo: function(e) {
