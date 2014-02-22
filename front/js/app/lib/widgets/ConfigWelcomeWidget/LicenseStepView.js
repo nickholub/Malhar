@@ -1,9 +1,10 @@
 var BaseView = require('./StepView');
 var LicenseModal = DT.lib.LicenseModal;
 var LicenseModel = DT.lib.LicenseModel;
-var UploadFilesView = DT.lib.UploadFilesView;
+var UploadLicenseView = require('./UploadLicenseView');
 var UploadFiles = DT.lib.UploadFileCollection;
 var LicenseTextModal = require('./LicenseTextModalView');
+var LicenseFileCollection = require('./LicenseFileCollection');
 
 var LicenseStepView = BaseView.extend({
 
@@ -14,8 +15,13 @@ var LicenseStepView = BaseView.extend({
 
     initialize: function() {
         BaseView.prototype.initialize.apply(this, arguments);
-        this.subview('file-upload', new UploadFilesView({
-            collection: new UploadFiles([])
+
+        // Set a collection for the jar(s) to be uploaded
+        this.filesToUpload = new LicenseFileCollection([], {
+        });
+
+        this.subview('file-upload', new UploadLicenseView({
+            collection: this.filesToUpload
         }));
 
         this.error = false;

@@ -43,6 +43,7 @@ exports = module.exports = {
         DependencyJar            :'/ws/:v/dependencyJars',
         License                  :'/ws/:v/licenses/files/current',
         LicenseAgent             :'/ws/:v/licenses/agents',
+        LicenseFiles             :'/ws/:v/licenses/files',
         GatewayInfo              :'/ws/:v/about'
         
     },
