@@ -44,6 +44,7 @@ exports = module.exports = {
         License                  :'/ws/:v/licenses/files/current',
         LicenseAgent             :'/ws/:v/licenses/agents',
         LicenseFiles             :'/ws/:v/licenses/files',
+        LicenseRequest           :'/ws/:v/licenses/request',
         GatewayInfo              :'/ws/:v/about'
         
     },

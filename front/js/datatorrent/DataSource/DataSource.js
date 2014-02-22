@@ -495,6 +495,18 @@ DataSource.prototype = {
         
         this.post(options);
         LOG(1, action + ' recording', [options]);
+    },
+    requestLicense: function (params) {
+        var url = settings.interpolateParams(settings.urls.LicenseRequest, {
+            v: settings.version
+        });
+
+        var options = {
+            data: params,
+            url: url
+        }
+
+        this.post(options);
     }
 }
 

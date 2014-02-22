@@ -10,11 +10,13 @@ var LicenseStepView = BaseView.extend({
 
     events: {
         'click .displayLicenseInfo': 'displayLicenseInfo',
-        'click .show-license-text': 'showLicenseText'
+        'click .show-license-text': 'showLicenseText',
+        'click .register': 'register'
     },
 
-    initialize: function() {
+    initialize: function(options) {
         BaseView.prototype.initialize.apply(this, arguments);
+        this.dataSource = options.dataSource;
 
         // Set a collection for the jar(s) to be uploaded
         this.filesToUpload = new LicenseFileCollection([], {
@@ -67,6 +69,19 @@ var LicenseStepView = BaseView.extend({
             this.licenseModal.addToDOM();
         }
         this.licenseModal.launch();
+    },
+
+    register: function () {
+        console.log('register');
+        var params = {
+            name: 'John Smith',
+            company: 'Company, Inc.',
+            country: 'US',
+            email: 'email@email.com',
+            phone: '9251234567',
+            type: 'trial'
+        }
+        this.dataSource.requestLicense(params);
     },
 
     render: function() {

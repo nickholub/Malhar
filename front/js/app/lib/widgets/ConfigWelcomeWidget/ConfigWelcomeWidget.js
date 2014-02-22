@@ -38,8 +38,9 @@ var ConfigWelcomeWidget = BaseView.extend({
     },
 
     initialize: function(options) {
-
         BaseView.prototype.initialize.call(this, options);
+
+        this.dataSource = options.dataSource;
 
         // installation issues, instantiated 
         // and fetched on WelcomePageView
@@ -124,6 +125,7 @@ var ConfigWelcomeWidget = BaseView.extend({
         // Injects the issues, properties, and step model
         // into the new view.
         this._currentView = new StepView({
+            dataSource: this.dataSource,
             issues: this.issues,
             properties: this.collection,
             model: step,

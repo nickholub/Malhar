@@ -39,7 +39,7 @@ var WelcomePageView = BasePageView.extend({
 
     initialize: function(options) {
         BasePageView.prototype.initialize.call(this,options);
-        
+
         this.properties = new ConfigPropertyCollection([]);
         this.properties.fetch();
         window.props = this.properties;
@@ -54,7 +54,8 @@ var WelcomePageView = BasePageView.extend({
                 limit: 1,
                 inject: {
                     collection: this.properties,
-                    issues: this.issues
+                    issues: this.issues,
+                    dataSource: this.dataSource
                 }
             }
         ]);
