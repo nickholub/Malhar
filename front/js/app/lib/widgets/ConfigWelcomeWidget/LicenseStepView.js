@@ -8,6 +8,7 @@ var LicenseFileCollection = require('./LicenseFileCollection');
 var countries = require('./countries');
 var LicenseRequestModel = require('./LicenseRequestModel');
 var Bbind = DT.lib.Bbindings;
+var Notifier = DT.lib.Notifier;
 
 var LicenseStepView = BaseView.extend({
 
@@ -23,6 +24,13 @@ var LicenseStepView = BaseView.extend({
 
         // Set a collection for the jar(s) to be uploaded
         this.filesToUpload = new LicenseFileCollection([], {
+        });
+
+        this.listenTo(this.filesToUpload, 'upload_success', function() {
+            Notifier.success({
+                'title': 'Debug',
+                'text': 'License File Uploaded'
+            });
         });
 
         this.subview('file-upload', new UploadLicenseView({

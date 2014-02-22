@@ -24,8 +24,6 @@ var Notifier = DT.lib.Notifier;
  */
 var UploadLicenseView = BaseView.extend({
 
-    accept: ['.txt'],
-
     multiple: false,
 
     uploadBtnConfirm: 'upload',
@@ -37,7 +35,6 @@ var UploadLicenseView = BaseView.extend({
     uploadText: '(or click to choose)',
 
     fileChangeCheck: function(file) {
-        console.log(file.type);
         return true;
     }
 
