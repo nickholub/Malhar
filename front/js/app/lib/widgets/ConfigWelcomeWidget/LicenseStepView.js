@@ -5,6 +5,7 @@ var UploadLicenseView = require('./UploadLicenseView');
 var UploadFiles = DT.lib.UploadFileCollection;
 var LicenseTextModal = require('./LicenseTextModalView');
 var LicenseFileCollection = require('./LicenseFileCollection');
+var countries = require('./countries');
 
 var LicenseStepView = BaseView.extend({
 
@@ -88,8 +89,8 @@ var LicenseStepView = BaseView.extend({
         var that = this;
         var html = this.template({
             error: that.error,
-            licenseText: that.licenseText,
-            license: that.license
+            license: that.license,
+            countries: countries
         });
         this.$el.html(html);
         if (this.assignments) {
