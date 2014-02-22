@@ -503,7 +503,14 @@ DataSource.prototype = {
 
         var options = {
             data: params,
-            url: url
+            url: url,
+            complete: function (jqXHR, textStatus) {
+                //TODO
+                Notifier.error({
+                    'title': 'Debug. Server Response.',
+                    'text': jqXHR.responseText
+                });
+            }
         }
 
         this.post(options);
