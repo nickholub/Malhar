@@ -23,19 +23,19 @@
     <div class="control-group">
         <label class="control-label">Name</label>
         <div class="controls">
-            <input type="text" />
+            <input type="text" class="register-name" />
         </div>
     </div>
     <div class="control-group">
         <label class="control-label">Company</label>
         <div class="controls">
-            <input type="text" />
+            <input type="text" class="register-company" />
         </div>
     </div>
     <div class="control-group">
         <label class="control-label">Country</label>
         <div class="controls">
-            <select>
+            <select id="country" class="register-country">
                 <option value=""></option>
                 <% _.each(countries, function(country) { %>
                 <option value="<%= country['alpha-2'] %>"><%= country.name %></option>
@@ -46,13 +46,13 @@
     <div class="control-group">
         <label class="control-label">Email</label>
         <div class="controls">
-            <input type="text" placeholder="Email" />
+            <input type="text" placeholder="Email" id="email" class="register-email" />
         </div>
     </div>
     <div class="control-group">
         <label class="control-label">Phone</label>
         <div class="controls">
-            <input type="text" />
+            <input type="text" id="phone" class="register-phone" />
         </div>
     </div>
 

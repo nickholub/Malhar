@@ -6,6 +6,8 @@ var UploadFiles = DT.lib.UploadFileCollection;
 var LicenseTextModal = require('./LicenseTextModalView');
 var LicenseFileCollection = require('./LicenseFileCollection');
 var countries = require('./countries');
+var LicenseRequestModel = require('./LicenseRequestModel');
+var Bbind = DT.lib.Bbindings;
 
 var LicenseStepView = BaseView.extend({
 
@@ -25,6 +27,49 @@ var LicenseStepView = BaseView.extend({
 
         this.subview('file-upload', new UploadLicenseView({
             collection: this.filesToUpload
+        }));
+
+        this.licenseRequestModel = new LicenseRequestModel();
+
+        this.subview('register-name', new Bbind.text({
+            model: this.licenseRequestModel,
+            attr: 'name',
+            classElement: function($el) {
+                return $el.parent();
+            },
+            errorClass: 'error'
+        }));
+        this.subview('register-company', new Bbind.text({
+            model: this.licenseRequestModel,
+            attr: 'company',
+            classElement: function($el) {
+                return $el.parent();
+            },
+            errorClass: 'error'
+        }));
+        this.subview('register-country', new Bbind.select({
+            model: this.licenseRequestModel,
+            attr: 'country',
+            classElement: function($el) {
+                return $el.parent();
+            },
+            errorClass: 'error'
+        }));
+        this.subview('register-email', new Bbind.text({
+            model: this.licenseRequestModel,
+            attr: 'email',
+            classElement: function($el) {
+                return $el.parent();
+            },
+            errorClass: 'error'
+        }));
+        this.subview('register-phone', new Bbind.text({
+            model: this.licenseRequestModel,
+            attr: 'phone',
+            classElement: function($el) {
+                return $el.parent();
+            },
+            errorClass: 'error'
         }));
 
         this.error = false;
@@ -73,7 +118,7 @@ var LicenseStepView = BaseView.extend({
     },
 
     register: function () {
-        console.log('register');
+        /*
         var params = {
             name: 'John Smith',
             company: 'Company, Inc.',
@@ -82,6 +127,8 @@ var LicenseStepView = BaseView.extend({
             phone: '9251234567',
             type: 'trial'
         }
+        */
+        var params = this.licenseRequestModel.toJSON();
         this.dataSource.requestLicense(params);
     },
 
@@ -100,7 +147,12 @@ var LicenseStepView = BaseView.extend({
     },
 
     assignments: {
-        '.file-upload-target': 'file-upload'
+        '.file-upload-target': 'file-upload',
+        '.register-name': 'register-name',
+        '.register-company': 'register-company',
+        '.register-country': 'register-country',
+        '.register-email': 'register-email',
+        '.register-phone': 'register-phone'
     }
 
 });
