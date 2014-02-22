@@ -17,16 +17,16 @@ var BaseView = DT.lib.UploadFilesView;
 var Notifier = DT.lib.Notifier;
 
 /**
- * UploadJarsView
+ * UploadLicenseView
  *
- * View in JarListWidget for uploading jar(s).
+ * View in License Step for uploading license file.
  *
  */
 var UploadLicenseView = BaseView.extend({
 
     accept: ['.txt'],
 
-    multiple: true,
+    multiple: false,
 
     uploadBtnConfirm: 'upload',
 
