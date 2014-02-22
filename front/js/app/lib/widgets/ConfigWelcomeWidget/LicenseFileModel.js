@@ -26,6 +26,8 @@ var LicenseFileModel = BaseModel.extend({
 
     debugName: 'LicenseFilesModel',
 
+    uploadMethod: 'POST',
+
     putResourceString: 'LicenseFiles',
 
     defaults: {
