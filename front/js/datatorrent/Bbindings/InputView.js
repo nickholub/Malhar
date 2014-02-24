@@ -33,7 +33,13 @@ var InputView = Backbone.View.extend({
             errorClass: 'validation-error',
             autoRevert: false,
             setAnyway: false,
-            delayUpdate: false
+            delayUpdate: false,
+            classElement: false,
+            // supply a function here that returns an element 
+            // and the element will be filled with validation
+            // error. If string, will use this.$el.parent().find(errorEl)
+            // to find the element.
+            errorEl: false
         });
         
         if (options.attr === undefined) {
@@ -55,7 +61,7 @@ var InputView = Backbone.View.extend({
         var eventHash = {};
         for (var i = this.options.events.length - 1; i >= 0; i--){
             eventHash[this.options.events[i]] = 'updateValue';
-        };
+        }
         return eventHash;
     },
     
@@ -93,6 +99,20 @@ var InputView = Backbone.View.extend({
             if (validationError) {
                 $el.addClass(this.options.errorClass);
                 this.trigger('error', validationError);
+                if (this.options.errorEl !== false) {
+                    var $err;
+                    switch (typeof this.options.errorEl) {
+                        case 'function':
+                            $err = this.options.errorEl(this.$el);
+                        break;
+                        case 'string':
+                            $err = this.$el.parent().find(this.options.errorEl);
+                        break;
+                    }
+                    if ($err) {
+                        $err.text(validationError);
+                    }
+                }
                 if (this.options.autoRevert) {
                     this.render();
                 }
