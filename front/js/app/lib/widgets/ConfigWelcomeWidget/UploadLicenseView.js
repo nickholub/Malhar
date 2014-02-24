@@ -36,6 +36,13 @@ var UploadLicenseView = BaseView.extend({
 
     fileChangeCheck: function(file) {
         return true;
+    },
+
+    initialize: function(options) {
+        BaseView.prototype.initialize.apply(this, arguments);
+        this.listenTo(this.collection, 'upload_error', function() {
+            console.log('error occurred');
+        });
     }
 
 });

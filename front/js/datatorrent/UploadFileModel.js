@@ -80,8 +80,17 @@ var UploadFileModel = BaseModel.extend({
         // complete
         xhr.upload.addEventListener('load', function(e){
             self.trigger('upload_progress', 100);
-            self.trigger('upload_success', self);
         }, false);
+
+        xhr.addEventListener('readystatechange', function() {
+            if (this.readyState == 4)  {
+                if (this.status != 200 && this.status != 301 && this.status != 302) {
+                    self.trigger('upload_error', this.status, this.statusText);
+                } else {
+                    self.trigger('upload_success', self);
+                }
+            }
+        });
         
         // open the connection
         var url = this.resourceURL(this.putResourceString);
