@@ -1,5 +1,13 @@
 <h1>System</h1>
 
+<% if (error) {  %>
+
+<p class="alert alert-error">
+    Error Loading License Information
+</p>
+
+<% } else if (about) {  %>
+
 <p class="well">
     Use the following controls to change basic system settings regarding your DataTorrent installation. 
     If there is an issue icon (<i class="install-issue">!</i>) next to a property name, it means that the
@@ -11,12 +19,12 @@
         <tr>
             <td><code>hadoop</code> binary location</td>
             <td>This is the absolute path to the location of the hadoop executable on the node that the gateway is running on.</td>
-            <td><input type="text" value="/home/hadoop/hadoop/bin/hadoop" disabled /></td>
+            <td><input type="text" value="<%= about.get('hadoopLocation') %>" disabled /></td>
         </tr>
         <tr>
             <td>java version</td>
             <td>Version of the Java Runtime Environment that is available on the node that the gateway is running on.</td>
-            <td><input type="text" value="1.6" disabled />  </td>
+            <td><input type="text" value="<%= about.get('javaVersion') %>" disabled />  </td>
         </tr>
         <tr>
             <td>gateway ip app address</td>
@@ -35,10 +43,18 @@
         <tr class="install-issue">
             <td><i class="install-issue" title="There is something wrong with this value!">!</i> HDFS directory</td>
             <td>The location where all datatorrent stuff will go, including checkpointed data, recordings, etc</td>
-            <td><input type="text" value="/users/datatorrent"/></td>
+            <td><input type="text" value="TODO"/></td>
         </tr>
     </tbody>
 </table>
+
+<% } else { %>
+
+<p class="alert">
+    <%= DT.text('Loading license information...') %>
+</p>
+
+<% } %>
 
 <a href="#" class="install-step-link btn pull-left btn-large" data-action="license">
     <i class="icon-circle-arrow-left"></i> back

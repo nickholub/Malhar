@@ -22,6 +22,8 @@ var steps = require('./steps');
 var StepListView = require('./StepListView');
 var StepView = require('./StepView');
 var LicenseStepView = require('./LicenseStepView');
+var SystemStepView = require('./SystemStepView');
+
 
 /**
  * ConfigWelcomeWidget
@@ -151,7 +153,7 @@ var ConfigWelcomeWidget = BaseView.extend({
     stepViews: {
         welcome: StepView,
         license: LicenseStepView,
-        system: StepView,
+        system: SystemStepView,
         performance: StepView,
         applications: StepView,
         summary: StepView
