@@ -77,7 +77,7 @@ DataSource.prototype = {
             LOG('3', 'WebSocket connection has closed');
             Notifier.warning({
                 'title': 'WebSocket connection closed',
-                'text': 'The WebSocket connection to the daemon has been closed. You may have left the network or the server itself may be down. Try <a href="Javascript:window.location.reload(true)">refreshing the page</a>.',
+                'text': 'The WebSocket connection to the Gateway has been closed. You may have left the network or the server itself may be down. Try <a href="Javascript:window.location.reload(true)">refreshing the page</a>.',
                 'hide': false
             });
         }
