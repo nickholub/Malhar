@@ -514,6 +514,18 @@ DataSource.prototype = {
         }
 
         this.post(options);
+    },
+    getConfigIPAddresses: function (callback) {
+        var url = settings.interpolateParams(settings.urls.ConfigIPAddresses, {
+            v: settings.version
+        });
+
+        var options = {
+            url: url,
+            success: callback
+        }
+
+        this.get(options);
     }
 }
 

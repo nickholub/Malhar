@@ -33,10 +33,9 @@
             </td>
             <td>
                 <select name="gateway-app-ip">
-                    <option value="192.168.0.1">192.168.0.1</option>
-                    <option value="192.168.0.2">192.168.0.2</option>
-                    <option value="192.168.0.3">192.168.0.3</option>
-                    <option value="192.168.0.4">192.168.0.4</option>
+                    <% _.each(ipAddresses, function(ip) { %>
+                        <option value="<%= ip %>"><%= ip %></option>
+                    <% }) %>
                 </select>
             </td>
         </tr>
