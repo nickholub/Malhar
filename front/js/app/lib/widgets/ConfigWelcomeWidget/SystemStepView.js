@@ -3,6 +3,8 @@ var GatewayInfoModel = require('../../../../datatorrent/GatewayInfoModel');
 var ConfigIPAddressCollection = require('./ConfigIPAddressCollection');
 var Bbind = DT.lib.Bbindings;
 var Notifier = DT.lib.Notifier;
+var ConfigPropertyCollection = DT.lib.ConfigPropertyCollection;
+var ConfigIssueCollection = DT.lib.ConfigIssueCollection;
 
 var SystemStepView = BaseView.extend({
 
@@ -39,6 +41,8 @@ var SystemStepView = BaseView.extend({
             this.assign(this.assignments);
         }
         return this;
+        //dt.attr.GATEWAY_ADDRESS ip:9090
+        //dt.gateway.address
     }
 
 });

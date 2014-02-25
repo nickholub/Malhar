@@ -15,15 +15,18 @@
  */
 
 var _ = require('underscore');
+var Backbone = require('backbone');
 var kt = require('knights-templar');
-var BaseView = DT.lib.WidgetView;
+var WidgetView = DT.lib.WidgetView;
 var StepCollection = require('./StepCollection');
 var steps = require('./steps');
 var StepListView = require('./StepListView');
 var StepView = require('./StepView');
 var LicenseStepView = require('./LicenseStepView');
 var SystemStepView = require('./SystemStepView');
-
+var LicenseInfoView = require('./LicenseInfoView');
+var LicenseRegisterView = require('./LicenseRegisterView');
+var LicenseUploadView = require('./LicenseUploadView');
 
 /**
  * ConfigWelcomeWidget
@@ -33,14 +36,14 @@ var SystemStepView = require('./SystemStepView');
  * sequential steps that show potential issues and
  * offer ways of fixing those issues.
 */
-var ConfigWelcomeWidget = BaseView.extend({
+var ConfigWelcomeWidget = WidgetView.extend({
 
     events: {
         'click .install-step-link[data-action]': 'onStepLinkClick'
     },
 
     initialize: function(options) {
-        BaseView.prototype.initialize.call(this, options);
+        WidgetView.prototype.initialize.call(this, options);
 
         this.dataSource = options.dataSource;
 
@@ -52,7 +55,7 @@ var ConfigWelcomeWidget = BaseView.extend({
         // process.
         this.steps = new StepCollection(steps);
         //this.steps.setActive('welcome');
-        this.steps.setActive('license');
+        //this.steps.setActive('system');
 
         // this view contains the list of steps on the left
         // side of the wizard. 
@@ -71,6 +74,11 @@ var ConfigWelcomeWidget = BaseView.extend({
             }
             this.goToStep(model);
         });
+
+        //this.activeStateId = 'LicenseInfoView';
+        this.activeStateId = 'LicenseRegisterView';
+        //this.activeStateId = 'LicenseUploadView';
+        //this.activeStateId = 'WelcomeView';
     },
 
     render: function() {
@@ -84,7 +92,8 @@ var ConfigWelcomeWidget = BaseView.extend({
         });
 
         // Goes to active step.
-        this.goToStep(this.steps.getActive());
+        //this.goToStep(this.steps.getActive());
+        this.go(this.activeStateId);
 
         // Allow chaining
         return this;
@@ -101,11 +110,16 @@ var ConfigWelcomeWidget = BaseView.extend({
 
         var step = $target.data('action');
         if (step) {
-            this.steps.setActive(step);
+            //this.steps.setActive(step);
+            this.go(step);
         }
     },
 
     goToStep: function(step) {
+        if (true) {
+            this.go(step);
+            return;
+        }
         // Retrieves template for the step
         var stepId = step.get('id');
         var StepView = this.stepViews[stepId];
@@ -159,8 +173,54 @@ var ConfigWelcomeWidget = BaseView.extend({
         summary: StepView
     },
 
+    navStates: {
+        WelcomeView: {
+            view: StepView, //TODO
+            template: kt.make(__dirname+'/step_welcome.html') //TODO
+        },
+        LicenseInfoView: {
+            view: LicenseInfoView,
+            template: kt.make(__dirname+'/LicenseInfoView.html')
+        },
+        LicenseRegisterView: {
+            view: LicenseRegisterView,
+            template: kt.make(__dirname+'/LicenseRegisterView.html')
+        },
+        LicenseUploadView: {
+            view: LicenseUploadView,
+            template: kt.make(__dirname+'/LicenseUploadView.html')
+        },
+        SystemView: {
+            view: SystemStepView,
+            template: kt.make(__dirname+'/step_system.html') // TODO
+        }
+    },
+
+    go: function (stateId, stateOptions) {
+        var state = this.navStates[stateId];
+
+        if (!state) {
+            throw new Error('No view found for "' + stateId + '" state!');
+        }
+
+        // Remove old current view if present
+        if (this._currentView) {
+            this._currentView.remove();
+        }
+
+        // Create and render new view.
+        var that = this;
+        this._currentView = new state.view({
+            dataSource: this.dataSource,
+            navFlow: that,
+            stateOptions: stateOptions,
+            template: state.template
+        });
+        this.$('.install-steps-pane .inner').html(this._currentView.render().el);
+    },
+
     remove: function() {
-        BaseView.prototype.remove.apply(this, arguments);
+        WidgetView.prototype.remove.apply(this, arguments);
         if (this._currentView) {
             this._currentView.remove();
         }

@@ -1,8 +1,6 @@
 var BaseView = require('./StepView');
 var LicenseModal = DT.lib.LicenseModal;
 var LicenseModel = DT.lib.LicenseModel;
-var UploadLicenseView = require('./UploadLicenseView');
-var UploadFiles = DT.lib.UploadFileCollection;
 var LicenseTextModal = require('./LicenseTextModalView');
 var LicenseFileCollection = require('./LicenseFileCollection');
 var countries = require('./countries');
@@ -10,32 +8,19 @@ var LicenseRequestModel = require('./LicenseRequestModel');
 var Bbind = DT.lib.Bbindings;
 var Notifier = DT.lib.Notifier;
 
-var LicenseStepView = BaseView.extend({
+var LicenseRegisterView = BaseView.extend({
 
     events: {
-        'click .displayLicenseInfo': 'displayLicenseInfo',
+        'click .displayLicenseInfo': 'displayLicenseInfo', //TODO
         'click .show-license-text': 'showLicenseText',
-        'click .register': 'register'
+        'click .register': 'register',
+        'click .upload': 'upload'
     },
 
     initialize: function(options) {
         BaseView.prototype.initialize.apply(this, arguments);
         this.dataSource = options.dataSource;
-
-        // Set a collection for the jar(s) to be uploaded
-        this.filesToUpload = new LicenseFileCollection([], {
-        });
-
-        this.listenTo(this.filesToUpload, 'upload_success', function() {
-            Notifier.success({
-                'title': 'Debug',
-                'text': 'License File Uploaded'
-            });
-        });
-
-        this.subview('file-upload', new UploadLicenseView({
-            collection: this.filesToUpload
-        }));
+        this.navFlow = options.navFlow;
 
         this.licenseRequestModel = new LicenseRequestModel();
 
@@ -80,8 +65,6 @@ var LicenseStepView = BaseView.extend({
             errorClass: 'error'
         }));
 
-        this.error = false;
-
         var that = this; //TODO make subview
 
         var dLicense = $.Deferred();
@@ -107,8 +90,8 @@ var LicenseStepView = BaseView.extend({
             });
     },
 
-    showLicenseText: function (e) {
-        e.preventDefault();
+    showLicenseText: function (event) {
+        event.preventDefault();
 
         if (!this.licenseTextModal) {
             this.licenseTextModal = new LicenseTextModal({ model: this.license });
@@ -127,19 +110,56 @@ var LicenseStepView = BaseView.extend({
         this.licenseModal.launch();
     },
 
-    register: function () {
+    register: function (event) {
+        event.preventDefault();
         /*
-        var params = {
-            name: 'John Smith',
-            company: 'Company, Inc.',
-            country: 'US',
-            email: 'email@email.com',
-            phone: '9251234567',
-            type: 'trial'
-        }
-        */
+         var params = {
+         name: 'John Smith',
+         company: 'Company, Inc.',
+         country: 'US',
+         email: 'email@email.com',
+         phone: '9251234567',
+         type: 'trial'
+         }
+         */
         var params = this.licenseRequestModel.toJSON();
-        this.dataSource.requestLicense(params);
+        var ajax = this.dataSource.requestLicense(params);
+
+        var that = this;
+
+        ajax.done(function () {
+                Notifier.success({
+                    'title': 'Success',
+                    'text': 'Successfully registered.'
+                });
+                that.navFlow.go('LicenseInfoView');
+            })
+            .fail(function (jqXHR) {
+                var response = JSON.parse(jqXHR.responseText);
+                //TODO parse resonse.message.message for field validation
+                Notifier.error({
+                    'title': 'Registration Failed',
+                    'text': 'Failed to register. Server response: ' + response.message + '.'
+                });
+            });
+    },
+
+    upload: function (event) {
+        event.preventDefault();
+
+        this.navFlow.go('LicenseUploadView', {
+            prevStateId: 'LicenseRegisterView'
+        });
+    },
+
+    displayLicenseInfo: function(e) {
+        e.preventDefault();
+
+        if (!this.licenseModal) {
+            this.licenseModal = new LicenseModal({ model: this.license });
+            this.licenseModal.addToDOM();
+        }
+        this.licenseModal.launch();
     },
 
     render: function() {
@@ -157,7 +177,6 @@ var LicenseStepView = BaseView.extend({
     },
 
     assignments: {
-        '.file-upload-target': 'file-upload',
         '.register-name': 'register-name',
         '.register-company': 'register-company',
         '.register-country': 'register-country',
@@ -166,4 +185,4 @@ var LicenseStepView = BaseView.extend({
     }
 
 });
-exports = module.exports = LicenseStepView;
+exports = module.exports = LicenseRegisterView;

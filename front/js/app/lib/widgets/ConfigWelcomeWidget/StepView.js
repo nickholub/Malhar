@@ -10,9 +10,9 @@ var StepView = BaseView.extend({
 
     render: function() {
         var html = this.template({
-            issues: this.issues.toJSON(),
-            properties: this.properties.toJSON(),
-            model: this.model.toJSON()
+            //issues: this.issues.toJSON(),
+            //properties: this.properties.toJSON(),
+            //model: this.model.toJSON()
         });
         this.$el.html(html);
         if (this.assignments) {

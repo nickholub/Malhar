@@ -503,17 +503,14 @@ DataSource.prototype = {
 
         var options = {
             data: params,
-            url: url,
-            complete: function (jqXHR, textStatus) {
-                //TODO
-                Notifier.error({
-                    'title': 'Debug. Server Response.',
-                    'text': jqXHR.responseText
-                });
-            }
+            url: url
         }
 
-        this.post(options);
+        //var d = $.Deferred();
+        //d.resolve();
+        //return d.promise();
+
+        return this.post(options);
     },
     getConfigIPAddresses: function (callback) {
         var url = settings.interpolateParams(settings.urls.ConfigIPAddresses, {
