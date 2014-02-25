@@ -123,6 +123,14 @@ var LicenseRegisterView = BaseView.extend({
          }
          */
         var params = this.licenseRequestModel.toJSON();
+
+        if (false) { //TODO
+            this.navFlow.go('LicenseOfflineView', {
+                licenseRequestBlob: 'TODO{licenseRequestBlob}'
+            });
+            return;
+        }
+
         var ajax = this.dataSource.requestLicense(params);
 
         var that = this;

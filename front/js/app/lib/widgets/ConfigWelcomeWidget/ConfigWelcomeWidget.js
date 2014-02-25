@@ -27,6 +27,7 @@ var SystemStepView = require('./SystemStepView');
 var LicenseInfoView = require('./LicenseInfoView');
 var LicenseRegisterView = require('./LicenseRegisterView');
 var LicenseUploadView = require('./LicenseUploadView');
+var LicenseOfflineView = require('./LicenseOfflineView');
 
 /**
  * ConfigWelcomeWidget
@@ -77,6 +78,7 @@ var ConfigWelcomeWidget = WidgetView.extend({
 
         //this.activeStateId = 'LicenseInfoView';
         this.activeStateId = 'LicenseRegisterView';
+        //this.activeStateId = 'LicenseOfflineView';
         //this.activeStateId = 'LicenseUploadView';
         //this.activeStateId = 'WelcomeView';
     },
@@ -189,6 +191,10 @@ var ConfigWelcomeWidget = WidgetView.extend({
         LicenseUploadView: {
             view: LicenseUploadView,
             template: kt.make(__dirname+'/LicenseUploadView.html')
+        },
+        LicenseOfflineView: {
+            view: LicenseOfflineView,
+            template: kt.make(__dirname+'/LicenseOfflineView.html')
         },
         SystemView: {
             view: SystemStepView,
