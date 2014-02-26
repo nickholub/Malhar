@@ -20,6 +20,15 @@ var LicenseRequestModel = Backbone.Model.extend({
     idAttribute: 'name',
 
     defaults: {
+        name: '',
+        company: '',
+        country: '',
+        email: '',
+        phone: '',
+        type: 'trial'
+    },
+
+    defaultsTest: {
         name: 'John Smith',
         company: 'Company, Inc.',
         country: 'US',

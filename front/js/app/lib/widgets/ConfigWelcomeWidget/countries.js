@@ -2,6 +2,7 @@
  * Copied from https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes
  */
 var countries = [
+    {"name": "United States", "alpha-2": "US", "country-code": "840"},
     {"name": "Afghanistan", "alpha-2": "AF", "country-code": "004"},
     {"name": "Åland Islands", "alpha-2": "AX", "country-code": "248"},
     {"name": "Albania", "alpha-2": "AL", "country-code": "008"},
@@ -237,7 +238,6 @@ var countries = [
     {"name": "Ukraine", "alpha-2": "UA", "country-code": "804"},
     {"name": "United Arab Emirates", "alpha-2": "AE", "country-code": "784"},
     {"name": "United Kingdom", "alpha-2": "GB", "country-code": "826"},
-    {"name": "United States", "alpha-2": "US", "country-code": "840"},
     {"name": "United States Minor Outlying Islands", "alpha-2": "UM", "country-code": "581"},
     {"name": "Uruguay", "alpha-2": "UY", "country-code": "858"},
     {"name": "Uzbekistan", "alpha-2": "UZ", "country-code": "860"},
