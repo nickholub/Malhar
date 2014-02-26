@@ -34,12 +34,18 @@ var LicenseInfoView = BaseView.extend({
         this.listenTo(this.license, 'sync', function () {
             //that.render();
             //TODO check if license is default
-            if (false) {
-                that.navFlow.go('LicenseRegisterView');
-            } else {
-                that.render();
+            if (this.navFlow.mockState) {
+                if (this.navFlow.mockState.LicenseInfoView.defaultLicense) {
+                    this.license.set('id', 'default-' + this.license.get('id'));
+                }
             }
-        });
+
+            if (this.license.isDefault()) {
+                this.navFlow.go('LicenseRegisterView');
+            } else {
+                this.render();
+            }
+        }.bind(this));
 
         //that.error = true;
     },

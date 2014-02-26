@@ -124,14 +124,26 @@ var LicenseRegisterView = BaseView.extend({
          */
         var params = this.licenseRequestModel.toJSON();
 
-        if (false) { //TODO
-            this.navFlow.go('LicenseOfflineView', {
-                licenseRequestBlob: 'TODO{licenseRequestBlob}'
-            });
-            return;
-        }
+        var ajax;
 
-        var ajax = this.dataSource.requestLicense(params);
+        if (this.navFlow.mockState && this.navFlow.mockState.LicenseRegisterView) {
+            ajax = $.Deferred();
+            console.log(this.navFlow.mockState.LicenseRegisterView.registerResponse);
+            if (this.navFlow.mockState.LicenseRegisterView.registerResponse === 'success') {
+                ajax.resolve();
+            } else if (this.navFlow.mockState.LicenseRegisterView.registerResponse === 'failed') {
+                ajax.rejectWith(null, [{
+                    status: 400,
+                    responseText: '{"message": "mock message"}'
+                }]);
+            } else if (this.navFlow.mockState.LicenseRegisterView.registerResponse === 'offline') {
+                ajax.rejectWith(null, [{
+                    status: 503
+                }]);
+            }
+        } else {
+            ajax = this.dataSource.requestLicense(params);
+        }
 
         var that = this;
 
@@ -143,12 +155,18 @@ var LicenseRegisterView = BaseView.extend({
                 that.navFlow.go('LicenseInfoView');
             })
             .fail(function (jqXHR) {
-                var response = JSON.parse(jqXHR.responseText);
-                //TODO parse resonse.message.message for field validation
-                Notifier.error({
-                    'title': 'Registration Failed',
-                    'text': 'Failed to register. Server response: ' + response.message + '.'
-                });
+                if (jqXHR.status === 503) {
+                    that.navFlow.go('LicenseOfflineView', {
+                        licenseRequestBlob: 'TODO{licenseRequestBlob}'
+                    });
+                } else {
+                    var response = JSON.parse(jqXHR.responseText);
+                    //TODO parse resonse.message.message for field validation
+                    Notifier.error({
+                        'title': 'Registration Failed',
+                        'text': 'Failed to register. Server response: ' + response.message + '.'
+                    });
+                }
             });
     },
 
