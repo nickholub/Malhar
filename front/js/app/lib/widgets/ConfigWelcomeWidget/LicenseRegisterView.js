@@ -28,40 +28,45 @@ var LicenseRegisterView = BaseView.extend({
             model: this.licenseRequestModel,
             attr: 'name',
             classElement: function($el) {
-                return $el.parent();
+                return $el.parent().parent();
             },
+            errorEl: '.help-block',
             errorClass: 'error'
         }));
         this.subview('register-company', new Bbind.text({
             model: this.licenseRequestModel,
             attr: 'company',
             classElement: function($el) {
-                return $el.parent();
+                return $el.parent().parent();
             },
+            errorEl: '.help-block',
             errorClass: 'error'
         }));
         this.subview('register-country', new Bbind.select({
             model: this.licenseRequestModel,
             attr: 'country',
             classElement: function($el) {
-                return $el.parent();
+                return $el.parent().parent();
             },
+            errorEl: '.help-block',
             errorClass: 'error'
         }));
         this.subview('register-email', new Bbind.text({
             model: this.licenseRequestModel,
             attr: 'email',
             classElement: function($el) {
-                return $el.parent();
+                return $el.parent().parent();
             },
+            errorEl: '.help-block',
             errorClass: 'error'
         }));
         this.subview('register-phone', new Bbind.text({
             model: this.licenseRequestModel,
             attr: 'phone',
             classElement: function($el) {
-                return $el.parent();
+                return $el.parent().parent();
             },
+            errorEl: '.help-block',
             errorClass: 'error'
         }));
 

@@ -22,7 +22,7 @@ var LicenseRequestModel = Backbone.Model.extend({
     defaults: {
         name: '',
         company: '',
-        country: '',
+        country: 'US',
         email: '',
         phone: '',
         type: 'trial'
@@ -35,6 +35,31 @@ var LicenseRequestModel = Backbone.Model.extend({
         email: 'test@test.com',
         phone: '4151234567',
         type: 'trial'
+    },
+
+    validate: function(attrs) {
+        // map to hold invalid messages
+        var invalid = {};
+
+        if (attrs['name'].trim().length === 0) {
+            invalid['name'] = 'Name is required';
+        }
+
+        if (attrs['company'].trim().length === 0) {
+            invalid['company'] = 'Company is required';
+        }
+
+        if (attrs['country'].length === 0) {
+            invalid['country'] = 'Country is required';
+        }
+
+        if (attrs['email'].trim().length === 0) {
+            invalid['email'] = 'Email is required';
+        }
+
+        if (! _.isEmpty(invalid) ) {
+            return invalid;
+        }
     }
 });
 exports = module.exports = LicenseRequestModel;
