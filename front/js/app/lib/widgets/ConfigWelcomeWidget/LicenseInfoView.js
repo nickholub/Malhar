@@ -12,6 +12,7 @@ var LicenseInfoView = BaseView.extend({
     events: {
         'click .displayLicenseInfo': 'displayLicenseInfo',
         'click .go-to-upload': 'goToUpload',
+        'click .go-to-register': 'goToRegister',
         'click .go-to-offline': 'goToOffline'
     },
 
@@ -47,6 +48,8 @@ var LicenseInfoView = BaseView.extend({
 
                 if (this.navFlow.mockState && this.navFlow.mockState.LicenseInfoView) {
                     ajax = $.Deferred();
+
+
 
                     // for testing only
                     if (this.navFlow.mockState.LicenseInfoView.lastRequest === 'exists') {
@@ -111,6 +114,14 @@ var LicenseInfoView = BaseView.extend({
         event.preventDefault();
 
         this.navFlow.go('LicenseUploadView', {
+            prevStateId: 'LicenseInfoView'
+        });
+    },
+
+    goToRegister: function (event) {
+        event.preventDefault();
+
+        this.navFlow.go('LicenseRegisterView', {
             prevStateId: 'LicenseInfoView'
         });
     },

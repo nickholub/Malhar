@@ -22,6 +22,9 @@ var LicenseRegisterView = BaseView.extend({
         this.dataSource = options.dataSource;
         this.navFlow = options.navFlow;
 
+        var stateOptions = options.stateOptions;
+        this.prevStateId = (stateOptions && stateOptions.prevStateId) ? stateOptions.prevStateId : 'WelcomeView';
+
         this.licenseRequestModel = new LicenseRequestModel();
 
         this.subview('register-name', new Bbind.text({
@@ -202,6 +205,7 @@ var LicenseRegisterView = BaseView.extend({
     render: function() {
         var html = this.template({
             error: this.error,
+            prevStateId: this.prevStateId,
             registrationErrorMsg: this.registrationErrorMsg,
             license: this.license,
             countries: countries
