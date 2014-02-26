@@ -36,14 +36,35 @@ var LicenseInfoView = BaseView.extend({
         this.listenTo(this.license, 'sync', function () {
             //that.render();
             //TODO check if license is default
-            if (this.navFlow.mockState) {
+            if (this.navFlow.mockState && this.navFlow.mockState.LicenseInfoView) {
                 if (this.navFlow.mockState.LicenseInfoView.defaultLicense) {
                     this.license.set('id', 'default-' + this.license.get('id'));
                 }
             }
 
             if (this.license.isDefault()) {
-                var ajax = this.dataSource.getLicenseLastRequest();
+                var ajax;
+
+                if (this.navFlow.mockState && this.navFlow.mockState.LicenseInfoView) {
+                    ajax = $.Deferred();
+
+                    // for testing only
+                    if (this.navFlow.mockState.LicenseInfoView.lastRequest === 'exists') {
+                        ajax.resolveWith(null, [{
+                            licenseRequestBlob: 'mocklicenseRequestBlob'
+                        }]);
+                    } else if (this.navFlow.mockState.LicenseInfoView.lastRequest === 'notfound') {
+                        ajax.rejectWith(null, [{
+                            status: 404
+                        }]);
+                    } else if (this.navFlow.mockState.LicenseInfoView.lastRequest === 'error') {
+                        ajax.rejectWith(null, [{
+                            status: 400
+                        }]);
+                    }
+                } else {
+                    ajax = this.dataSource.getLicenseLastRequest();
+                }
 
                 ajax.done(function (data) {
                     this.licenseRequestBlob = data.licenseRequestBlob;
@@ -51,10 +72,11 @@ var LicenseInfoView = BaseView.extend({
                 }.bind(this));
 
                 ajax.fail(function (jqXHR) {
-                    if (jqXHR.status === 404) {
+                    if (jqXHR.status === 404) { // no license offline request is found
                         this.navFlow.go('LicenseRegisterView');
                     } else {
-                        //TOOD
+                        this.error = true;
+                        this.render();
                     }
                 }.bind(this));
             } else {
