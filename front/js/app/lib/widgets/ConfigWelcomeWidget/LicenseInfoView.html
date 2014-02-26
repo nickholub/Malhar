@@ -9,6 +9,12 @@
 
 <% } else if (license.get('id')) {  %>
 
+<% if (message) {  %>
+<p class="alert alert-success">
+    <%= message %>
+</p>
+<% } %>
+
 <% if (licenseRequestBlob) {  %>
 <p class="alert">
     You are using embedded license. See details of your evaluation license request <a href="#" class="go-to-offline">here</a>.

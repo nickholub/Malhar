@@ -157,11 +157,9 @@ var LicenseRegisterView = BaseView.extend({
         var that = this;
 
         ajax.done(function () {
-                Notifier.success({
-                    'title': 'Success',
-                    'text': 'Successfully registered.'
+                that.navFlow.go('LicenseInfoView', {
+                    message: 'Successfully registered.'
                 });
-                that.navFlow.go('LicenseInfoView');
             })
             .fail(function (jqXHR) {
                 if (jqXHR.status === 504) {

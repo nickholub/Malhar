@@ -20,6 +20,11 @@ var LicenseInfoView = BaseView.extend({
         BaseView.prototype.initialize.apply(this, arguments);
         this.dataSource = options.dataSource;
         this.navFlow = options.navFlow;
+        var stateOptions = options.stateOptions;
+
+        if (stateOptions && stateOptions.message) {
+            this.message = stateOptions.message;
+        }
 
         this.error = false;
         this.licenseRequestBlob = null;
@@ -136,11 +141,11 @@ var LicenseInfoView = BaseView.extend({
     },
 
     render: function() {
-        var that = this;
         var html = this.template({
-            error: that.error,
+            error: this.error,
+            message: this.message,
             licenseRequestBlob: this.licenseRequestBlob,
-            license: that.license
+            license: this.license
         });
         this.$el.html(html);
         if (this.assignments) {
