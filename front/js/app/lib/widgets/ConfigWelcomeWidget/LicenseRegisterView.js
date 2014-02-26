@@ -166,10 +166,12 @@ var LicenseRegisterView = BaseView.extend({
                 } else {
                     var response = JSON.parse(jqXHR.responseText);
                     //TODO parse resonse.message.message for field validation
-                    Notifier.error({
-                        'title': 'Registration Failed',
-                        'text': 'Failed to register. Server response: ' + response.message + '.'
-                    });
+                    that.registrationErrorMsg = response.message;
+                    that.render();
+                    //Notifier.error({
+                    //    'title': 'Registration Failed',
+                    //    'text': 'Failed to register. Server response: ' + response.message + '.'
+                    //});
                 }
             });
     },
@@ -193,10 +195,10 @@ var LicenseRegisterView = BaseView.extend({
     },
 
     render: function() {
-        var that = this;
         var html = this.template({
-            error: that.error,
-            license: that.license,
+            error: this.error,
+            registrationErrorMsg: this.registrationErrorMsg,
+            license: this.license,
             countries: countries
         });
         this.$el.html(html);

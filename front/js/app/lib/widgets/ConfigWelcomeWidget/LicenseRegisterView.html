@@ -9,6 +9,12 @@
 
 <% } else {  %>
 
+<% if (registrationErrorMsg) {  %>
+<p class="alert alert-error">
+    Registration request failed: <%= registrationErrorMsg %>
+</p>
+<% } %>
+
 <div class="form-horizontal license-register">
     <h4>Register for 1 year evaluation license</h4>
 
