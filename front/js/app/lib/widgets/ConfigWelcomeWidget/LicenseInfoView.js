@@ -11,7 +11,7 @@ var LicenseInfoView = BaseView.extend({
 
     events: {
         'click .displayLicenseInfo': 'displayLicenseInfo',
-        'click .upload': 'upload',
+        'click .go-to-upload': 'goToUpload',
         'click .go-to-offline': 'goToOffline'
     },
 
@@ -85,7 +85,7 @@ var LicenseInfoView = BaseView.extend({
         this.licenseModal.launch();
     },
 
-    upload: function (event) {
+    goToUpload: function (event) {
         event.preventDefault();
 
         this.navFlow.go('LicenseUploadView', {

@@ -21,7 +21,7 @@ var LicenseUploadView = BaseView.extend({
     initialize: function(options) {
         BaseView.prototype.initialize.apply(this, arguments);
         this.dataSource = options.dataSource;
-        this.navFlow = options.navFlow;f
+        this.navFlow = options.navFlow;
 
         var stateOptions = options.stateOptions;
         this.prevStateId = (stateOptions && stateOptions.prevStateId) ? stateOptions.prevStateId : 'WelcomeView';
