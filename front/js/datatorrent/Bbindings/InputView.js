@@ -64,14 +64,31 @@ var InputView = Backbone.View.extend({
         }
         return eventHash;
     },
+
+    getClassElement: function() {
+        return this.options.classElement ? this.options.classElement(this.$el) : this.$el ;
+    },
+
+    getErrorElement: function() {
+        if (this.options.errorEl !== false) {
+            switch (typeof this.options.errorEl) {
+                case 'function':
+                    return this.options.errorEl(this.$el);
+
+                case 'string':
+                    return this.$el.parent().find(this.options.errorEl);
+            }
+        }
+        return false;
+    },
     
     setValue: function(updates) {
         
         // get the element to add/remove error class to
-        var $el = this.options.classElement ? this.options.classElement(this.$el) : this.$el ;
+        var $el = this.getClassElement();
 
-        // will hold element with error message if this.model.errorClass is set
-        var $err;
+        // get element with error message if this.model.errorClass is set
+        var $err = this.getErrorElement();
         
         // try setting
         var response = this.model.set( updates, { validate: true } );
@@ -102,18 +119,8 @@ var InputView = Backbone.View.extend({
             if (validationError) {
                 $el.addClass(this.options.errorClass);
                 this.trigger('error', validationError);
-                if (this.options.errorEl !== false) {
-                    switch (typeof this.options.errorEl) {
-                        case 'function':
-                            $err = this.options.errorEl(this.$el);
-                        break;
-                        case 'string':
-                            $err = this.$el.parent().find(this.options.errorEl);
-                        break;
-                    }
-                    if ($err) {
-                        $err.text(validationError);
-                    }
+                if ($err) {
+                    $err.text(validationError);
                 }
                 if (this.options.autoRevert) {
                     this.render();
