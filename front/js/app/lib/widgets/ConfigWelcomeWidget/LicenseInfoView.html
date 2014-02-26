@@ -8,6 +8,13 @@
 </p>
 
 <% } else if (license.get('id')) {  %>
+
+<% if (licenseRequestBlob) {  %>
+<p class="alert">
+    You are using embedded license. See details of your evaluation license request <a href="#" class="go-to-offline">here</a>.
+</p>
+<% } %>
+
 <div>
     <h4>Current License</h4>
     <p><strong>license ID:</strong> <%= license.get('id') %> <a href="#" class="displayLicenseInfo">More Info</a></p>

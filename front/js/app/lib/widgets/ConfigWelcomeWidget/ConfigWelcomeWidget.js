@@ -80,7 +80,7 @@ var ConfigWelcomeWidget = WidgetView.extend({
         //this.activeStateId = 'LicenseRegisterView';
         //this.activeStateId = 'LicenseOfflineView';
         //this.activeStateId = 'LicenseUploadView';
-        //this.activeStateId = 'WelcomeView';
+        //fthis.activeStateId = 'WelcomeView';
     },
 
     render: function() {
@@ -239,7 +239,8 @@ var ConfigWelcomeWidget = WidgetView.extend({
 //TODO
 window.mockState = {
     LicenseInfoView: {
-        defaultLicense: true
+        defaultLicense: true,
+        lastRequest: 'exists' // exists, notfound, error
     },
     LicenseRegisterView: {
         registerResponse: 'offline' // success, failed, offline, input

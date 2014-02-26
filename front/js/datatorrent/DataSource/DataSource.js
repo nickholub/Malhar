@@ -512,6 +512,18 @@ DataSource.prototype = {
 
         return this.post(options);
     },
+    getLicenseLastRequest: function (params) {
+        var url = settings.interpolateParams(settings.urls.LicenseLastRequest, {
+            v: settings.version
+        });
+
+        var options = {
+            data: params,
+            url: url
+        }
+
+        return this.get(options);
+    },
     getConfigIPAddresses: function (callback) {
         var url = settings.interpolateParams(settings.urls.ConfigIPAddresses, {
             v: settings.version

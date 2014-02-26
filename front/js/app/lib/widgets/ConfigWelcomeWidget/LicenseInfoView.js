@@ -11,7 +11,8 @@ var LicenseInfoView = BaseView.extend({
 
     events: {
         'click .displayLicenseInfo': 'displayLicenseInfo',
-        'click .upload': 'upload'
+        'click .upload': 'upload',
+        'click .go-to-offline': 'goToOffline'
     },
 
     initialize: function(options) {
@@ -20,6 +21,7 @@ var LicenseInfoView = BaseView.extend({
         this.navFlow = options.navFlow;
 
         this.error = false;
+        this.licenseRequestBlob = null;
 
         var that = this; //TODO make subview
 
@@ -41,7 +43,20 @@ var LicenseInfoView = BaseView.extend({
             }
 
             if (this.license.isDefault()) {
-                this.navFlow.go('LicenseRegisterView');
+                var ajax = this.dataSource.getLicenseLastRequest();
+
+                ajax.done(function (data) {
+                    this.licenseRequestBlob = data.licenseRequestBlob;
+                    this.render();
+                }.bind(this));
+
+                ajax.fail(function (jqXHR) {
+                    if (jqXHR.status === 404) {
+                        this.navFlow.go('LicenseRegisterView');
+                    } else {
+                        //TOOD
+                    }
+                }.bind(this));
             } else {
                 this.render();
             }
@@ -78,10 +93,20 @@ var LicenseInfoView = BaseView.extend({
         });
     },
 
+    goToOffline: function (event) {
+        event.preventDefault();
+
+        this.navFlow.go('LicenseOfflineView', {
+            prevStateId: 'LicenseInfoView',
+            licenseRequestBlob: this.licenseRequestBlob
+        });
+    },
+
     render: function() {
         var that = this;
         var html = this.template({
             error: that.error,
+            licenseRequestBlob: this.licenseRequestBlob,
             license: that.license
         });
         this.$el.html(html);

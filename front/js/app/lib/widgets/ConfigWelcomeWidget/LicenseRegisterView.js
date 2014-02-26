@@ -126,6 +126,7 @@ var LicenseRegisterView = BaseView.extend({
 
         var ajax;
 
+        // for testing only
         if (this.navFlow.mockState && this.navFlow.mockState.LicenseRegisterView) {
             ajax = $.Deferred();
             console.log(this.navFlow.mockState.LicenseRegisterView.registerResponse);
@@ -155,10 +156,11 @@ var LicenseRegisterView = BaseView.extend({
                 that.navFlow.go('LicenseInfoView');
             })
             .fail(function (jqXHR) {
+                that.navFlow.go('LicenseOfflineView', {
+                    prevStateId: 'LicenseRegisterView',
+                    licenseRequestBlob: 'TODOlicenseRequestBlob' //TODO
+                });
                 if (jqXHR.status === 503) {
-                    that.navFlow.go('LicenseOfflineView', {
-                        licenseRequestBlob: 'TODO{licenseRequestBlob}'
-                    });
                 } else {
                     var response = JSON.parse(jqXHR.responseText);
                     //TODO parse resonse.message.message for field validation
