@@ -69,6 +69,9 @@ var InputView = Backbone.View.extend({
         
         // get the element to add/remove error class to
         var $el = this.options.classElement ? this.options.classElement(this.$el) : this.$el ;
+
+        // will hold element with error message if this.model.errorClass is set
+        var $err;
         
         // try setting
         var response = this.model.set( updates, { validate: true } );
@@ -100,7 +103,6 @@ var InputView = Backbone.View.extend({
                 $el.addClass(this.options.errorClass);
                 this.trigger('error', validationError);
                 if (this.options.errorEl !== false) {
-                    var $err;
                     switch (typeof this.options.errorEl) {
                         case 'function':
                             $err = this.options.errorEl(this.$el);
@@ -126,6 +128,9 @@ var InputView = Backbone.View.extend({
         // If it made it to here, it is valid and has been set.
         // remove the error class and return;
         $el.removeClass(this.options.errorClass);
+        if ($err) {
+            $err.html('');
+        }
         return;
         
     }
