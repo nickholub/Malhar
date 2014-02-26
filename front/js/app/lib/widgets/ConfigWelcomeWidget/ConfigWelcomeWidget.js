@@ -76,15 +76,15 @@ var ConfigWelcomeWidget = WidgetView.extend({
             this.goToStep(model);
         });
 
-        this.activeStateId = 'LicenseInfoView';
+        //this.activeStateId = 'LicenseInfoView';
         //this.activeStateId = 'LicenseRegisterView';
         //this.activeStateId = 'LicenseOfflineView';
         //this.activeStateId = 'LicenseUploadView';
-        //fthis.activeStateId = 'WelcomeView';
+        this.activeStateId = 'WelcomeView';
     },
 
     render: function() {
-        this.mockState = window.mockState; //TODO
+        //this.mockState = window.mockState; //TODO
 
         // Sets up the base markup for the wizard
         var html = this.template({});
@@ -240,7 +240,7 @@ var ConfigWelcomeWidget = WidgetView.extend({
 window.mockState = {
     LicenseInfoView: {
         defaultLicense: true,
-        lastRequest: 'exists' // exists, notfound, error
+        lastRequest: 'notfound' // exists, notfound, error
     },
     LicenseRegisterView: {
         registerResponse: 'offline' // success, failed, offline, input
