@@ -139,7 +139,7 @@ var LicenseRegisterView = BaseView.extend({
                 }]);
             } else if (this.navFlow.mockState.LicenseRegisterView.registerResponse === 'offline') {
                 ajax.rejectWith(null, [{
-                    status: 503
+                    status: 504
                 }]);
             }
         } else {
@@ -156,11 +156,13 @@ var LicenseRegisterView = BaseView.extend({
                 that.navFlow.go('LicenseInfoView');
             })
             .fail(function (jqXHR) {
-                that.navFlow.go('LicenseOfflineView', {
-                    prevStateId: 'LicenseRegisterView',
-                    licenseRequestBlob: 'TODOlicenseRequestBlob' //TODO
-                });
-                if (jqXHR.status === 503) {
+                if (jqXHR.status === 504) {
+                    var response = JSON.parse(jqXHR.responseText);
+
+                    that.navFlow.go('LicenseOfflineView', {
+                        prevStateId: 'LicenseRegisterView',
+                        licenseRequestBlob: response.licenseRequestBlob
+                    });
                 } else {
                     var response = JSON.parse(jqXHR.responseText);
                     //TODO parse resonse.message.message for field validation
