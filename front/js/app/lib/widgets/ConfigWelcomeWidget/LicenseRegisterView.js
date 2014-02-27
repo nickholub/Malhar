@@ -27,9 +27,20 @@ var LicenseRegisterView = BaseView.extend({
 
         this.licenseRequestModel = new LicenseRequestModel();
 
+        this.listenTo(this.licenseRequestModel, 'change', function (model) {
+            var valid = this.licenseRequestModel.isValid();
+
+            if (valid) {
+                this.$el.find('.register').removeClass('disabled');
+            } else {
+                this.$el.find('.register').addClass('disabled');
+            }
+        });
+
         this.subview('register-name', new Bbind.text({
             model: this.licenseRequestModel,
             attr: 'name',
+            setAnyway: true,
             classElement: function($el) {
                 return $el.parent().parent();
             },
@@ -39,6 +50,7 @@ var LicenseRegisterView = BaseView.extend({
         this.subview('register-company', new Bbind.text({
             model: this.licenseRequestModel,
             attr: 'company',
+            setAnyway: true,
             classElement: function($el) {
                 return $el.parent().parent();
             },
@@ -48,6 +60,7 @@ var LicenseRegisterView = BaseView.extend({
         this.subview('register-country', new Bbind.select({
             model: this.licenseRequestModel,
             attr: 'country',
+            setAnyway: true,
             classElement: function($el) {
                 return $el.parent().parent();
             },
@@ -57,6 +70,7 @@ var LicenseRegisterView = BaseView.extend({
         this.subview('register-email', new Bbind.text({
             model: this.licenseRequestModel,
             attr: 'email',
+            setAnyway: true,
             classElement: function($el) {
                 return $el.parent().parent();
             },
@@ -66,6 +80,7 @@ var LicenseRegisterView = BaseView.extend({
         this.subview('register-phone', new Bbind.text({
             model: this.licenseRequestModel,
             attr: 'phone',
+            setAnyway: true,
             classElement: function($el) {
                 return $el.parent().parent();
             },
@@ -120,16 +135,11 @@ var LicenseRegisterView = BaseView.extend({
 
     register: function (event) {
         event.preventDefault();
-        /*
-         var params = {
-         name: 'John Smith',
-         company: 'Company, Inc.',
-         country: 'US',
-         email: 'email@email.com',
-         phone: '9251234567',
-         type: 'trial'
-         }
-         */
+
+        if (!this.licenseRequestModel.isValid()) {
+            return;
+        }
+
         var params = this.licenseRequestModel.toJSON();
 
         var ajax;
