@@ -142,6 +142,7 @@ var LicenseRegisterView = BaseView.extend({
         }
 
         this.$el.find('.loading').show();
+        this.$el.find('.registration-error').hide();
         jQuery(event.target).addClass('disabled');
 
         var params = this.licenseRequestModel.toJSON();
