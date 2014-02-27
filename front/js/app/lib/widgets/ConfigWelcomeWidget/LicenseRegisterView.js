@@ -163,7 +163,8 @@ var LicenseRegisterView = BaseView.extend({
                 }]);
             } else if (this.navFlow.mockState.LicenseRegisterView.registerResponse === 'offline') {
                 ajax.rejectWith(null, [{
-                    status: 504
+                    status: 504,
+                    responseText: '{"licenseRequestBlob": "mockBlob"}'
                 }]);
             }
         } else {
