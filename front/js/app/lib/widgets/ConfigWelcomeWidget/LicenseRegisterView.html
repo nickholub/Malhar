@@ -9,6 +9,10 @@
 
 <% } else {  %>
 
+<p class="alert loading">
+    <span class="register-spinner"></span> Submitting license request...
+</p>
+
 <% if (registrationErrorMsg) {  %>
 <p class="alert alert-error">
     Registration request failed: <%= registrationErrorMsg %>

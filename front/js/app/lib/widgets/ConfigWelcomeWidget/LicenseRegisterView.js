@@ -140,6 +140,8 @@ var LicenseRegisterView = BaseView.extend({
             return;
         }
 
+        this.$el.find('.loading').show();
+
         var params = this.licenseRequestModel.toJSON();
 
         var ajax;
@@ -147,9 +149,10 @@ var LicenseRegisterView = BaseView.extend({
         // for testing only
         if (this.navFlow.mockState && this.navFlow.mockState.LicenseRegisterView) {
             ajax = $.Deferred();
-            console.log(this.navFlow.mockState.LicenseRegisterView.registerResponse);
             if (this.navFlow.mockState.LicenseRegisterView.registerResponse === 'success') {
-                ajax.resolve();
+                setTimeout(function () {
+                    ajax.resolve();
+                }, 3000);
             } else if (this.navFlow.mockState.LicenseRegisterView.registerResponse === 'failed') {
                 ajax.rejectWith(null, [{
                     status: 400,
