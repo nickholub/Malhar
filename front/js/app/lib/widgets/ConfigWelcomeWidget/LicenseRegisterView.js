@@ -136,11 +136,13 @@ var LicenseRegisterView = BaseView.extend({
     register: function (event) {
         event.preventDefault();
 
-        if (!this.licenseRequestModel.isValid()) {
+        //if (!this.licenseRequestModel.isValid()) {
+        if (jQuery(event.target).hasClass('disabled')) {
             return;
         }
 
         this.$el.find('.loading').show();
+        jQuery(event.target).addClass('disabled');
 
         var params = this.licenseRequestModel.toJSON();
 
