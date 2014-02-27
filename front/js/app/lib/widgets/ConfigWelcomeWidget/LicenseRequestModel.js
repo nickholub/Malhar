@@ -55,11 +55,18 @@ var LicenseRequestModel = Backbone.Model.extend({
 
         if (attrs['email'].trim().length === 0) {
             invalid['email'] = 'Email is required';
+        } else if (!this.validateEmail(attrs['email'])) {
+            invalid['email'] = 'Email should be valid';
         }
 
         if (! _.isEmpty(invalid) ) {
             return invalid;
         }
+    },
+
+    validateEmail: function (email) {
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
     }
 });
 exports = module.exports = LicenseRequestModel;
