@@ -19,8 +19,7 @@ Web Applications for DataTorrent Demos:
  By default application will be available at http://localhost:3003 and will connect to DT Gateway at localhost:9090.
 
 ## Demos configuration
- Please use ```config.js``` or environment variables for configuration (DT Gateway, Redis, MongoDB, etc.).
- See ```start.sh```.
+ Please use ```config.js``` or environment variables (```start.sh```) for configuration (DT Gateway, Redis, MongoDB, etc.).
 
 ## Architecture and Development
 
