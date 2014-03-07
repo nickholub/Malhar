@@ -10,12 +10,11 @@ Web Applications for DataTorrent Demos:
 
 ## Running Demos
  Demos run on [Node.js](http://nodejs.org/).
- To run demo web application:
+ To run demo web server use ```start.sh``` or launch application with Node.js:
 
  ``` bash
     $ node app.js
  ```
- or use ```start.sh```
 
  By default application will be available at http://localhost:3003 and will connect to DT Gateway at localhost:9090.
 
