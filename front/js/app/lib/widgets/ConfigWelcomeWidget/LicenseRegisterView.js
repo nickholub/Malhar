@@ -186,7 +186,7 @@ var LicenseRegisterView = BaseView.extend({
 
         ajax.done(function () {
             this.navFlow.go('LicenseInfoView', {
-                message: 'Registration request submitted. Please check your email to validate the registration and to unlock the free one-year license.'
+                message: 'Registration request submitted. You have been given 3 months license, please check your email to validate the registration and to unlock the free one-year license.'
             });
         }.bind(this));
 
