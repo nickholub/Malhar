@@ -29,6 +29,7 @@ angular.module('widgets')
       controller: function ($scope) {
         var filter = $filter('date');
 
+        $scope.summaryDateFormat = 'yyyy/MM/dd HH:mm:ss';
         $scope.dateFormat = 'HH:mm';
 
         function getFormat(mode) {
@@ -61,6 +62,27 @@ angular.module('widgets')
         });
       },
       link: function postLink(scope) {
+        scope.chartData = [{
+          key: '',
+          values: []
+        }];
+
+        scope.metric = null;
+
+        function updateChart(timeseries) {
+          var values = _.map(timeseries, function (item) {
+            return {
+              timestamp: item.timestamp,
+              value: item[scope.metric]
+            };
+          });
+
+          scope.chartData = [{
+            key: 'key',
+            values: values
+          }];
+        }
+
         scope.$watch('data', function (data) {
           if (data && data[0] && data[0].values && (data[0].values.length > 1)) {
             var timeseries = _.sortBy(data[0].values, function (item) {
@@ -71,6 +93,22 @@ angular.module('widgets')
             var end = timeseries[timeseries.length - 1].timestamp;
             scope.start = start;
             scope.end = end;
+
+            var sampleObject = timeseries[0];
+            var keys = _.keys(sampleObject);
+            keys = _.sortBy(keys, function (key) {
+              return key;
+            });
+            scope.metrics = keys;
+            if (!scope.metric) {
+              if (_.contains(keys, 'revenue')) {
+                scope.metric = 'revenue';
+              } else {
+                scope.metric = scope.metrics[0];
+              }
+            };
+
+            updateChart(timeseries);
           }
         });
       }

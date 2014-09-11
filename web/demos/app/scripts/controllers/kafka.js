@@ -33,22 +33,38 @@ angular.module('kafka', [
     $scope.timeSeries = [];
     $scope.mode = 'MINUTES';
 
-    function updateBarChart(timeseries) {
-      var metric = 'impressions';
+    $scope.metric = null;
 
+    function updateBarChart(timeseries) {
       var values = [];
-      if (timeseries && metric) {
+      if (timeseries) {
+        if (timeseries.length > 0) {
+          var sampleObject = timeseries[0];
+          var keys = _.keys(sampleObject);
+          keys = _.sortBy(keys, function (key) {
+            return key;
+          });
+          $scope.metrics = keys;
+          if (!$scope.metric) {
+            if (_.contains(keys, 'revenue')) {
+              $scope.metric = 'revenue';
+            } else {
+              $scope.metric = $scope.metrics[0];
+            }
+          };
+        }
+
         values = _.map(timeseries, function (item) {
           return {
             timestamp: item.timestamp,
-            value: item[metric]
+            value: item[$scope.metric]
           };
         });
 
         $scope.barChart = [
           {
-            key: metric,
-            values: values
+            key: $scope.metric,
+            values: timeseries
           }
         ];
       } else {

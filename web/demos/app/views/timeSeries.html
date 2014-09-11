@@ -1,9 +1,18 @@
 <div class="bar-chart">
-    <div style="text-align: right;">
-        <span ng-if="start && end">{{start|date:dateFormat}} - {{end|date:dateFormat}}</span>&nbsp;
+    <div style="display: table;width: 100%;">
+        <div style="display: table-cell;vertical-align: middle;">
+
+        </div>
+        <div style="display: table-cell;vertical-align: middle;">
+            Metric: <select ng-model="metric" ng-options="opt for opt in metrics"
+                    class="form-control" style="width: 200px; margin-bottom: 0;"></select>
+        </div>
+        <div style="display: table-cell;text-align: right;vertical-align: middle;">
+            <span ng-if="start && end">{{start|date:summaryDateFormat}} - {{end|date:summaryDateFormat}}</span>&nbsp;
+        </div>
     </div>
     <nvd3-multi-bar-chart
-            data="data"
+            data="chartData"
             xAxisTickFormat="xAxisTickFormatFunction()"
             x="xFunction()"
             y="yFunction()"
