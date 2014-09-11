@@ -10,4 +10,9 @@ export ADS_REDIS_HOST=
 export ADS_REDIS_PORT=
 export MONGODB_HOST=
 
+export ZOOKEEPER=localhost:2181
+export KAFKA_TOPIC_IN=AdsDemoQuery
+export KAFKA_TOPIC_OUT=AdsDemoQueryResult
+export MOCK_DATA=true
+
 node app.js
