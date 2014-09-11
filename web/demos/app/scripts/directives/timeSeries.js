@@ -62,7 +62,6 @@ angular.module('widgets')
       },
       link: function postLink(scope) {
         scope.$watch('data', function (data) {
-          console.log(data);
           if (data && data[0] && data[0].values && (data[0].values.length > 1)) {
             var timeseries = _.sortBy(data[0].values, function (item) {
               return item.timestamp;
