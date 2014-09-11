@@ -10,7 +10,7 @@ export ADS_REDIS_PORT=4379
 export ADS_REDIS_DB_INDEX=0
 export MONGODB_HOST=localhost
 
-export ZOOKEEPER=127.0.0.1:2181
+export ZOOKEEPER=localhost:2181
 export KAFKA_TOPIC_IN=AdsDemoQuery
 export KAFKA_TOPIC_OUT=AdsDemoQueryResult
 export MOCK_DATA=true
