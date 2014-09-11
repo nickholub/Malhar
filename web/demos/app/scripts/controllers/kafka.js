@@ -61,12 +61,7 @@ angular.module('kafka', [
           };
         });
 
-        $scope.barChart = [
-          {
-            key: $scope.metric,
-            values: timeseries
-          }
-        ];
+        $scope.barChart = timeseries;
       } else {
         $scope.barChart = null;
       }

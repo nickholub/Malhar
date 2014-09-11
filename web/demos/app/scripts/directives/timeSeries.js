@@ -84,8 +84,8 @@ angular.module('widgets')
         }
 
         scope.$watch('data', function (data) {
-          if (data && data[0] && data[0].values && (data[0].values.length > 1)) {
-            var timeseries = _.sortBy(data[0].values, function (item) {
+          if (data && (data.length > 1)) {
+            var timeseries = _.sortBy(data, function (item) {
               return item.timestamp;
             });
 
