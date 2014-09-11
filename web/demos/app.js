@@ -22,6 +22,7 @@ var config = require('./config');
 var machine = require('./routes/machine');
 var adsdimensions = require('./routes/adsdimensions');
 var fraud = require('./routes/fraud');
+var kafka = require('./routes/kafka');
 
 var app = express();
 
@@ -52,6 +53,8 @@ app.get('/ws/*', function(req, res) {
         port: config.gateway.port
     });
 });
+app.get('/data', kafka.data);
+app.post('/data', kafka.publish);
 
 app.get('/settings.js', function(req, res) {
   res.setHeader('Content-Type', 'application/javascript');

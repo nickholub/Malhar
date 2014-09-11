@@ -22,6 +22,14 @@ config.fraud.mongo.host = process.env.MONGODB_HOST || null;
 config.fraud.mongo.port = process.env.MONGODB_PORT || 27017;
 config.fraud.mongo.dbName = 'frauddetect';
 
+config.kafka = {};
+config.kafka.zookeeper = process.env.ZOOKEEPER || 'localhost:2181';
+config.kafka.lruCacheMax = 1000;
+config.kafka.enableMockData = process.env.MOCK_DATA || false;
+config.kafka.topic = {};
+config.kafka.topic.in = process.env.KAFKA_TOPIC_IN || 'test';
+config.kafka.topic.out = process.env.KAFKA_TOPIC_OUT || 'test';
+
 // client settings (passed to the browser)
 config.settings = {};
 var settings = config.settings;
@@ -63,5 +71,8 @@ settings.dimensions.range.publisher = { start: 0, stop: 49 };
 settings.dimensions.range.advertiser = { start: 0, stop: 99 };
 settings.dimensions.range.adunit = { start: 0, stop: 4 };
 settings.fraud.appName = process.env.APP_NAME_FRAUD || 'FraudDetectDemo';
+
+settings.pollInterval = 1000;
+settings.keepAliveInterval = 5000;
 
 module.exports = config

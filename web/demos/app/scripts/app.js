@@ -26,9 +26,10 @@ angular.module('machine', ['ng', 'rest', 'widgets']);
 angular.module('dimensions', ['ng', 'rest', 'widgets']);
 angular.module('fraud', ['rest', 'widgets']);
 
-angular.module('app', ['ngRoute', 'socket', 'twitter', 'mobile', 'machine', 'dimensions', 'fraud']);
+angular.module('app', ['ngRoute', 'socket', 'twitter', 'mobile', 'machine', 'dimensions', 'fraud', 'kafka']);
 
 angular.module('app')
+  .constant('settings', window.settings)
   .config(function ($routeProvider, socketProvider) {
     if (window.settings) {
       socketProvider.setWebSocketURL(settings.webSocketURL);
@@ -62,6 +63,10 @@ angular.module('app')
         templateUrl: 'views/fraud.html',
         controller: 'FraudController'
       })
+      .when('/kafka', {
+        templateUrl: 'views/kafka.html',
+        controller: 'KafkaCtrl'
+      });
   });
 
 })();
